@@ -1,7 +1,4 @@
-﻿using DiffyAPI.Controllers.Model;
-using DiffyAPI.Core.Model;
-
-namespace DiffyAPI.Database.Model
+﻿namespace DiffyAPI.Database.Model
 {
     public class UserData
     {

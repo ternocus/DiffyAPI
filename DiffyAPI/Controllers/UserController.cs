@@ -1,6 +1,5 @@
 ﻿using DiffyAPI.Controllers.Model;
 using DiffyAPI.Core;
-using DiffyAPI.Database;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DiffyAPI.Controllers
@@ -11,10 +10,9 @@ namespace DiffyAPI.Controllers
     {
         private readonly IUserManager _userManager;
 
-        public UserController()
+        public UserController(IUserManager userManager)
         {
-            var dataRepository = new DataRepository();
-            _userManager = new UserManager(dataRepository);
+            _userManager = userManager;
         }
 
         [HttpPost("Login")]
@@ -26,8 +24,7 @@ namespace DiffyAPI.Controllers
             }
             catch (Exception ex)
             {
-                // UserNotFoundException, UnauthorizedAccessException, Exception db...
-                return BadRequest(ex.Message);
+                return BadRequest(new { ErrorType = ex.GetType().Name, Error = ex.Message });
             }
         }
 
@@ -40,7 +37,7 @@ namespace DiffyAPI.Controllers
             }
             catch(Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { ErrorType = ex.GetType().Name, Error = ex.Message });
             }
         }
     }

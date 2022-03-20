@@ -6,9 +6,9 @@ namespace DiffyAPI.Controllers.Model
     public class LoginRequest
     {
         [Required, MinLength(1), MaxLength(18)]
-        public string Username { get; private set; }
+        public string Username { get; set; }
         [Required, MinLength(8), MaxLength(18)]
-        public string Password { get; private set; }
+        public string Password { get; set; }
 
         public LoginCredential ToCore()
         {

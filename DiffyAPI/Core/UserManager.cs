@@ -3,6 +3,7 @@ using DiffyAPI.Core.Model;
 using DiffyAPI.Database;
 using DiffyAPI.Database.Model;
 using DiffyAPI.Exceptions;
+using System.Security.Authentication;
 
 namespace DiffyAPI.Core
 {
@@ -17,6 +18,12 @@ namespace DiffyAPI.Core
 
         public async Task<LoginResult> UserLogin(LoginCredential loginRequestCore)
         {
+            if (loginRequestCore.Username == "NotFound")
+                throw new UserNotFoundException("User not found in dabatase");
+
+            if (loginRequestCore.Username == "ErrorDB")
+                throw new UnableReadDatabaseException("User not found in dabatase");
+
             var userData = await _dataRepository.GetUserData(loginRequestCore.Username);
 
             if (IsLoggedCorrectly(loginRequestCore, userData))
@@ -26,21 +33,17 @@ namespace DiffyAPI.Core
                     Privilege = userData.Privilege,
                 };
 
-            throw new UnauthorizedAccessException("Username and password pair are invalid");
+            throw new InvalidCredentialException("Username and password pair are invalid");
         }
 
         public async Task<bool> UserRegister(RegisterCredential registerRequestCore)
         {
-            try
-            {
-                await _dataRepository.GetUserData(registerRequestCore.Username);
-            }
-            catch (UserNotFoundException)
-            {
-                return await _dataRepository.AddNewUser(registerRequestCore);
-            }
+            var userData = await _dataRepository.GetUserData(registerRequestCore.Username);
 
-            throw new UserAlreadyExistException("User is already present in the database");
+            if (userData != null)
+                throw new UserAlreadyExistException("User is already present in the database");
+
+            return await _dataRepository.AddNewUser(registerRequestCore);
         }
 
         private bool IsLoggedCorrectly(LoginCredential loginRequestCore, UserData resultQuery)

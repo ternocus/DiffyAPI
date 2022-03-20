@@ -7,11 +7,7 @@ namespace DiffyAPI.Database
     {
         async Task<UserData> IDataRepository.GetUserData(string username)
         {
-            // UserNotFoundException -> non trovo l'utente
             // Exception -> errore lettura/scrittura db
-            if (username == "NotFound")
-                throw new UserNotFoundException("User not found in dabatase");
-
             if (username == "ErrorDB")
                 throw new UnableReadDatabaseException("User not found in dabatase");
 
@@ -20,14 +16,13 @@ namespace DiffyAPI.Database
             {
                  Username = username,
                  Privilege = "Athlete",
-                 Password = "Admin"
+                 Password = "admin1234"
             };
         }
 
         async Task<bool> IDataRepository.AddNewUser(RegisterCredential registerRequestCore)
         {
             // Ricerco dati sul DB e restituisco il valore
-
             return true;
         }
     }
