@@ -20,6 +20,6 @@ namespace DiffyAPI.CommunicationAPI.Controller.Model
                 Title = Title,
                 Message = Message
             };
-        } 
+        }
     }
 }

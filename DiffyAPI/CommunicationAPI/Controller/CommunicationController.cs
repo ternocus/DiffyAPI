@@ -1,7 +1,5 @@
 ﻿using DiffyAPI.CommunicationAPI.Controller.Model;
 using DiffyAPI.CommunicationAPI.Core;
-using DiffyAPI.Controllers.Model;
-using DiffyAPI.Core;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DiffyAPI.Controllers

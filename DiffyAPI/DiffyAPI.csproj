@@ -20,7 +20,6 @@
     <Folder Include="CalendarAPI\Controllers\Model\" />
     <Folder Include="CalendarAPI\Core\Model\" />
     <Folder Include="CalendarAPI\Database\Model\" />
-    <Folder Include="CommunicationAPI\Database\Model\" />
   </ItemGroup>
 
 </Project>
