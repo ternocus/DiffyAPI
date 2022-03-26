@@ -6,13 +6,13 @@ namespace DiffyAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class AccessController : ControllerBase
     {
-        private readonly IUserManager _userManager;
+        private readonly IAccessManager _accessManager;
 
-        public UserController(IUserManager userManager)
+        public AccessController(IAccessManager accessManager)
         {
-            _userManager = userManager;
+            _accessManager = accessManager;
         }
 
         [HttpPost("Login")]
@@ -20,7 +20,7 @@ namespace DiffyAPI.Controllers
         {
             try
             {
-                return Ok(await _userManager.UserLogin(request.ToCore()));
+                return Ok(await _accessManager.AccessLogin(request.ToCore()));
             }
             catch (Exception ex)
             {
@@ -28,14 +28,14 @@ namespace DiffyAPI.Controllers
             }
         }
 
-        [HttpPut("Register")]
+        [HttpPost("Register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
-            try 
+            try
             {
-                return Ok(await _userManager.UserRegister(request.ToCore()));
+                return Ok(await _accessManager.AccessUserRegister(request.ToCore()));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(new { ErrorType = ex.GetType().Name, Error = ex.Message });
             }

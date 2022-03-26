@@ -6,7 +6,7 @@ namespace DiffyAPI.Core.Model
     {
         public string Username { get; set; }
         public string Password { get; set; }
-        public Privilege Privilege { get; set; }
+        public Privileges Privilege { get; set; }
 
         public LoginResult ToController()
         {

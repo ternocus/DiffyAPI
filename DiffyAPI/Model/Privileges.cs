@@ -1,6 +1,6 @@
 ﻿namespace DiffyAPI.Core.Model
 {
-    public enum Privilege
+    public enum Privileges
     {
         Guest,
         Associate,

@@ -7,16 +7,16 @@ using System.Security.Authentication;
 
 namespace DiffyAPI.Core
 {
-    internal class UserManager : IUserManager
+    internal class AccessManager : IAccessManager
     {
-        private readonly IDataRepository _dataRepository;
+        private readonly IAccessDataRepository _dataRepository;
 
-        public UserManager(IDataRepository dataRepository)
+        public AccessManager(IAccessDataRepository dataRepository)
         {
             _dataRepository = dataRepository;
         }
 
-        public async Task<LoginResult> UserLogin(LoginCredential loginRequestCore)
+        public async Task<LoginResult> AccessLogin(LoginCredential loginRequestCore)
         {
             if (loginRequestCore.Username == "NotFound")
                 throw new UserNotFoundException("User not found in dabatase");
@@ -24,29 +24,29 @@ namespace DiffyAPI.Core
             if (loginRequestCore.Username == "ErrorDB")
                 throw new UnableReadDatabaseException("User not found in dabatase");
 
-            var userData = await _dataRepository.GetUserData(loginRequestCore.Username);
+            var accessData = await _dataRepository.GetAccessData(loginRequestCore.Username);
 
-            if (IsLoggedCorrectly(loginRequestCore, userData))
+            if (IsLoggedCorrectly(loginRequestCore, accessData))
                 return new LoginResult
                 {
-                    Username = userData.Username,
-                    Privilege = userData.Privilege,
+                    Username = accessData.Username,
+                    Privilege = accessData.Privilege,
                 };
 
             throw new InvalidCredentialException("Username and password pair are invalid");
         }
 
-        public async Task<bool> UserRegister(RegisterCredential registerRequestCore)
+        public async Task<bool> AccessUserRegister(RegisterCredential registerRequestCore)
         {
-            var userData = await _dataRepository.GetUserData(registerRequestCore.Username);
+            var accessData = await _dataRepository.GetAccessData(registerRequestCore.Username);
 
-            if (userData != null)
+            if (accessData != null)
                 throw new UserAlreadyExistException("User is already present in the database");
 
-            return await _dataRepository.AddNewUser(registerRequestCore);
+            return await _dataRepository.AddNewUserAccess(registerRequestCore);
         }
 
-        private bool IsLoggedCorrectly(LoginCredential loginRequestCore, UserData resultQuery)
+        private bool IsLoggedCorrectly(LoginCredential loginRequestCore, AccessData resultQuery)
         {
             return resultQuery.Password.CompareTo(loginRequestCore.Password) == 0;
         }

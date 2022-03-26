@@ -7,9 +7,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.3" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="CalendarAPI\Controllers\Model\" />
+    <Folder Include="CalendarAPI\Core\Model\" />
+    <Folder Include="CalendarAPI\Database\Model\" />
+    <Folder Include="CommunicationAPI\Database\Model\" />
   </ItemGroup>
 
 </Project>

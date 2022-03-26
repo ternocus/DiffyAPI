@@ -3,14 +3,14 @@
 namespace DiffyAPI.Database
 {
     [Serializable]
-    internal class UnableReadDatabaseException : Exception
+    public class UnableReadDatabaseException : Exception
     {
-        public UnableReadDatabaseException() {}
+        public UnableReadDatabaseException() { }
 
-        public UnableReadDatabaseException(string? message) : base(message) {}
+        public UnableReadDatabaseException(string? message) : base(message) { }
 
-        public UnableReadDatabaseException(string? message, Exception? innerException) : base(message, innerException) {}
+        public UnableReadDatabaseException(string? message, Exception? innerException) : base(message, innerException) { }
 
-        protected UnableReadDatabaseException(SerializationInfo info, StreamingContext context) : base(info, context) {}
+        protected UnableReadDatabaseException(SerializationInfo info, StreamingContext context) : base(info, context) { }
     }
 }

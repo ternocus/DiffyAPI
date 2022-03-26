@@ -1,6 +1,6 @@
 ﻿namespace DiffyAPI.Database.Model
 {
-    public class UserData
+    public class AccessData
     {
         public string Username { get; set; }
         public string Privilege { get; set; }
