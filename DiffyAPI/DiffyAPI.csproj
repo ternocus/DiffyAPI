@@ -16,10 +16,4 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="CalendarAPI\Controllers\Model\" />
-    <Folder Include="CalendarAPI\Core\Model\" />
-    <Folder Include="CalendarAPI\Database\Model\" />
-  </ItemGroup>
-
 </Project>

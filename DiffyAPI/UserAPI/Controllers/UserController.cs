@@ -42,7 +42,7 @@ namespace DiffyAPI.Controllers
         }
 
         [HttpPut("UploadUser")]
-        public async Task<IActionResult> UploadUser([FromBody] UploadRequest request)
+        public async Task<IActionResult> UploadUser([FromBody] UploadUserRequest request)
         {
             try
             {

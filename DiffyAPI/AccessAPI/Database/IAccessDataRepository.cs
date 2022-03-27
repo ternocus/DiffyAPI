@@ -5,7 +5,8 @@ namespace DiffyAPI.Database
 {
     public interface IAccessDataRepository
     {
-        Task<AccessData> GetAccessData(string username);
-        Task<bool> AddNewUserAccess(RegisterCredential registerRequestCore);
+        public Task<AccessData> GetAccessData(string username);
+        public Task AddNewUserAccess(RegisterCredential registerRequestCore);
+        public Task<bool> IsRegistered(string username);
     }
 }

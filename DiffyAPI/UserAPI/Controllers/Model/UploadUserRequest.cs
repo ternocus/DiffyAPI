@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DiffyAPI.UserAPI.Controllers.Model
 {
-    public class UploadRequest
+    public class UploadUserRequest
     {
         [Required, MinLength(1), MaxLength(18)]
         public string Name { get; set; }

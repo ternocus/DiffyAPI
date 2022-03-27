@@ -10,5 +10,6 @@ namespace DiffyAPI.CommunicationAPI.Core
         public Task<IEnumerable<string>> GetListMessage(string name);
         public Task<bool> AddMessage(BodyMessage message);
         public Task<MessageResponse> GetBodyMessage(HeaderMessage messageRequest);
+        public Task<bool> UploadMessage(UploadMessage uploadMessage);
     }
 }

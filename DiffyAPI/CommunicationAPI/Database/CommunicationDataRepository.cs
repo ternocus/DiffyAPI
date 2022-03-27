@@ -53,5 +53,10 @@ namespace DiffyAPI.CommunicationAPI.Database
             else
                 return true;
         }
+
+        public async Task<bool> UploadMessage(UploadMessage uploadMessage)
+        {
+            return true;
+        }
     }
 }

@@ -21,10 +21,7 @@ namespace DiffyAPI.CommunicationAPI.Core
 
             _communicationDataRepository.CreateNewCategory(category);
 
-            if (await _communicationDataRepository.IsCategoryExist(category))
-                return true;
-
-            throw new CategoryNotUploadedException("An error occurred when creating the category.");
+            return await _communicationDataRepository.IsCategoryExist(category);
         }
 
         public async Task<bool> AddMessage(BodyMessage message)
@@ -34,10 +31,7 @@ namespace DiffyAPI.CommunicationAPI.Core
 
             _communicationDataRepository.AddNewMessage(message);
 
-            if (await _communicationDataRepository.IsMessageExist(message))
-                return true;
-
-            throw new MessageNotUploadedException("An error occurred when creating the message.");
+            return await _communicationDataRepository.IsMessageExist(message);
         }
 
         public async Task<MessageResponse> GetBodyMessage(HeaderMessage messageRequest)
@@ -58,6 +52,11 @@ namespace DiffyAPI.CommunicationAPI.Core
         public async Task<IEnumerable<string>> GetListMessage(string name)
         {
             return await _communicationDataRepository.GetListMessage();
+        }
+
+        public async Task<bool> UploadMessage(UploadMessage uploadMessage)
+        {
+            return await _communicationDataRepository.UploadMessage(uploadMessage);
         }
     }
 }

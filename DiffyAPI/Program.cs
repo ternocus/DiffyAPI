@@ -1,3 +1,5 @@
+using DiffyAPI.CalendarAPI.Core;
+using DiffyAPI.CalendarAPI.Database;
 using DiffyAPI.CommunicationAPI.Core;
 using DiffyAPI.CommunicationAPI.Database;
 using DiffyAPI.Core;
@@ -10,6 +12,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to Access
 builder.Services.AddScoped<IAccessManager, AccessManager>();
 builder.Services.AddScoped<IAccessDataRepository, AccessDataRepository>();
+
+// Add services to Calendar
+builder.Services.AddScoped<ICalendarManager, CalendarManager>();
+builder.Services.AddScoped<ICalendarDataRepository, CalendarDataRepository>();
 
 // Add services to Communication
 builder.Services.AddScoped<ICommunicationManager, CommunicationManager>();

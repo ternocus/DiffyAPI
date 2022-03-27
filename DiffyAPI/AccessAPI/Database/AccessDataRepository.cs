@@ -5,7 +5,7 @@ namespace DiffyAPI.Database
 {
     public class AccessDataRepository : IAccessDataRepository
     {
-        async Task<AccessData> IAccessDataRepository.GetAccessData(string username)
+        public async Task<AccessData> GetAccessData(string username)
         {
             // Exception -> errore lettura/scrittura db
             if (username == "ErrorDB")
@@ -20,10 +20,19 @@ namespace DiffyAPI.Database
             };
         }
 
-        async Task<bool> IAccessDataRepository.AddNewUserAccess(RegisterCredential registerRequestCore)
+        public async Task AddNewUserAccess(RegisterCredential registerRequestCore)
         {
             // Ricerco dati sul DB e restituisco il valore
-            return true;
+            return;
+        }
+
+        public async Task<bool> IsRegistered(string username)
+        {
+            Random random = new Random();
+            if (random.Next(0, 2) == 0)
+                return false;
+            else
+                return true;
         }
     }
 }

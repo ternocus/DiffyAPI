@@ -1,6 +1,7 @@
 ﻿using DiffyAPI.CommunicationAPI.Controller.Model;
 using DiffyAPI.CommunicationAPI.Core;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace DiffyAPI.Controllers
 {
@@ -15,7 +16,7 @@ namespace DiffyAPI.Controllers
             _communicationManager = communicationManager;
         }
 
-        [HttpGet("GetCategory")]
+        [HttpGet("Category")]
         public async Task<IActionResult> GetCategory()
         {
             try
@@ -29,7 +30,7 @@ namespace DiffyAPI.Controllers
         }
 
         [HttpPost("AddNewCategory")]
-        public async Task<IActionResult> AddNewCategory([FromQuery] string name)
+        public async Task<IActionResult> AddNewCategory([FromQuery, Required] string name)
         {
             try
             {
@@ -42,7 +43,7 @@ namespace DiffyAPI.Controllers
         }
 
         [HttpGet("MessageList")]
-        public async Task<IActionResult> GetListMessage([FromQuery] string category)
+        public async Task<IActionResult> GetListMessage([FromQuery, Required] string category)
         {
             try
             {
@@ -73,6 +74,19 @@ namespace DiffyAPI.Controllers
             try
             {
                 return Ok(await _communicationManager.GetBodyMessage(messageRequest.ToCore()));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { ErrorType = ex.GetType().Name, Error = ex.Message });
+            }
+        }
+
+        [HttpPut("UploadMessage")]
+        public async Task<IActionResult> UploadMessage([FromBody] UploadMessageRequest request)
+        {
+            try
+            {
+                return Ok(await _communicationManager.UploadMessage(request.ToCore()));
             }
             catch (Exception ex)
             {

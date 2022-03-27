@@ -38,12 +38,12 @@ namespace DiffyAPI.Core
 
         public async Task<bool> AccessUserRegister(RegisterCredential registerRequestCore)
         {
-            var accessData = await _dataRepository.GetAccessData(registerRequestCore.Username);
-
-            if (accessData != null)
+            if (await _dataRepository.IsRegistered(registerRequestCore.Username))
                 throw new UserAlreadyExistException("User is already present in the database");
 
-            return await _dataRepository.AddNewUserAccess(registerRequestCore);
+            await _dataRepository.GetAccessData(registerRequestCore.Username);
+
+            return await _dataRepository.IsRegistered(registerRequestCore.Username);
         }
 
         private bool IsLoggedCorrectly(LoginCredential loginRequestCore, AccessData resultQuery)

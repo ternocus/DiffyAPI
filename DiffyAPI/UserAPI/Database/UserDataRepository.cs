@@ -48,9 +48,20 @@ namespace DiffyAPI.UserAPI.Database
             return list;
         }
 
+        public async Task<bool> IsUserExist(string username)
+        {
+            Random random = new Random();
+            if (random.Next(0, 2) == 0)
+                return true;
+            else
+                return false;
+        }
+
         public async Task UploadUserData(UploadUser registerCredential)
         {
             return;
         }
+
+
     }
 }

@@ -31,15 +31,12 @@ namespace DiffyAPI.UserAPI.Core
 
         public async Task<bool> UploadUser(UploadUser registerCredential)
         {
-            if (await _userDataRepository.GetUserData(registerCredential.Username) == null)
+            if (await _userDataRepository.IsUserExist(registerCredential.Username))
                 throw new UserNotFoundException("User not found in dabatase");
 
             await _userDataRepository.UploadUserData(registerCredential);
 
-            if (await _userDataRepository.GetUserData(registerCredential.Username) == null)
-                throw new UserNotUploadedException("An error occurred during user update");
-
-            return true;
+            return await _userDataRepository.IsUserExist(registerCredential.Username);
         }
 
         public async Task<UserInfoResult> GetUserInfo(string username)

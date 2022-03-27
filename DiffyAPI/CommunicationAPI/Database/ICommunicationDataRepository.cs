@@ -11,5 +11,6 @@ namespace DiffyAPI.CommunicationAPI.Database
         public void AddNewMessage(BodyMessage message);
         public Task<MessageResponse> GetMessage(HeaderMessage messageRequest);
         public Task<IEnumerable<string>> GetListMessage();
+        public Task<bool> UploadMessage(UploadMessage uploadMessage);
     }
 }
