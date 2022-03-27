@@ -14,7 +14,7 @@ namespace DiffyAPI.CalendarAPI.Controllers.Model
         {
             return new UploadEvent
             {
-                OldTitle = OldTitle, 
+                OldTitle = OldTitle,
                 OldDate = OldDate,
                 Header = Header.ToCore(),
                 Description = Description,

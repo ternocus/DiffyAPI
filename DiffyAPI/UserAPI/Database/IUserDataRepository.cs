@@ -1,6 +1,4 @@
-﻿using DiffyAPI.Database.Model;
-using DiffyAPI.UserAPI.Controllers.Model;
-using DiffyAPI.UserAPI.Core.Model;
+﻿using DiffyAPI.UserAPI.Core.Model;
 using DiffyAPI.UserAPI.Database.Model;
 
 namespace DiffyAPI.UserAPI.Database

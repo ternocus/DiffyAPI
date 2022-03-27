@@ -1,6 +1,5 @@
 ﻿using DiffyAPI.Core.Model;
 using DiffyAPI.Database;
-using DiffyAPI.Exceptions;
 using DiffyAPI.UserAPI.Controllers.Model;
 using DiffyAPI.UserAPI.Core.Model;
 using DiffyAPI.UserAPI.Database;

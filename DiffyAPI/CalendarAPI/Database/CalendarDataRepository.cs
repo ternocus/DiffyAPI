@@ -19,7 +19,7 @@ namespace DiffyAPI.CalendarAPI.Database
         public async Task<IEnumerable<EventHeaderData>> GetMonthEvents(DateTime filter)
         {
             var result = new List<EventHeaderData>();
-            for(int i = 0; i < 5; i++)
+            for (int i = 0; i < 5; i++)
             {
                 result.Add(new EventHeaderData
                 {

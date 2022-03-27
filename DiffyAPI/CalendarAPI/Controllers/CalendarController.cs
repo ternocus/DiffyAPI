@@ -1,7 +1,5 @@
 ﻿using DiffyAPI.CalendarAPI.Controllers.Model;
 using DiffyAPI.CalendarAPI.Core;
-using DiffyAPI.Controllers.Model;
-using DiffyAPI.Core;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 

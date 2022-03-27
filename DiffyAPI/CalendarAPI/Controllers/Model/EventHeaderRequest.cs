@@ -14,8 +14,8 @@ namespace DiffyAPI.CalendarAPI.Controllers.Model
         {
             return new EventHeader
             {
-                 Title = Title,
-                 Date = Date,
+                Title = Title,
+                Date = Date,
             };
         }
     }

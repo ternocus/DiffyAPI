@@ -1,7 +1,4 @@
-﻿using DiffyAPI.Core.Model;
-using System.ComponentModel.DataAnnotations;
-
-namespace DiffyAPI.UserAPI.Controllers.Model
+﻿namespace DiffyAPI.UserAPI.Controllers.Model
 {
     public class UserInfoResult
     {
