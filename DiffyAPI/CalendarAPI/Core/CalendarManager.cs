@@ -8,10 +8,12 @@ namespace DiffyAPI.CalendarAPI.Core
     public class CalendarManager : ICalendarManager
     {
         private readonly ICalendarDataRepository _calendarDataRepository;
+        private readonly ILogger<CalendarManager> _logger;
 
-        public CalendarManager(ICalendarDataRepository calendarDataRepository)
+        public CalendarManager(ICalendarDataRepository calendarDataRepository, ILogger<CalendarManager> logger)
         {
             _calendarDataRepository = calendarDataRepository;
+            _logger = logger;
         }
 
         public async Task<bool> AddNewEvent(Event myEvent)

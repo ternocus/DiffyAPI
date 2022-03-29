@@ -25,6 +25,10 @@ builder.Services.AddScoped<ICommunicationDataRepository, CommunicationDataReposi
 builder.Services.AddScoped<IUserManager, UserManager>();
 builder.Services.AddScoped<IUserDataRepository, UserDataRepository>();
 
+// Add services to logger
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+
 // Add services to the container.
 builder.Services.AddControllers().AddNewtonsoftJson();
 builder.Services.AddEndpointsApiExplorer();
