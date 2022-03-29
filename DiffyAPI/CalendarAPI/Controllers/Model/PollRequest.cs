@@ -5,6 +5,7 @@ namespace DiffyAPI.CalendarAPI.Controllers.Model
 {
     public class PollRequest
     {
+        public int Id { get; set; }
         [Required, MinLength(1)]
         public string Username { get; set; }
 
@@ -12,6 +13,7 @@ namespace DiffyAPI.CalendarAPI.Controllers.Model
         {
             return new Poll
             {
+                Id = Id,
                 Username = Username,
             };
         }

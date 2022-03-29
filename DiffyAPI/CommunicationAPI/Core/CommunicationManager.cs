@@ -19,7 +19,7 @@ namespace DiffyAPI.CommunicationAPI.Core
             if (await _communicationDataRepository.IsCategoryExist(category))
                 throw new CategoryAlreadyCreatedException($"The {category} category is already present in the database.");
 
-            _communicationDataRepository.CreateNewCategory(category);
+            await _communicationDataRepository.CreateNewCategory(category);
 
             return await _communicationDataRepository.IsCategoryExist(category);
         }
@@ -29,7 +29,7 @@ namespace DiffyAPI.CommunicationAPI.Core
             if (await _communicationDataRepository.IsMessageExist(message))
                 throw new MessageAlreadyCreatedException($"The [{message.Category}, {message.Title}]  message is already present in the database.");
 
-            _communicationDataRepository.AddNewMessage(message);
+            await _communicationDataRepository.AddNewMessage(message);
 
             return await _communicationDataRepository.IsMessageExist(message);
         }

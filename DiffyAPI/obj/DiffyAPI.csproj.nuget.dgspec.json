@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\apioggia\\Source\\Repos\\ternocus\\DiffyAPI\\DiffyAPI\\DiffyAPI.csproj": {}
+    "C:\\Users\\apioggia\\source\\repos\\ternocus\\DiffyAPI\\DiffyAPI\\DiffyAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\apioggia\\Source\\Repos\\ternocus\\DiffyAPI\\DiffyAPI\\DiffyAPI.csproj": {
+    "C:\\Users\\apioggia\\source\\repos\\ternocus\\DiffyAPI\\DiffyAPI\\DiffyAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\apioggia\\Source\\Repos\\ternocus\\DiffyAPI\\DiffyAPI\\DiffyAPI.csproj",
+        "projectUniqueName": "C:\\Users\\apioggia\\source\\repos\\ternocus\\DiffyAPI\\DiffyAPI\\DiffyAPI.csproj",
         "projectName": "DiffyAPI",
-        "projectPath": "C:\\Users\\apioggia\\Source\\Repos\\ternocus\\DiffyAPI\\DiffyAPI\\DiffyAPI.csproj",
+        "projectPath": "C:\\Users\\apioggia\\source\\repos\\ternocus\\DiffyAPI\\DiffyAPI\\DiffyAPI.csproj",
         "packagesPath": "C:\\Users\\apioggia\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\apioggia\\Source\\Repos\\ternocus\\DiffyAPI\\DiffyAPI\\obj\\",
+        "outputPath": "C:\\Users\\apioggia\\source\\repos\\ternocus\\DiffyAPI\\DiffyAPI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

@@ -42,6 +42,7 @@ namespace DiffyAPI.CalendarAPI.Database
                 Description = "Descrizione dell'evento",
                 Poll = new PollData
                 {
+                    Id = 1,
                     Username = "Username",
                 },
             };
@@ -56,7 +57,7 @@ namespace DiffyAPI.CalendarAPI.Database
                 return false;
         }
 
-        public async Task<bool> IsPollAlreadyCreated(string username)
+        public async Task<bool> IsPollAlreadyCreated(int id)
         {
             Random random = new Random();
             if (random.Next(0, 2) == 0)

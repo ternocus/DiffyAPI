@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "R5nJunteVVhUvnJEURUnW4HXI6SeBfZTg0bdMy/Jims+/U6nO7J4CsLK4ssZgq6PRlfuMzUBYNQjoNqeMpalPw==",
+  "dgSpecHash": "cfgHN4aXse7yOsvOpn38JfbloFGtpZnbSl4UVd24Y1IyxuCrnOoCzYGPQChMeYTWa1pbTiuP6VI1I3W9xPQ93Q==",
   "success": true,
-  "projectFilePath": "C:\\Users\\apioggia\\Source\\Repos\\ternocus\\DiffyAPI\\DiffyAPI\\DiffyAPI.csproj",
+  "projectFilePath": "C:\\Users\\apioggia\\source\\repos\\ternocus\\DiffyAPI\\DiffyAPI\\DiffyAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\apioggia\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\6.0.3\\microsoft.aspnetcore.jsonpatch.6.0.3.nupkg.sha512",
     "C:\\Users\\apioggia\\.nuget\\packages\\microsoft.aspnetcore.mvc.newtonsoftjson\\6.0.3\\microsoft.aspnetcore.mvc.newtonsoftjson.6.0.3.nupkg.sha512",

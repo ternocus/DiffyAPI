@@ -6,5 +6,6 @@
         public string Surname { get; set; }
         public string Username { get; set; }
         public string Privilege { get; set; }
+        public string Email { get; set; }
     }
 }

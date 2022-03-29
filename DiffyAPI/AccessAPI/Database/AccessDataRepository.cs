@@ -7,11 +7,6 @@ namespace DiffyAPI.Database
     {
         public async Task<AccessData> GetAccessData(string username)
         {
-            // Exception -> errore lettura/scrittura db
-            if (username == "ErrorDB")
-                throw new UnableReadDatabaseException("User not found in dabatase");
-
-            // Ricerco dati sul DB e restituisco il valore
             return new AccessData
             {
                 Username = username,
@@ -22,7 +17,6 @@ namespace DiffyAPI.Database
 
         public async Task AddNewUserAccess(RegisterCredential registerRequestCore)
         {
-            // Ricerco dati sul DB e restituisco il valore
             return;
         }
 

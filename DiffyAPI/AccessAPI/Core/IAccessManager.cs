@@ -5,7 +5,7 @@ namespace DiffyAPI.Core
 {
     public interface IAccessManager
     {
-        public Task<LoginResult> AccessLogin(LoginCredential loginRequestCore);
-        public Task<bool> AccessUserRegister(RegisterCredential registerRequestCore);
+        public Task<Result> AccessLogin(LoginCredential loginRequestCore);
+        public Task<Result> AccessUserRegister(RegisterCredential registerRequestCore);
     }
 }

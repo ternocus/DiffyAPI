@@ -26,12 +26,12 @@ namespace DiffyAPI.CalendarAPI.Core
 
         public async Task<bool> AddNewPoll(Poll poll)
         {
-            if (await _calendarDataRepository.IsPollAlreadyCreated(poll.Username))
-                throw new PollAlreadyExistException($"The {poll.Username} survey is already present.");
+            if (await _calendarDataRepository.IsPollAlreadyCreated(poll.Id))
+                throw new PollAlreadyExistException($"The {poll.Username} poll is already present.");
 
             await _calendarDataRepository.AddNewPoll(poll);
 
-            return await _calendarDataRepository.IsPollAlreadyCreated(poll.Username);
+            return await _calendarDataRepository.IsPollAlreadyCreated(poll.Id);
         }
 
         public async Task<IEnumerable<EventHeaderResult>> GetMothEvents(DateTime filter)

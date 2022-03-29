@@ -16,18 +16,15 @@ namespace DiffyAPI.Core
             _dataRepository = dataRepository;
         }
 
-        public async Task<LoginResult> AccessLogin(LoginCredential loginRequestCore)
+        public async Task<Result> AccessLogin(LoginCredential loginRequestCore)
         {
-            if (loginRequestCore.Username == "NotFound")
-                throw new UserNotFoundException("User not found in dabatase");
-
-            if (loginRequestCore.Username == "ErrorDB")
-                throw new UnableReadDatabaseException("User not found in dabatase");
+            if (!await _dataRepository.IsRegistered(loginRequestCore.Username))
+                throw new UserNotFoundException("Username not found in the database");
 
             var accessData = await _dataRepository.GetAccessData(loginRequestCore.Username);
 
             if (IsLoggedCorrectly(loginRequestCore, accessData))
-                return new LoginResult
+                return new Result
                 {
                     Username = accessData.Username,
                     Privilege = accessData.Privilege,
@@ -36,14 +33,18 @@ namespace DiffyAPI.Core
             throw new InvalidCredentialException("Username and password pair are invalid");
         }
 
-        public async Task<bool> AccessUserRegister(RegisterCredential registerRequestCore)
+        public async Task<Result> AccessUserRegister(RegisterCredential registerRequestCore)
         {
             if (await _dataRepository.IsRegistered(registerRequestCore.Username))
                 throw new UserAlreadyExistException("User is already present in the database");
 
-            await _dataRepository.GetAccessData(registerRequestCore.Username);
+            var accessData = await _dataRepository.GetAccessData(registerRequestCore.Username);
 
-            return await _dataRepository.IsRegistered(registerRequestCore.Username);
+            return new Result
+            {
+                Username = accessData.Username,
+                Privilege = accessData.Privilege,
+            };
         }
 
         private bool IsLoggedCorrectly(LoginCredential loginRequestCore, AccessData resultQuery)

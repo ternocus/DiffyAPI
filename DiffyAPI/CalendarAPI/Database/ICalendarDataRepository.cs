@@ -8,7 +8,7 @@ namespace DiffyAPI.CalendarAPI.Database
     {
         public Task<bool> IsEventExist(Event myEvent);
         public Task AddNewEvent(Event myEvent);
-        public Task<bool> IsPollAlreadyCreated(string username);
+        public Task<bool> IsPollAlreadyCreated(int id);
         public Task AddNewPoll(Poll poll);
         public Task<IEnumerable<EventHeaderData>> GetMonthEvents(DateTime filter);
         public Task<EventData> GetSingleEvent(EventHeaderRequest request);

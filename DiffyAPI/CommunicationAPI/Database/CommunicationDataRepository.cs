@@ -5,15 +5,9 @@ namespace DiffyAPI.CommunicationAPI.Database
 {
     public class CommunicationDataRepository : ICommunicationDataRepository
     {
-        public void AddNewMessage(BodyMessage message)
-        {
-            return;
-        }
+        public async Task AddNewMessage(BodyMessage message) { }
 
-        public void CreateNewCategory(string name)
-        {
-            return;
-        }
+        public async Task CreateNewCategory(string name) { }
 
         public async Task<IEnumerable<string>> GetListMessage()
         {

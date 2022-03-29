@@ -5,5 +5,6 @@
         public EventHeader Header { get; set; }
         public string Description { get; set; }
         public Poll Poll { get; set; }
+        public int Id { get; set; }
     }
 }

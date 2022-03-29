@@ -40,10 +40,10 @@ namespace DiffyAPI.UserAPI.Core
 
         public async Task<UserInfoResult> GetUserInfo(string username)
         {
-            var result = (await _userDataRepository.GetUserData(username)).ToCoreUserInfo();
-
-            if (result == null)
+            if (await _userDataRepository.IsUserExist(username))
                 throw new UserNotFoundException($"User {username} not found in database");
+
+            var result = (await _userDataRepository.GetUserData(username)).ToCoreUserInfo();
 
             return result.ToController();
         }
@@ -74,6 +74,5 @@ namespace DiffyAPI.UserAPI.Core
                        Privilege = user.Privilege.ToString(),
                    };
         }
-
     }
 }

@@ -2,6 +2,7 @@
 {
     public class Poll
     {
+        public int Id { get; set; }
         public string Username { get; set; }
     }
 }

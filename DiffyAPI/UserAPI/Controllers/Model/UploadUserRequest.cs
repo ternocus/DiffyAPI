@@ -14,6 +14,9 @@ namespace DiffyAPI.UserAPI.Controllers.Model
         public string Username { get; set; }
         [Required, MinLength(1), MaxLength(18)]
         public string Privilege { get; set; }
+        [Required, MaxLength(1)]
+        public string Email { get; set; }
+        public string OldUsername { get; set; }
 
         public UploadUser ToCore()
         {
@@ -23,6 +26,8 @@ namespace DiffyAPI.UserAPI.Controllers.Model
                 Surname = Surname,
                 Username = Username,
                 Privilege = (Privileges)Enum.Parse(typeof(Privileges), Privilege),
+                Email = Email,
+                OldUsername = OldUsername,
             };
         }
     }
