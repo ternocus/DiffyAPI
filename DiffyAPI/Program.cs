@@ -27,12 +27,14 @@ builder.Services.AddScoped<IUserDataRepository, UserDataRepository>();
 
 // Add services to logger
 builder.Logging.ClearProviders();
+builder.Logging.AddApplicationInsights();
 builder.Logging.AddConsole();
 
 // Add services to the container.
 builder.Services.AddControllers().AddNewtonsoftJson();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddApplicationInsightsTelemetry(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
 
 var app = builder.Build();
 
