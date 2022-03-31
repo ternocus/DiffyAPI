@@ -42,7 +42,6 @@ namespace DiffyAPI.Core
             }
 
             _logger.LogError("InvalidCredentialException: Utente e password inseriti non sono corretti.");
-
             throw new InvalidCredentialException("Username and password pair are invalid");
         }
 
@@ -60,6 +59,8 @@ namespace DiffyAPI.Core
 
             if (await _dataRepository.IsRegistered(registerRequestCore.Username))
             {
+                _logger.LogInformation($"Nuovo utente {registerRequestCore.Username} creato.");
+
                 return new Result
                 {
                     Username = accessData.Username,

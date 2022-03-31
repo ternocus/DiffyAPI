@@ -12,7 +12,7 @@ namespace DiffyAPI.CalendarAPI.Controllers.Model
         [Required]
         public PollRequest Poll { get; set; }
         [Required]
-        public int Id { get; set; }
+        public int IdEvent { get; set; }
 
         public Event ToCore()
         {
@@ -21,7 +21,7 @@ namespace DiffyAPI.CalendarAPI.Controllers.Model
                 Header = Header.ToCore(),
                 Description = Description,
                 Poll = Poll.ToCore(),
-                Id = Id,
+                IdEvent = IdEvent,
             };
         }
     }

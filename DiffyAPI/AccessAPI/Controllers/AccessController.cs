@@ -9,10 +9,12 @@ namespace DiffyAPI.Controllers
     public class AccessController : ControllerBase
     {
         private readonly IAccessManager _accessManager;
+        private readonly ILogger<AccessController> _logger;
 
-        public AccessController(IAccessManager accessManager)
+        public AccessController(IAccessManager accessManager, ILogger<AccessController> logger)
         {
             _accessManager = accessManager;
+            _logger = logger;
         }
 
         [HttpPost("Login")]
@@ -24,6 +26,7 @@ namespace DiffyAPI.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, ex.Message);
                 return BadRequest(new { ErrorType = ex.GetType().Name, Error = ex.Message });
             }
         }
@@ -37,6 +40,7 @@ namespace DiffyAPI.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, ex.Message);
                 return BadRequest(new { ErrorType = ex.GetType().Name, Error = ex.Message });
             }
         }

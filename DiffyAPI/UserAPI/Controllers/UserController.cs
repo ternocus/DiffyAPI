@@ -9,10 +9,12 @@ namespace DiffyAPI.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserManager _userManager;
+        private readonly ILogger<UserController> _logger;
 
-        public UserController(IUserManager userManager)
+        public UserController(IUserManager userManager, ILogger<UserController> _logger)
         {
             _userManager = userManager;
+            _logger = _logger;
         }
 
         [HttpGet("UserList")]
@@ -24,6 +26,7 @@ namespace DiffyAPI.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, ex.Message);
                 return BadRequest(new { ErrorType = ex.GetType().Name, Error = ex.Message });
             }
         }
@@ -37,6 +40,7 @@ namespace DiffyAPI.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, ex.Message);
                 return BadRequest(new { ErrorType = ex.GetType().Name, Error = ex.Message });
             }
         }
@@ -50,6 +54,7 @@ namespace DiffyAPI.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, ex.Message);
                 return BadRequest(new { ErrorType = ex.GetType().Name, Error = ex.Message });
             }
         }

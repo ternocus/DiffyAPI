@@ -2,7 +2,7 @@
 {
     public class Poll
     {
-        public int Id { get; set; }
+        public int IdEvent { get; set; }
         public string Username { get; set; }
     }
 }

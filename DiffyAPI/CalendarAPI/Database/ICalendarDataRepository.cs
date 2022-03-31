@@ -12,6 +12,6 @@ namespace DiffyAPI.CalendarAPI.Database
         public Task AddNewPoll(Poll poll);
         public Task<IEnumerable<EventHeaderData>> GetMonthEvents(DateTime filter);
         public Task<EventData> GetSingleEvent(EventHeaderRequest request);
-        public Task<bool> UploadEvent(UploadEvent uploadEvent);
+        public Task<bool> UploadEvent(Event uploadEvent);
     }
 }

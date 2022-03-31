@@ -10,10 +10,12 @@ namespace DiffyAPI.Controllers
     public class CommunicationController : ControllerBase
     {
         private readonly ICommunicationManager _communicationManager;
+        private readonly ILogger<CommunicationController> _logger;
 
-        public CommunicationController(ICommunicationManager communicationManager)
+        public CommunicationController(ICommunicationManager communicationManager, ILogger<CommunicationController> logger)
         {
             _communicationManager = communicationManager;
+            _logger = logger;
         }
 
         [HttpGet("Category")]
@@ -25,6 +27,7 @@ namespace DiffyAPI.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, ex.Message);
                 return BadRequest(new { ErrorType = ex.GetType().Name, Error = ex.Message });
             }
         }
@@ -38,6 +41,7 @@ namespace DiffyAPI.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, ex.Message);
                 return BadRequest(new { ErrorType = ex.GetType().Name, Error = ex.Message });
             }
         }
@@ -51,6 +55,7 @@ namespace DiffyAPI.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, ex.Message);
                 return BadRequest(new { ErrorType = ex.GetType().Name, Error = ex.Message });
             }
         }
@@ -64,6 +69,7 @@ namespace DiffyAPI.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, ex.Message);
                 return BadRequest(new { ErrorType = ex.GetType().Name, Error = ex.Message });
             }
         }
@@ -77,6 +83,7 @@ namespace DiffyAPI.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, ex.Message);
                 return BadRequest(new { ErrorType = ex.GetType().Name, Error = ex.Message });
             }
         }
@@ -90,6 +97,7 @@ namespace DiffyAPI.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, ex.Message);
                 return BadRequest(new { ErrorType = ex.GetType().Name, Error = ex.Message });
             }
         }

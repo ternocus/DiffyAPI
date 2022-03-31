@@ -18,8 +18,12 @@ namespace DiffyAPI.CalendarAPI.Core
 
         public async Task<bool> AddNewEvent(Event myEvent)
         {
+            _logger.LogInformation($"Richiesto l'inserimento di un nuovo evento", myEvent);
             if (await _calendarDataRepository.IsEventExist(myEvent))
+            {
+                _logger.LogError($"L'evento {myEvent.Header.Title} in data {myEvent.Header.Date} è già presente nel database.");
                 throw new EventAlreadyCreatedException($"The event {myEvent.Header.Title} already exists on {myEvent.Header.Date}.");
+            }
 
             await _calendarDataRepository.AddNewEvent(myEvent);
 
@@ -28,30 +32,40 @@ namespace DiffyAPI.CalendarAPI.Core
 
         public async Task<bool> AddNewPoll(Poll poll)
         {
-            if (await _calendarDataRepository.IsPollAlreadyCreated(poll.Id))
+            _logger.LogInformation($"Richiesto l'inserimento di un nuovo sondaggio", poll);
+            if (await _calendarDataRepository.IsPollAlreadyCreated(poll.IdEvent))
+            {
+                _logger.LogError($"Il sondaggio di {poll.Username} è già presente nel database.");
                 throw new PollAlreadyExistException($"The {poll.Username} poll is already present.");
+            }
 
             await _calendarDataRepository.AddNewPoll(poll);
 
-            return await _calendarDataRepository.IsPollAlreadyCreated(poll.Id);
+            return await _calendarDataRepository.IsPollAlreadyCreated(poll.IdEvent);
         }
 
         public async Task<IEnumerable<EventHeaderResult>> GetMothEvents(DateTime filter)
         {
             var eventsData = await _calendarDataRepository.GetMonthEvents(filter);
 
+            _logger.LogInformation($"Numero di eventi nel mese {filter.Month}: {eventsData.Count()}");
+
             return (eventsData.Select(data => data.ToController())).ToList();
         }
 
         public async Task<EventResult> GetSingleEvent(EventHeaderRequest request)
         {
+            _logger.LogInformation($"Richiesto singolo evento: ", request);
             return (await _calendarDataRepository.GetSingleEvent(request)).ToController();
         }
 
-        public async Task<bool> UploadEvent(UploadEvent uploadEvent)
+        public async Task<bool> UploadEvent(Event uploadEvent)
         {
             if (!await _calendarDataRepository.IsEventExist(uploadEvent))
-                throw new EventNotFoundException($"The event {uploadEvent.OldTitle} is not present in the database.");
+            {
+                _logger.LogError($"L'evento {uploadEvent.Header.Title} da modificare non è presente nel database");
+                throw new EventNotFoundException($"The event {uploadEvent.IdEvent} is not present in the database.");
+            }
 
             return await _calendarDataRepository.UploadEvent(uploadEvent);
         }

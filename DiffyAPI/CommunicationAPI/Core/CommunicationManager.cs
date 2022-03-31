@@ -8,16 +8,23 @@ namespace DiffyAPI.CommunicationAPI.Core
     public class CommunicationManager : ICommunicationManager
     {
         private readonly ICommunicationDataRepository _communicationDataRepository;
+        private readonly ILogger<CommunicationManager> _logger;
 
-        public CommunicationManager(ICommunicationDataRepository communicationDataRepository)
+        public CommunicationManager(ICommunicationDataRepository communicationDataRepository, ILogger<CommunicationManager> logger)
         {
             _communicationDataRepository = communicationDataRepository;
+            _logger = logger;
         }
 
         public async Task<bool> AddCategory(string category)
         {
+            _logger.LogInformation($"Richiesto l'inserimento di una nuova categoria {category}.");
+
             if (await _communicationDataRepository.IsCategoryExist(category))
+            {
+                _logger.LogError($"La categoria {category} è già presente nel database.");
                 throw new CategoryAlreadyCreatedException($"The {category} category is already present in the database.");
+            }
 
             await _communicationDataRepository.CreateNewCategory(category);
 
@@ -26,8 +33,13 @@ namespace DiffyAPI.CommunicationAPI.Core
 
         public async Task<bool> AddMessage(BodyMessage message)
         {
+            _logger.LogInformation($"Richiesto l'inserimento di un nuovo messaggio.", message);
+
             if (await _communicationDataRepository.IsMessageExist(message))
+            {
+                _logger.LogError($"Il messaggio {message.Title} è già presente nel database");
                 throw new MessageAlreadyCreatedException($"The [{message.Category}, {message.Title}]  message is already present in the database.");
+            }
 
             await _communicationDataRepository.AddNewMessage(message);
 
@@ -36,10 +48,15 @@ namespace DiffyAPI.CommunicationAPI.Core
 
         public async Task<MessageResponse> GetBodyMessage(HeaderMessage messageRequest)
         {
+            _logger.LogInformation($"Richiesto l'invio di un messaggio", messageRequest);
+
             var result = await _communicationDataRepository.GetMessage(messageRequest);
 
             if (result == null)
+            {
+                _logger.LogError($"Il messaggio {messageRequest.Title} non è presente nel database.");
                 throw new MessageNotFoundException($"The [{messageRequest.Category}, {messageRequest.Title}] message is not present in the databases.");
+            }
 
             return result;
         }

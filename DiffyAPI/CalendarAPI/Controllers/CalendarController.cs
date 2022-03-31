@@ -10,10 +10,12 @@ namespace DiffyAPI.Controllers
     public class CalendarController : ControllerBase
     {
         private readonly ICalendarManager _calendarManager;
+        private readonly ILogger<CalendarController> _logger;
 
-        public CalendarController(ICalendarManager calendarManager)
+        public CalendarController(ICalendarManager calendarManager, ILogger<CalendarController> logger)
         {
             _calendarManager = calendarManager;
+            _logger = logger;
         }
 
         [HttpGet("MonthEvents")]
@@ -25,6 +27,7 @@ namespace DiffyAPI.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, ex.Message);
                 return BadRequest(new { ErrorType = ex.GetType().Name, Error = ex.Message });
             }
         }
@@ -38,6 +41,7 @@ namespace DiffyAPI.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, ex.Message);
                 return BadRequest(new { ErrorType = ex.GetType().Name, Error = ex.Message });
             }
         }
@@ -51,12 +55,13 @@ namespace DiffyAPI.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, ex.Message);
                 return BadRequest(new { ErrorType = ex.GetType().Name, Error = ex.Message });
             }
         }
 
         [HttpPut("UploadEvent")]
-        public async Task<IActionResult> UploadMessage([FromBody] UploadEventRequest request)
+        public async Task<IActionResult> UploadMessage([FromBody] EventRequest request)
         {
             try
             {
@@ -64,6 +69,7 @@ namespace DiffyAPI.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, ex.Message);
                 return BadRequest(new { ErrorType = ex.GetType().Name, Error = ex.Message });
             }
         }
@@ -77,6 +83,7 @@ namespace DiffyAPI.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, ex.Message);
                 return BadRequest(new { ErrorType = ex.GetType().Name, Error = ex.Message });
             }
         }

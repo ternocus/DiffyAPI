@@ -11,10 +11,12 @@ namespace DiffyAPI.UserAPI.Core
     {
 
         private readonly IUserDataRepository _userDataRepository;
+        private readonly ILogger<UserManager> _logger;
 
-        public UserManager(IUserDataRepository userDataRepository)
+        public UserManager(IUserDataRepository userDataRepository, ILogger<UserManager> logger)
         {
             _userDataRepository = userDataRepository;
+            _logger = logger;
         }
 
         public async Task<IEnumerable<ExportLineResult>> GetUserList()
@@ -25,13 +27,17 @@ namespace DiffyAPI.UserAPI.Core
             result.AddRange(AddGuestUser(userResult));
             result.AddRange(AddAllUser(userResult));
 
+            _logger.LogInformation($"Numero di utenti trovati: {result.Count()}");
             return result;
         }
 
         public async Task<bool> UploadUser(UploadUser registerCredential)
         {
             if (await _userDataRepository.IsUserExist(registerCredential.Username))
+            {
+                _logger.LogError($"L'utente {registerCredential.Username} richiesto non è presente nel database");
                 throw new UserNotFoundException("User not found in dabatase");
+            }
 
             await _userDataRepository.UploadUserData(registerCredential);
 
@@ -41,7 +47,10 @@ namespace DiffyAPI.UserAPI.Core
         public async Task<UserInfoResult> GetUserInfo(string username)
         {
             if (await _userDataRepository.IsUserExist(username))
+            {
+                _logger.LogError($"L'utente {username} non è presente nel database");
                 throw new UserNotFoundException($"User {username} not found in database");
+            }
 
             var result = (await _userDataRepository.GetUserData(username)).ToCoreUserInfo();
 
