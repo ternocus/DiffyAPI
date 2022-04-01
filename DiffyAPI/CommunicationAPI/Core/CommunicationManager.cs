@@ -33,7 +33,7 @@ namespace DiffyAPI.CommunicationAPI.Core
 
         public async Task<bool> AddMessage(BodyMessage message)
         {
-            _logger.LogInformation($"Richiesto l'inserimento di un nuovo messaggio.", message);
+            _logger.LogInformation("Richiesto l'inserimento di un nuovo messaggio.", message);
 
             if (await _communicationDataRepository.IsMessageExist(message))
             {
@@ -48,7 +48,7 @@ namespace DiffyAPI.CommunicationAPI.Core
 
         public async Task<MessageResponse> GetBodyMessage(HeaderMessage messageRequest)
         {
-            _logger.LogInformation($"Richiesto l'invio di un messaggio", messageRequest);
+            _logger.LogInformation("Richiesto l'invio di un messaggio", messageRequest);
 
             var result = await _communicationDataRepository.GetMessage(messageRequest);
 

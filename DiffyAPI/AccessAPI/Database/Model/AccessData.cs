@@ -1,4 +1,4 @@
-﻿namespace DiffyAPI.Database.Model
+﻿namespace DiffyAPI.AccessAPI.Database.Model
 {
     public class AccessData
     {

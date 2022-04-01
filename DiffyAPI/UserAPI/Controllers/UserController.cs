@@ -2,7 +2,7 @@
 using DiffyAPI.UserAPI.Core;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DiffyAPI.Controllers
+namespace DiffyAPI.UserAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -11,10 +11,10 @@ namespace DiffyAPI.Controllers
         private readonly IUserManager _userManager;
         private readonly ILogger<UserController> _logger;
 
-        public UserController(IUserManager userManager, ILogger<UserController> _logger)
+        public UserController(IUserManager userManager, ILogger<UserController> logger)
         {
             _userManager = userManager;
-            _logger = _logger;
+            _logger = logger;
         }
 
         [HttpGet("UserList")]

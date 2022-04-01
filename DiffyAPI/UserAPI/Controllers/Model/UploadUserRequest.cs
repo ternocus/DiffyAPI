@@ -1,6 +1,6 @@
-﻿using DiffyAPI.Core.Model;
-using DiffyAPI.UserAPI.Core.Model;
+﻿using DiffyAPI.UserAPI.Core.Model;
 using System.ComponentModel.DataAnnotations;
+using DiffyAPI.Model;
 
 namespace DiffyAPI.UserAPI.Controllers.Model
 {

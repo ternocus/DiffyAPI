@@ -51,11 +51,8 @@ namespace DiffyAPI.UserAPI.Database
 
         public async Task<bool> IsUserExist(string username)
         {
-            Random random = new Random();
-            if (random.Next(0, 2) == 0)
-                return true;
-            else
-                return false;
+            var random = new Random();
+            return random.Next(0, 2) == 0;
         }
 
         public async Task UploadUserData(UploadUser registerCredential)

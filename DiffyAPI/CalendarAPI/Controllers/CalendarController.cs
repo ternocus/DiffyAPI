@@ -1,9 +1,9 @@
-﻿using DiffyAPI.CalendarAPI.Controllers.Model;
+﻿using System.ComponentModel.DataAnnotations;
+using DiffyAPI.CalendarAPI.Controllers.Model;
 using DiffyAPI.CalendarAPI.Core;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
 
-namespace DiffyAPI.Controllers
+namespace DiffyAPI.CalendarAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

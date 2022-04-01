@@ -1,7 +1,7 @@
-﻿using DiffyAPI.Controllers.Model;
-using DiffyAPI.Core.Model;
+﻿using DiffyAPI.AccessAPI.Controllers.Model;
+using DiffyAPI.AccessAPI.Core.Model;
 
-namespace DiffyAPI.Core
+namespace DiffyAPI.AccessAPI.Core
 {
     public interface IAccessManager
     {

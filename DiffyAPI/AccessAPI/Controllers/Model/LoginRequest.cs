@@ -1,7 +1,7 @@
-﻿using DiffyAPI.Core.Model;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using DiffyAPI.AccessAPI.Core.Model;
 
-namespace DiffyAPI.Controllers.Model
+namespace DiffyAPI.AccessAPI.Controllers.Model
 {
     public class LoginRequest
     {

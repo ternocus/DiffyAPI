@@ -1,11 +1,11 @@
-﻿using DiffyAPI.Controllers.Model;
-using DiffyAPI.Core.Model;
-using DiffyAPI.Database;
-using DiffyAPI.Database.Model;
+﻿using System.Security.Authentication;
+using DiffyAPI.AccessAPI.Controllers.Model;
+using DiffyAPI.AccessAPI.Core.Model;
+using DiffyAPI.AccessAPI.Database;
+using DiffyAPI.AccessAPI.Database.Model;
 using DiffyAPI.Exceptions;
-using System.Security.Authentication;
 
-namespace DiffyAPI.Core
+namespace DiffyAPI.AccessAPI.Core
 {
     internal class AccessManager : IAccessManager
     {
@@ -71,9 +71,9 @@ namespace DiffyAPI.Core
             throw new RegisterFailedException("Something gone wrong with register");
         }
 
-        private bool IsLoggedCorrectly(LoginCredential loginRequestCore, AccessData resultQuery)
+        private static bool IsLoggedCorrectly(LoginCredential loginRequestCore, AccessData resultQuery)
         {
-            return resultQuery.Password.CompareTo(loginRequestCore.Password) == 0;
+            return string.Compare(resultQuery.Password, loginRequestCore.Password, StringComparison.Ordinal) == 0;
         }
     }
 }

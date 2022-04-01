@@ -32,20 +32,14 @@ namespace DiffyAPI.CommunicationAPI.Database
 
         public async Task<bool> IsCategoryExist(string name)
         {
-            Random random = new Random();
-            if (random.Next(0, 2) == 0)
-                return false;
-            else
-                return true;
+            var random = new Random();
+            return random.Next(0, 2) != 0;
         }
 
         public async Task<bool> IsMessageExist(BodyMessage message)
         {
-            Random random = new Random();
-            if (random.Next(0, 2) == 0)
-                return false;
-            else
-                return true;
+            var random = new Random();
+            return random.Next(0, 2) != 0;
         }
 
         public async Task<bool> UploadMessage(UploadMessage uploadMessage)

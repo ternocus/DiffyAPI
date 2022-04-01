@@ -1,9 +1,9 @@
+using DiffyAPI.AccessAPI.Core;
+using DiffyAPI.AccessAPI.Database;
 using DiffyAPI.CalendarAPI.Core;
 using DiffyAPI.CalendarAPI.Database;
 using DiffyAPI.CommunicationAPI.Core;
 using DiffyAPI.CommunicationAPI.Database;
-using DiffyAPI.Core;
-using DiffyAPI.Database;
 using DiffyAPI.UserAPI.Core;
 using DiffyAPI.UserAPI.Database;
 
@@ -27,7 +27,6 @@ builder.Services.AddScoped<IUserDataRepository, UserDataRepository>();
 
 // Add services to logger
 builder.Logging.ClearProviders();
-builder.Logging.AddApplicationInsights();
 builder.Logging.AddConsole();
 
 // Add services to the container.

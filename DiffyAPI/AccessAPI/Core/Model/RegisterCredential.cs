@@ -1,4 +1,4 @@
-﻿namespace DiffyAPI.Core.Model
+﻿namespace DiffyAPI.AccessAPI.Core.Model
 {
     public class RegisterCredential
     {

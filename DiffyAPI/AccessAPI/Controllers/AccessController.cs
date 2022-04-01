@@ -1,8 +1,8 @@
-﻿using DiffyAPI.Controllers.Model;
-using DiffyAPI.Core;
+﻿using DiffyAPI.AccessAPI.Controllers.Model;
+using DiffyAPI.AccessAPI.Core;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DiffyAPI.Controllers
+namespace DiffyAPI.AccessAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

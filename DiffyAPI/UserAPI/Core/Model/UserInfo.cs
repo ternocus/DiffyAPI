@@ -1,6 +1,7 @@
-﻿using DiffyAPI.Core.Model;
+﻿using DiffyAPI.Model;
+using DiffyAPI.UserAPI.Controllers.Model;
 
-namespace DiffyAPI.UserAPI.Controllers.Model
+namespace DiffyAPI.UserAPI.Core.Model
 {
     public class UserInfo
     {

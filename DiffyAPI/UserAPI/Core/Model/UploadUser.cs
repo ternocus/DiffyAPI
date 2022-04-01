@@ -1,4 +1,4 @@
-﻿using DiffyAPI.Core.Model;
+﻿using DiffyAPI.Model;
 
 namespace DiffyAPI.UserAPI.Core.Model
 {

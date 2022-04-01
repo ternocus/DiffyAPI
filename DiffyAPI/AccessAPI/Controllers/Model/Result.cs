@@ -1,4 +1,4 @@
-﻿namespace DiffyAPI.Controllers.Model
+﻿namespace DiffyAPI.AccessAPI.Controllers.Model
 {
     public class Result
     {

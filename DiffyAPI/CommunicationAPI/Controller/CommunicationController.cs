@@ -1,9 +1,9 @@
-﻿using DiffyAPI.CommunicationAPI.Controller.Model;
+﻿using System.ComponentModel.DataAnnotations;
+using DiffyAPI.CommunicationAPI.Controller.Model;
 using DiffyAPI.CommunicationAPI.Core;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
 
-namespace DiffyAPI.Controllers
+namespace DiffyAPI.CommunicationAPI.Controller
 {
     [Route("api/[controller]")]
     [ApiController]

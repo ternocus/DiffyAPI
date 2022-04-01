@@ -48,9 +48,10 @@ namespace DiffyAPI.CalendarAPI.Core
         {
             var eventsData = await _calendarDataRepository.GetMonthEvents(filter);
 
-            _logger.LogInformation($"Numero di eventi nel mese {filter.Month}: {eventsData.Count()}");
+            var eventHeaderDatas = eventsData.ToList();
+            _logger.LogInformation($"Numero di eventi nel mese {filter.Month}: {eventHeaderDatas.Count()}");
 
-            return (eventsData.Select(data => data.ToController())).ToList();
+            return (eventHeaderDatas.Select(data => data.ToController())).ToList();
         }
 
         public async Task<EventResult> GetSingleEvent(EventHeaderRequest request)

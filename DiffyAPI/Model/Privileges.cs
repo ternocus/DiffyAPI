@@ -1,4 +1,4 @@
-﻿namespace DiffyAPI.Core.Model
+﻿namespace DiffyAPI.Model
 {
     public enum Privileges
     {

@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace DiffyAPI.Database
+namespace DiffyAPI.Exceptions
 {
     [Serializable]
     public class UnableReadDatabaseException : Exception

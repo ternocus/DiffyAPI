@@ -1,7 +1,7 @@
-﻿using DiffyAPI.Core.Model;
-using DiffyAPI.Database.Model;
+﻿using DiffyAPI.AccessAPI.Core.Model;
+using DiffyAPI.AccessAPI.Database.Model;
 
-namespace DiffyAPI.Database
+namespace DiffyAPI.AccessAPI.Database
 {
     public class AccessDataRepository : IAccessDataRepository
     {
@@ -22,11 +22,8 @@ namespace DiffyAPI.Database
 
         public async Task<bool> IsRegistered(string username)
         {
-            Random random = new Random();
-            if (random.Next(0, 2) == 0)
-                return false;
-            else
-                return true;
+            var random = new Random();
+            return random.Next(0, 2) != 0;
         }
     }
 }
