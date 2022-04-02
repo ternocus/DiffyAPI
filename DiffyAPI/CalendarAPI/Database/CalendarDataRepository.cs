@@ -32,8 +32,8 @@ namespace DiffyAPI.CalendarAPI.Database
             {
                 Header = new EventHeaderData
                 {
-                    Title = request.Title,
-                    Date = request.Date,
+                    Title = request.Title!,
+                    Date = request.Date!.Value,
                 },
                 Description = "Descrizione dell'evento",
                 Poll = new PollData

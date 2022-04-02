@@ -9,6 +9,6 @@ namespace DiffyAPI.UserAPI.Core.Model
         public string Username { get; set; }
         public Privileges Privilege { get; set; }
         public string Email { get; set; }
-        public string OldUsername { get; set; }
+        public int IdUser { get; set; }
     }
 }

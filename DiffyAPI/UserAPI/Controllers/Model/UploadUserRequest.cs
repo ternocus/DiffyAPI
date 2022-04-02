@@ -1,34 +1,73 @@
 ﻿using DiffyAPI.UserAPI.Core.Model;
 using System.ComponentModel.DataAnnotations;
 using DiffyAPI.Model;
+using DiffyAPI.Utils;
 
 namespace DiffyAPI.UserAPI.Controllers.Model
 {
-    public class UploadUserRequest
+    public class UploadUserRequest : IValidateResult
     {
-        [Required, MinLength(1), MaxLength(18)]
-        public string Name { get; set; }
-        [Required, MinLength(1), MaxLength(18)]
-        public string Surname { get; set; }
-        [Required, MinLength(1), MaxLength(18)]
-        public string Username { get; set; }
-        [Required, MinLength(1), MaxLength(18)]
-        public string Privilege { get; set; }
-        [Required, MaxLength(1)]
-        public string Email { get; set; }
-        public string OldUsername { get; set; }
+        public string? Name { get; set; }
+        public string? Surname { get; set; }
+        public string? Username { get; set; }
+        public string? Privilege { get; set; }
+        public string? Email { get; set; }
+        public int? IdUser { get; set; }
 
         public UploadUser ToCore()
         {
             return new UploadUser
             {
-                Name = Name,
-                Surname = Surname,
-                Username = Username,
-                Privilege = (Privileges)Enum.Parse(typeof(Privileges), Privilege),
-                Email = Email,
-                OldUsername = OldUsername,
+                Name = Name!,
+                Surname = Surname!,
+                Username = Username!,
+                Privilege = (Privileges)Enum.Parse(typeof(Privileges), Privilege!),
+                Email = Email!,
+                IdUser = IdUser!.Value,
             };
+        }
+
+        public ValidateResult Validate()
+        {
+            var result = new ValidateResult();
+
+            if (string.IsNullOrEmpty(Name))
+                result.ErrorMessage("Name", "The Name must contain a value");
+            else
+            {
+                if (Name.Length < 8)
+                    result.ErrorMessage("Name", "The Name must have a minimum of 8 characters");
+                if (Name.Length > 18)
+                    result.ErrorMessage("Name", "The Name must be a maximum of 18 characters");
+            }
+
+            if (string.IsNullOrEmpty(Surname))
+                result.ErrorMessage("Surname", "The Surname must contain a value");
+            else
+            {
+                if (Surname.Length < 8)
+                    result.ErrorMessage("Surname", "The Surname must have a minimum of 8 characters");
+                if (Surname.Length > 18)
+                    result.ErrorMessage("Surname", "The Surname must be a maximum of 18 characters");
+            }
+
+            if (string.IsNullOrEmpty(Username))
+                result.ErrorMessage("Username", "The username must contain a value");
+            else if (Username.Length > 18)
+                result.ErrorMessage("Username", "The username must be a maximum of 18 characters");
+
+            if (string.IsNullOrEmpty(Privilege))
+                result.ErrorMessage("Privilege", "The Privilege must contain a value");
+            
+            if (string.IsNullOrEmpty(Email))
+                result.ErrorMessage("Email", "The Email must contain a value");
+
+            if(IdUser == null)
+                result.ErrorMessage("IdUser", "The IdUser must contain a value");
+            else if(IdUser < 0)
+                result.ErrorMessage("IdUser", "The IdUser must contain a real value");
+
+            return result;
         }
     }
 }

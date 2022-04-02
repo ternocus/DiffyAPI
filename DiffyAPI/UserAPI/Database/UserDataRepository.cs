@@ -13,7 +13,8 @@ namespace DiffyAPI.UserAPI.Database
                 Surname = username,
                 Username = "Username",
                 Privilege = "Athlete",
-                Email = "pippo@virgilio.it"
+                Email = "pippo@virgilio.it",
+                IdUser = 1,
             };
         }
 

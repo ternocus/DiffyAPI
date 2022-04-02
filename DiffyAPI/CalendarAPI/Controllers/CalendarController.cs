@@ -37,7 +37,12 @@ namespace DiffyAPI.CalendarAPI.Controllers
         {
             try
             {
-                return Ok(await _calendarManager.AddNewEvent(request.ToCore()));
+                var validate = request.Validate();
+
+                if (validate.IsValid)
+                    return Ok(await _calendarManager.AddNewEvent(request.ToCore()));
+
+                return BadRequest(new { ErrorType = "InvalidEventObject", Error = validate.GetErrorMessage().Replace("[", "").Replace("]", "") });
             }
             catch (Exception ex)
             {
@@ -51,7 +56,12 @@ namespace DiffyAPI.CalendarAPI.Controllers
         {
             try
             {
-                return Ok(await _calendarManager.GetSingleEvent(request));
+                var validate = request.Validate();
+
+                if(validate.IsValid)
+                    return Ok(await _calendarManager.GetSingleEvent(request));
+
+                return BadRequest(new { ErrorType = "InvalidEventObject", Error = validate.GetErrorMessage().Replace("[", "").Replace("]", "") });
             }
             catch (Exception ex)
             {
@@ -65,7 +75,12 @@ namespace DiffyAPI.CalendarAPI.Controllers
         {
             try
             {
-                return Ok(await _calendarManager.UploadEvent(request.ToCore()));
+                var validate = request.Validate();
+
+                if(validate.IsValid)
+                    return Ok(await _calendarManager.UploadEvent(request.ToCore()));
+
+                return BadRequest(new { ErrorType = "InvalidEventObject", Error = validate.GetErrorMessage().Replace("[", "").Replace("]", "") });
             }
             catch (Exception ex)
             {
@@ -79,7 +94,12 @@ namespace DiffyAPI.CalendarAPI.Controllers
         {
             try
             {
-                return Ok(await _calendarManager.AddNewPoll(request.ToCore()));
+                var validate = request.Validate();
+
+                if(validate.IsValid)
+                    return Ok(await _calendarManager.AddNewPoll(request.ToCore()));
+
+                return BadRequest(new { ErrorType = "InvalidEventObject", Error = validate.GetErrorMessage().Replace("[", "").Replace("]", "") });
             }
             catch (Exception ex)
             {

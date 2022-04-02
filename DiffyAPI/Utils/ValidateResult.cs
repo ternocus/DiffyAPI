@@ -2,7 +2,7 @@
 {
     public class ValidateResult
     {
-        private IDictionary<string, string> _errors { get; set; }
+        public IDictionary<string, string> _errors { get; set; }
         public bool IsValid => !_errors.Any();
 
         public ValidateResult()

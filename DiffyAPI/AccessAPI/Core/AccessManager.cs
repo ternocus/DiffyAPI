@@ -1,9 +1,9 @@
-﻿using System.Security.Authentication;
-using DiffyAPI.AccessAPI.Controllers.Model;
+﻿using DiffyAPI.AccessAPI.Controllers.Model;
 using DiffyAPI.AccessAPI.Core.Model;
 using DiffyAPI.AccessAPI.Database;
 using DiffyAPI.AccessAPI.Database.Model;
 using DiffyAPI.Exceptions;
+using System.Security.Authentication;
 
 namespace DiffyAPI.AccessAPI.Core
 {
@@ -24,8 +24,8 @@ namespace DiffyAPI.AccessAPI.Core
 
             if (!await _dataRepository.IsRegistered(loginRequestCore.Username))
             {
-                _logger.LogError("UserNotFoundException: Utente non trovato nel database.");
-                throw new UserNotFoundException("Username not found in the database");
+                _logger.LogError($"UserNotFoundException: Utente '{loginRequestCore.Username}' non trovato nel database.");
+                throw new UserNotFoundException($"Username '{loginRequestCore.Username}' not found in the database");
             }
 
             var accessData = await _dataRepository.GetAccessData(loginRequestCore.Username);
@@ -41,8 +41,8 @@ namespace DiffyAPI.AccessAPI.Core
                 };
             }
 
-            _logger.LogError("InvalidCredentialException: Utente e password inseriti non sono corretti.");
-            throw new InvalidCredentialException("Username and password pair are invalid");
+            _logger.LogError($"InvalidCredentialException: Utente '{loginRequestCore.Username}' e password inseriti non sono corretti.");
+            throw new InvalidCredentialException($"Username '{loginRequestCore.Username}' and password pair are invalid");
         }
 
         public async Task<Result> AccessUserRegister(RegisterCredential registerRequestCore)

@@ -10,6 +10,7 @@ namespace DiffyAPI.UserAPI.Core.Model
         public string Username { get; set; }
         public Privileges Privilege { get; set; }
         public string Email { get; set; }
+        public int IdUser { get; set; }
 
         public UserInfoResult ToController()
         {
@@ -19,7 +20,8 @@ namespace DiffyAPI.UserAPI.Core.Model
                 Surname = Surname,
                 Username = Username,
                 Privilege = Privilege.ToString(),
-                Email = Email
+                Email = Email,
+                IdUser = IdUser,
             };
         }
     }

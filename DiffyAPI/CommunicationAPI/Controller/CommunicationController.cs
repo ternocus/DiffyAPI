@@ -33,7 +33,7 @@ namespace DiffyAPI.CommunicationAPI.Controller
         }
 
         [HttpPost("AddNewCategory")]
-        public async Task<IActionResult> AddNewCategory([FromQuery, Required] string name)
+        public async Task<IActionResult> AddNewCategory([FromQuery, Required, MinLength(1)] string name)
         {
             try
             {
@@ -47,7 +47,7 @@ namespace DiffyAPI.CommunicationAPI.Controller
         }
 
         [HttpGet("MessageList")]
-        public async Task<IActionResult> GetListMessage([FromQuery, Required] string category)
+        public async Task<IActionResult> GetListMessage([FromQuery, Required, MinLength(1)] string category)
         {
             try
             {
@@ -65,7 +65,12 @@ namespace DiffyAPI.CommunicationAPI.Controller
         {
             try
             {
-                return Ok(await _communicationManager.AddMessage(message.ToCore()));
+                var validate = message.Validate();
+
+                if(validate.IsValid)
+                    return Ok(await _communicationManager.AddMessage(message.ToCore()));
+
+                return BadRequest(new { ErrorType = "InvalidMessageObject", Error = validate.GetErrorMessage().Replace("[", "").Replace("]", "") });
             }
             catch (Exception ex)
             {
@@ -79,7 +84,12 @@ namespace DiffyAPI.CommunicationAPI.Controller
         {
             try
             {
-                return Ok(await _communicationManager.GetBodyMessage(messageRequest.ToCore()));
+                var validate = messageRequest.Validate();
+
+                if(validate.IsValid)
+                    return Ok(await _communicationManager.GetBodyMessage(messageRequest.ToCore()));
+
+                return BadRequest(new { ErrorType = "InvalidBodyMessageObject", Error = validate.GetErrorMessage().Replace("[", "").Replace("]", "") });
             }
             catch (Exception ex)
             {
@@ -93,7 +103,12 @@ namespace DiffyAPI.CommunicationAPI.Controller
         {
             try
             {
-                return Ok(await _communicationManager.UploadMessage(request.ToCore()));
+                var validate = request.Validate();
+
+                if(validate.IsValid)
+                    return Ok(await _communicationManager.UploadMessage(request.ToCore()));
+
+                return BadRequest(new { ErrorType = "InvalidMessageObject", Error = validate.GetErrorMessage().Replace("[", "").Replace("]", "") });
             }
             catch (Exception ex)
             {

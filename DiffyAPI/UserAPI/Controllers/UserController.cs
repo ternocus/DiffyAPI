@@ -1,4 +1,5 @@
-﻿using DiffyAPI.UserAPI.Controllers.Model;
+﻿using System.ComponentModel.DataAnnotations;
+using DiffyAPI.UserAPI.Controllers.Model;
 using DiffyAPI.UserAPI.Core;
 using Microsoft.AspNetCore.Mvc;
 
@@ -32,7 +33,7 @@ namespace DiffyAPI.UserAPI.Controllers
         }
 
         [HttpGet("UserInfo")]
-        public async Task<IActionResult> UserInformation([FromQuery] string username)
+        public async Task<IActionResult> UserInformation([FromQuery] [Required, MinLength(1)] string username)
         {
             try
             {
@@ -50,7 +51,12 @@ namespace DiffyAPI.UserAPI.Controllers
         {
             try
             {
-                return Ok(await _userManager.UploadUser(request.ToCore()));
+                var validate = request.Validate();
+
+                if(validate.IsValid)
+                    return Ok(await _userManager.UploadUser(request.ToCore()));
+
+                return BadRequest(new { ErrorType = "InvalidUserObject", Error = validate.GetErrorMessage().Replace("[", "").Replace("]", "") });
             }
             catch (Exception ex)
             {

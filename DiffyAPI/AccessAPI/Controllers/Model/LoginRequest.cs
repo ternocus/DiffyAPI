@@ -5,15 +5,15 @@ namespace DiffyAPI.AccessAPI.Controllers.Model
 {
     public class LoginRequest : IValidateResult
     {
-        public string Username { get; set; }
-        public string Password { get; set; }
+        public string? Username { get; set; }
+        public string? Password { get; set; }
 
         public LoginCredential ToCore()
         {
             return new LoginCredential
             {
-                Username = Username,
-                Password = Password,
+                Username = Username!,
+                Password = Password!,
             };
         }
 
@@ -23,15 +23,18 @@ namespace DiffyAPI.AccessAPI.Controllers.Model
 
             if (string.IsNullOrEmpty(Username))
                 result.ErrorMessage("Username", "The username must contain a value");
-            if (Username.Length > 18)
+            else if (Username.Length > 18)
                 result.ErrorMessage("Username", "The username must be a maximum of 18 characters");
 
             if (string.IsNullOrEmpty(Password))
                 result.ErrorMessage("Password", "The Password must contain a value");
-            if (Password.Length < 8)
-                result.ErrorMessage("Password", "The password must have a minimum of 8 characters");
-            if (Password.Length > 18)
-                result.ErrorMessage("Password", "The Password must be a maximum of 18 characters");
+            else
+            {
+                if (Password.Length < 8)
+                    result.ErrorMessage("Password", "The password must have a minimum of 8 characters");
+                if (Password.Length > 18)
+                    result.ErrorMessage("Password", "The Password must be a maximum of 18 characters");
+            }
 
             return result;
         }

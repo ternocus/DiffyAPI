@@ -10,6 +10,7 @@ namespace DiffyAPI.UserAPI.Database.Model
         public string Username { get; set; }
         public string Privilege { get; set; }
         public string Email { get; set; }
+        public int IdUser { get; set; }
 
         public UserResult ToCoreUserResult()
         {
@@ -29,6 +30,7 @@ namespace DiffyAPI.UserAPI.Database.Model
                 Username = Username,
                 Privilege = (Privileges)Enum.Parse(typeof(Privileges), Privilege),
                 Email = Email,
+                IdUser = IdUser,
             };
         }
     }
