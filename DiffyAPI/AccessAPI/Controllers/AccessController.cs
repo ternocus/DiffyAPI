@@ -1,6 +1,8 @@
 ﻿using DiffyAPI.AccessAPI.Controllers.Model;
 using DiffyAPI.AccessAPI.Core;
+using DiffyAPI.Exceptions;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace DiffyAPI.AccessAPI.Controllers
 {
@@ -22,12 +24,17 @@ namespace DiffyAPI.AccessAPI.Controllers
         {
             try
             {
-                return Ok(await _accessManager.AccessLogin(request.ToCore()));
+                var validate = request.Validate();
+
+                if (validate.IsValid)
+                    return Ok(await _accessManager.AccessLogin(request.ToCore()));
+
+                throw new ServiceResponseException(HttpStatusCode.BadRequest, "InvalidLoginObject", validate.GetErrorMessage());
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
-                return BadRequest(new { ErrorType = ex.GetType().Name, Error = ex.Message });
+                throw new ServiceResponseException(HttpStatusCode.BadRequest, ex.GetType().Name, ex.Message);
             }
         }
 
@@ -36,12 +43,17 @@ namespace DiffyAPI.AccessAPI.Controllers
         {
             try
             {
-                return Ok(await _accessManager.AccessUserRegister(request.ToCore()));
+                var validate = request.Validate();
+
+                if (validate.IsValid)
+                    return Ok(await _accessManager.AccessUserRegister(request.ToCore()));
+
+                throw new ServiceResponseException(HttpStatusCode.BadRequest, "InvalidLoginObject", validate.GetErrorMessage());
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
-                return BadRequest(new { ErrorType = ex.GetType().Name, Error = ex.Message });
+                throw new ServiceResponseException(HttpStatusCode.BadRequest, ex.GetType().Name, ex.Message);
             }
         }
     }

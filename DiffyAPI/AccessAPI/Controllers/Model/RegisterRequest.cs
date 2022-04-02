@@ -1,19 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
-using DiffyAPI.AccessAPI.Core.Model;
+﻿using DiffyAPI.AccessAPI.Core.Model;
+using DiffyAPI.Utils;
 
 namespace DiffyAPI.AccessAPI.Controllers.Model
 {
-    public class RegisterRequest
+    public class RegisterRequest : IValidateResult
     {
-        [Required, MinLength(1), MaxLength(18)]
         public string Name { get; set; }
-        [Required, MinLength(1), MaxLength(18)]
         public string Surname { get; set; }
-        [Required, MinLength(1), MaxLength(18)]
         public string Username { get; set; }
-        [Required, MinLength(1)]
         public string Email { get; set; }
-        [Required, MinLength(8), MaxLength(18)]
         public string Password { get; set; }
 
         public RegisterCredential ToCore()
@@ -26,6 +21,42 @@ namespace DiffyAPI.AccessAPI.Controllers.Model
                 Email = Email,
                 Password = Password,
             };
+        }
+
+        public ValidateResult Validate()
+        {
+            var result = new ValidateResult();
+
+            if (string.IsNullOrEmpty(Name))
+                result.ErrorMessage("Name", "The Name must contain a value");
+            if (Name.Length < 8)
+                result.ErrorMessage("Name", "The Name must have a minimum of 8 characters");
+            if (Name.Length > 18)
+                result.ErrorMessage("Name", "The Name must be a maximum of 18 characters");
+
+            if (string.IsNullOrEmpty(Surname))
+                result.ErrorMessage("Surname", "The Surname must contain a value");
+            if (Surname.Length < 8)
+                result.ErrorMessage("Surname", "The Surname must have a minimum of 8 characters");
+            if (Surname.Length > 18)
+                result.ErrorMessage("Surname", "The Surname must be a maximum of 18 characters");
+
+            if (string.IsNullOrEmpty(Username))
+                result.ErrorMessage("Username", "The username must contain a value");
+            if (Username.Length > 18)
+                result.ErrorMessage("Username", "The username must be a maximum of 18 characters");
+
+            if (string.IsNullOrEmpty(Email))
+                result.ErrorMessage("Email", "The Email must contain a value");
+
+            if (string.IsNullOrEmpty(Password))
+                result.ErrorMessage("Password", "The Password must contain a value");
+            if (Password.Length < 8)
+                result.ErrorMessage("Password", "The password must have a minimum of 8 characters");
+            if (Password.Length > 18)
+                result.ErrorMessage("Password", "The Password must be a maximum of 18 characters");
+
+            return result;
         }
     }
 }
