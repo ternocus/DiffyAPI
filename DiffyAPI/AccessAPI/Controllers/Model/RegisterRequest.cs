@@ -48,7 +48,7 @@ namespace DiffyAPI.AccessAPI.Controllers.Model
             }
 
             if (string.IsNullOrEmpty(Username))
-                result.ErrorMessage("Username", "The username must contain a value"); 
+                result.ErrorMessage("Username", "The username must contain a value");
             else if (Username.Length > 18)
                 result.ErrorMessage("Username", "The username must be a maximum of 18 characters");
 

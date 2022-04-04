@@ -3,11 +3,12 @@ using DiffyAPI.AccessAPI.Core.Model;
 using DiffyAPI.AccessAPI.Database;
 using DiffyAPI.AccessAPI.Database.Model;
 using DiffyAPI.Exceptions;
+using DiffyAPI.Model;
 using System.Security.Authentication;
 
 namespace DiffyAPI.AccessAPI.Core
 {
-    internal class AccessManager : IAccessManager
+    public class AccessManager : IAccessManager
     {
         private readonly IAccessDataRepository _dataRepository;
         private readonly ILogger<AccessManager> _logger;
@@ -37,7 +38,7 @@ namespace DiffyAPI.AccessAPI.Core
                 return new Result
                 {
                     Username = accessData.Username,
-                    Privilege = accessData.Privilege,
+                    Privilege = ((Privileges)accessData.Privilege).ToString(),
                 };
             }
 
@@ -55,23 +56,25 @@ namespace DiffyAPI.AccessAPI.Core
                 throw new UserAlreadyExistException("User is already present in the database");
             }
 
+            await _dataRepository.AddNewUserAccess(registerRequestCore);
+
             var accessData = await _dataRepository.GetAccessData(registerRequestCore.Username);
 
-            if (await _dataRepository.IsRegistered(registerRequestCore.Username))
+            if (accessData != null)
             {
                 _logger.LogInformation($"Nuovo utente {registerRequestCore.Username} creato.");
 
                 return new Result
                 {
                     Username = accessData.Username,
-                    Privilege = accessData.Privilege,
+                    Privilege = ((Privileges)accessData.Privilege).ToString(),
                 };
             }
             _logger.LogError($"RegisterFailedException: è occorso un errore durante l'inserimento dell'utente {registerRequestCore.Username}.");
             throw new RegisterFailedException("Something gone wrong with register");
         }
 
-        private static bool IsLoggedCorrectly(LoginCredential loginRequestCore, AccessData resultQuery)
+        private static bool IsLoggedCorrectly(LoginCredential loginRequestCore, AccessData? resultQuery)
         {
             return string.Compare(resultQuery.Password, loginRequestCore.Password, StringComparison.Ordinal) == 0;
         }
