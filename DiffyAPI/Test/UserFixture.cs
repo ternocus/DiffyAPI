@@ -1,4 +1,6 @@
-﻿using DiffyAPI.Exceptions;
+﻿using DiffyAPI.AccessAPI.Core.Model;
+using DiffyAPI.AccessAPI.Database;
+using DiffyAPI.Exceptions;
 using DiffyAPI.Model;
 using DiffyAPI.UserAPI.Controllers.Model;
 using DiffyAPI.UserAPI.Core;
@@ -115,11 +117,13 @@ namespace DiffyAPI.Test
             {
                 Username = "Admin",
                 Privilege = 5,
+                Id = 1,
             });
             data.Add(new UserInfoData
             {
                 Username = "Guest",
                 Privilege = 0,
+                Id = 2,
             });
 
             var logger = new Mock<ILogger<UserManager>>();
@@ -134,7 +138,11 @@ namespace DiffyAPI.Test
 
             Assert.AreEqual(2, output.Result.Count());
             Assert.AreEqual("Guest", output.Result.First().Username);
+            Assert.AreEqual(2, output.Result.First().Id);
+            Assert.AreEqual(Privileges.Guest.ToString(), output.Result.First().Privilege);
             Assert.AreEqual("Admin", output.Result.ToList()[1].Username);
+            Assert.AreEqual(1, output.Result.ToList()[1].Id);
+            Assert.AreEqual(Privileges.Admin.ToString(), output.Result.ToList()[1].Privilege);
         }
 
         [Test]
@@ -253,32 +261,41 @@ namespace DiffyAPI.Test
         #endregion
 
         #region UserDataRepository
+
         [Test]
-        public void GetUserList_CorrectInput_IEnumerableUserInfoData()
+        public async Task UserDataRepo()
         {
             var database = new UserDataRepository();
+            var dbAccess = new AccessDataRepository();
 
-            var output = database.GetUserListData();
+            var user = new RegisterCredential
+            {
+                Name = "UserNamTest",
+                Surname = "UserSurTest",
+                Username = "UserTest",
+                Email = "test@virgilio.it",
+                Password = "passwordTest",
+            };
+
+            await dbAccess.AddNewUserAccess(user);
+
+            UserInfoData output = null;
+            var list = await database.GetUserListData();
+            foreach (var users in list)
+            {
+                if (users.Username == user.Username)
+                    output = users;
+            }
+            Assert.NotNull(output);
+            Assert.AreNotEqual(0, list.Count());
+            Assert.IsTrue(database.IsUserExist(output.Id).Result);
+
+            var outputData = await database.GetUserData(output.Id);
 
             Assert.NotNull(output);
-            Assert.AreNotEqual(0, output.Result.ToList().Count);
-        }
+            Assert.AreEqual(user.Username, outputData.Username);
+            Assert.AreEqual(0, outputData.Privilegi);
 
-        [Test]
-        public void GetUserData_CorrectInput_UserData()
-        {
-            var database = new UserDataRepository();
-
-            var output = database.GetUserData(1);
-
-            Assert.NotNull(output);
-            Assert.AreEqual("Ternocus", output.Result.Username);
-            Assert.AreEqual(5, output.Result.Privilegi);
-        }
-
-        [Test]
-        public void UploadUserData_CorrectInput_UploadUserData()
-        {
             var obj = new UpdateUser
             {
                 Name = "Usertest",
@@ -287,47 +304,24 @@ namespace DiffyAPI.Test
                 Password = "UpdatePass",
                 Privilege = Privileges.Guest,
                 Email = "user1234",
-                IdUser = 11
+                IdUser = output.Id,
             };
 
-            var database = new UserDataRepository();
+            await database.UploadUserData(obj);
 
-            database.UploadUserData(obj);
-
-            var output = database.GetUserData(12).Result;
+            var output2 = await database.GetUserData(output.Id);
 
             Assert.NotNull(output);
-            Assert.AreEqual(obj.Name, output.Nome);
-            Assert.AreEqual(obj.Surname, output.Cognome);
-            Assert.AreEqual(obj.Username, output.Username);
-            Assert.AreEqual((int)obj.Privilege, output.Privilegi);
-            Assert.AreEqual(obj.Email, output.Email);
-        }
+            Assert.AreEqual(obj.Name, output2.Nome);
+            Assert.AreEqual(obj.Surname, output2.Cognome);
+            Assert.AreEqual(obj.Username, output2.Username);
+            Assert.AreEqual((int)obj.Privilege, output2.Privilegi);
+            Assert.AreEqual(obj.Email, output2.Email);
 
-        [Test]
-        public void IsUserExist_True()
-        {
-            var database = new UserDataRepository();
 
-            Assert.IsTrue(database.IsUserExist(1).Result);
-        }
+            await database.DeleteUser(output.Id);
 
-        [Test]
-        public void IsUserExist_False()
-        {
-            var database = new UserDataRepository();
-
-            Assert.IsFalse(database.IsUserExist(100).Result);
-        }
-
-        [Test]
-        public void DeleteUser_CorrectInput()
-        {
-            var database = new UserDataRepository();
-
-            database.DeleteUser(11);
-
-            Assert.IsFalse(database.IsUserExist(11).Result);
+            Assert.IsFalse(database.IsUserExist(output.Id).Result);
         }
         #endregion
     }

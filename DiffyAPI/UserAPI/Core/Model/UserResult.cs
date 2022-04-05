@@ -7,6 +7,7 @@ namespace DiffyAPI.UserAPI.Core.Model
     {
         public string Username { get; set; }
         public Privileges Privilege { get; set; }
+        public int Id { get; set; }
 
         public ExportLineResult ToController()
         {
@@ -14,6 +15,7 @@ namespace DiffyAPI.UserAPI.Core.Model
             {
                 Username = Username,
                 Privilege = Privilege.ToString(),
+                Id = Id
             };
         }
     }

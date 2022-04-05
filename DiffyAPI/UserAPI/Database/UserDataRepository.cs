@@ -22,7 +22,7 @@ namespace DiffyAPI.UserAPI.Database
         {
             using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
             var result = await connection.QueryAsync<UserInfoData>(
-                "SELECT Username, Privilegi FROM [dbo].[Utenti] ");
+                "SELECT Username, Privilegi, Id FROM [dbo].[Utenti] ");
             return result;
         }
 
@@ -37,11 +37,11 @@ namespace DiffyAPI.UserAPI.Database
             await connection.QueryAsync("UPDATE [dbo].[Utenti] SET " +
                                         $"Nome = '{registerCredential.Name}', " +
                                         $"Cognome = '{registerCredential.Surname}', " +
-                                        $"Username = '{registerCredential.Username}' " +
-                                        $"Password = '{registerCredential.Password}' " +
-                                        $"Privilegi = {(int)registerCredential.Privilege} " +
+                                        $"Username = '{registerCredential.Username}', " +
+                                        $"Password = '{registerCredential.Password}', " +
+                                        $"Privilegi = {(int)registerCredential.Privilege}, " +
                                         $"Email = '{registerCredential.Email}' " +
-                                        $"WHERE Id = {registerCredential.IdUser}");
+                                        $"WHERE Id = {registerCredential.IdUser};");
         }
 
         public async Task DeleteUser(int user)

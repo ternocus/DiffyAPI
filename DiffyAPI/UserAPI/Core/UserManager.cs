@@ -54,7 +54,7 @@ namespace DiffyAPI.UserAPI.Core
 
             var result = await _userDataRepository.GetUserData(id);
 
-            return result == null ? result!.ToCore().ToController() : throw new UserNotFoundException("User not found in database");
+            return result == null ? throw new UserNotFoundException("User not found in database") : result!.ToCore().ToController();
         }
 
         public async Task<bool> DeleteUser(int user)
@@ -83,6 +83,7 @@ namespace DiffyAPI.UserAPI.Core
                    {
                        Username = user.Username,
                        Privilege = user.Privilege.ToString(),
+                       Id = user.Id,
                    };
         }
 
@@ -94,6 +95,7 @@ namespace DiffyAPI.UserAPI.Core
                    {
                        Username = user.Username,
                        Privilege = user.Privilege.ToString(),
+                       Id = user.Id,
                    };
         }
     }
