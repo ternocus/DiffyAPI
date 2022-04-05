@@ -28,24 +28,14 @@ namespace DiffyAPI.AccessAPI.Controllers.Model
             var result = new ValidateResult();
 
             if (string.IsNullOrEmpty(Name))
-                result.ErrorMessage("Name", "The Name must contain a value");
-            else
-            {
-                if (Name.Length < 8)
-                    result.ErrorMessage("Name", "The Name must have a minimum of 8 characters");
-                if (Name.Length > 18)
-                    result.ErrorMessage("Name", "The Name must be a maximum of 18 characters");
-            }
+                result.ErrorMessage("Nome", "The Nome must contain a value");
+            else if (Name.Length > 18)
+                result.ErrorMessage("Nome", "The Nome must be a maximum of 18 characters");
 
             if (string.IsNullOrEmpty(Surname))
-                result.ErrorMessage("Surname", "The Surname must contain a value");
-            else
-            {
-                if (Surname.Length < 8)
-                    result.ErrorMessage("Surname", "The Surname must have a minimum of 8 characters");
-                if (Surname.Length > 18)
-                    result.ErrorMessage("Surname", "The Surname must be a maximum of 18 characters");
-            }
+                result.ErrorMessage("Cognome", "The Cognome must contain a value");
+            else if (Surname.Length > 18)
+                result.ErrorMessage("Cognome", "The Cognome must be a maximum of 18 characters");
 
             if (string.IsNullOrEmpty(Username))
                 result.ErrorMessage("Username", "The username must contain a value");

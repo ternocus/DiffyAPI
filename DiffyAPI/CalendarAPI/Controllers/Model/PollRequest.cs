@@ -28,9 +28,9 @@ namespace DiffyAPI.CalendarAPI.Controllers.Model
                 result.ErrorMessage("PollIdEvent", "The IdEvent must be a real value");
 
             if (string.IsNullOrEmpty(Username))
-                result.ErrorMessage("Surname", "The Surname must contain a value");
+                result.ErrorMessage("Cognome", "The Cognome must contain a value");
             else if (Username.Length > 18)
-                result.ErrorMessage("Surname", "The Surname must be a maximum of 18 characters");
+                result.ErrorMessage("Cognome", "The Cognome must be a maximum of 18 characters");
             
             return result;
         }

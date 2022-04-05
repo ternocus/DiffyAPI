@@ -3,7 +3,7 @@
     public class AccessData
     {
         public string Username { get; set; }
-        public int Privilege { get; set; }
+        public int Privilegi { get; set; }
         public string Password { get; set; }
     }
 }

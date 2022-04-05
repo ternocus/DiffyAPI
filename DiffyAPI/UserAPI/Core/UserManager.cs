@@ -31,35 +31,48 @@ namespace DiffyAPI.UserAPI.Core
             return result;
         }
 
-        public async Task<bool> UploadUser(UploadUser registerCredential)
+        public async Task<bool> UploadUser(UpdateUser registerCredential)
         {
-            if (await _userDataRepository.IsUserExist(registerCredential.Username))
+            if (await _userDataRepository.IsUserExist(registerCredential.IdUser))
             {
                 _logger.LogError($"L'utente {registerCredential.Username} richiesto non è presente nel database");
-                throw new UserNotFoundException("User not found in dabatase");
+                throw new UserNotFoundException("UpdateUser not found in dabatase");
             }
 
             await _userDataRepository.UploadUserData(registerCredential);
 
-            return await _userDataRepository.IsUserExist(registerCredential.Username);
+            return await _userDataRepository.IsUserExist(registerCredential.IdUser);
         }
 
-        public async Task<UserInfoResult> GetUserInfo(string username)
+        public async Task<UserInfoResult> GetUserInfo(int id)
         {
-            if (await _userDataRepository.IsUserExist(username))
+            if (await _userDataRepository.IsUserExist(id))
             {
-                _logger.LogError($"L'utente {username} non è presente nel database");
-                throw new UserNotFoundException($"User {username} not found in database");
+                _logger.LogError($"L'utente non è presente nel database");
+                throw new UserNotFoundException("User not found in database");
             }
 
-            var result = (await _userDataRepository.GetUserData(username)).ToCoreUserInfo();
+            var result = await _userDataRepository.GetUserData(id);
 
-            return result.ToController();
+            return result == null ? result!.ToCore().ToController() : throw new UserNotFoundException("User not found in database");
         }
 
-        private IEnumerable<UserResult> ConvertUserResult(IEnumerable<UserData> userData)
+        public async Task<bool> DeleteUser(int user)
         {
-            return (userData.Select(user => user.ToCoreUserResult())).ToList();
+            if (!await _userDataRepository.IsUserExist(user))
+            {
+                _logger.LogError($"L'utente non è presente nel database, impossibile eliminarlo");
+                throw new UserNotFoundException($"UpdateUser not found in database, impossible to delete");
+            }
+
+            await _userDataRepository.DeleteUser(user);
+
+            return !await _userDataRepository.IsUserExist(user);
+        }
+
+        private IEnumerable<UserResult> ConvertUserResult(IEnumerable<UserInfoData> userData)
+        {
+            return (userData.Select(user => user.ToCore())).ToList();
         }
 
         private IEnumerable<ExportLineResult> AddGuestUser(IEnumerable<UserResult> userResult)

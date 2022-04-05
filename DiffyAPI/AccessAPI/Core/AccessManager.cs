@@ -38,7 +38,7 @@ namespace DiffyAPI.AccessAPI.Core
                 return new Result
                 {
                     Username = accessData.Username,
-                    Privilege = ((Privileges)accessData.Privilege).ToString(),
+                    Privilege = ((Privileges)accessData.Privilegi).ToString(),
                 };
             }
 
@@ -53,7 +53,7 @@ namespace DiffyAPI.AccessAPI.Core
             if (await _dataRepository.IsRegistered(registerRequestCore.Username))
             {
                 _logger.LogError($"UserAlreadyExistException: l'utente {registerRequestCore.Username} è già presente nel database.");
-                throw new UserAlreadyExistException("User is already present in the database");
+                throw new UserAlreadyExistException("UpdateUser is already present in the database");
             }
 
             await _dataRepository.AddNewUserAccess(registerRequestCore);
@@ -62,12 +62,12 @@ namespace DiffyAPI.AccessAPI.Core
 
             if (accessData != null)
             {
-                _logger.LogInformation($"Nuovo utente {registerRequestCore.Username} creato.");
+                _logger.LogInformation($"Nuovo utente {accessData.Username} creato.");
 
                 return new Result
                 {
                     Username = accessData.Username,
-                    Privilege = ((Privileges)accessData.Privilege).ToString(),
+                    Privilege = ((Privileges)accessData.Privilegi).ToString(),
                 };
             }
             _logger.LogError($"RegisterFailedException: è occorso un errore durante l'inserimento dell'utente {registerRequestCore.Username}.");

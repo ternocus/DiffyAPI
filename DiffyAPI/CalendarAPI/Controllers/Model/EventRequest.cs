@@ -34,7 +34,7 @@ namespace DiffyAPI.CalendarAPI.Controllers.Model
                 result = Header.Validate();
 
             if (string.IsNullOrEmpty(Description))
-                result.ErrorMessage("Name", "The Name must contain a value");
+                result.ErrorMessage("Nome", "The Nome must contain a value");
 
             if (Poll == null)
                 result.ErrorMessage("Poll", "The Poll must contain a value");

@@ -6,7 +6,8 @@ namespace DiffyAPI.UserAPI.Core
     public interface IUserManager
     {
         public Task<IEnumerable<ExportLineResult>> GetUserList();
-        public Task<bool> UploadUser(UploadUser registerCredential);
-        public Task<UserInfoResult> GetUserInfo(string username);
+        public Task<bool> UploadUser(UpdateUser registerCredential);
+        public Task<UserInfoResult> GetUserInfo(int id);
+        public Task<bool> DeleteUser(int id);
     }
 }

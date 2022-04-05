@@ -21,7 +21,7 @@ builder.Services.AddScoped<ICalendarDataRepository, CalendarDataRepository>();
 builder.Services.AddScoped<ICommunicationManager, CommunicationManager>();
 builder.Services.AddScoped<ICommunicationDataRepository, CommunicationDataRepository>();
 
-// Add services to User
+// Add services to UpdateUser
 builder.Services.AddScoped<IUserManager, UserManager>();
 builder.Services.AddScoped<IUserDataRepository, UserDataRepository>();
 

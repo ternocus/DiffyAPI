@@ -21,7 +21,7 @@ namespace DiffyAPI.AccessAPI.Database
         public async Task AddNewUserAccess(RegisterCredential registerRequestCore)
         {
             using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
-            await connection.QueryAsync("INSERT INTO [dbo].[Utenti] VALUES " +
+            await connection.QueryAsync("INSERT INTO [dbo].[Utenti] (Nome, Cognome, Username, Password, Privilegi, Email) VALUES " +
                                         $"('{registerRequestCore.Name}', '{registerRequestCore.Surname}', '{registerRequestCore.Username}', " +
                                         $"'{registerRequestCore.Password}', 0, '{registerRequestCore.Email}');");
         }

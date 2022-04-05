@@ -1,64 +1,53 @@
-﻿using DiffyAPI.UserAPI.Core.Model;
+﻿using Dapper;
+using DiffyAPI.UserAPI.Core.Model;
 using DiffyAPI.UserAPI.Database.Model;
+using DiffyAPI.Utils;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace DiffyAPI.UserAPI.Database
 {
     public class UserDataRepository : IUserDataRepository
     {
-        public async Task<UserData> GetUserData(string username)
+        public async Task<UserData?> GetUserData(int id)
         {
-            return new UserData
-            {
-                Name = "Utente",
-                Surname = username,
-                Username = "Username",
-                Privilege = "Athlete",
-                Email = "pippo@virgilio.it",
-                IdUser = 1,
-            };
+            using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
+            var result = await connection.QueryAsync<UserData>(
+                "SELECT * FROM [dbo].[Utenti] " +
+                $"WHERE Id = '{id}'");
+            return result.FirstOrDefault();
         }
 
-        public async Task<IEnumerable<UserData>> GetUserListData()
+        public async Task<IEnumerable<UserInfoData>> GetUserListData()
         {
-            var list = new List<UserData>();
-            list.Add(new UserData
-            {
-                Username = "Pippo",
-                Privilege = "Athlete",
-            });
-            list.Add(new UserData
-            {
-                Username = "Pluto",
-                Privilege = "Associate",
-            });
-            list.Add(new UserData
-            {
-                Username = "paperino",
-                Privilege = "Guest",
-            });
-            list.Add(new UserData
-            {
-                Username = "Pippo",
-                Privilege = "Councillor",
-            });
-            list.Add(new UserData
-            {
-                Username = "Pippo",
-                Privilege = "Guest",
-            });
-
-            return list;
+            using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
+            var result = await connection.QueryAsync<UserInfoData>(
+                "SELECT Username, Privilegi FROM [dbo].[Utenti] ");
+            return result;
         }
 
-        public async Task<bool> IsUserExist(string username)
+        public async Task<bool> IsUserExist(int id)
         {
-            var random = new Random();
-            return random.Next(0, 2) == 0;
+            return await GetUserData(id) != null;
         }
 
-        public async Task UploadUserData(UploadUser registerCredential)
+        public async Task UploadUserData(UpdateUser registerCredential)
         {
-            return;
+            using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
+            await connection.QueryAsync("UPDATE [dbo].[Utenti] SET " +
+                                        $"Nome = '{registerCredential.Name}', " +
+                                        $"Cognome = '{registerCredential.Surname}', " +
+                                        $"Username = '{registerCredential.Username}' " +
+                                        $"Password = '{registerCredential.Password}' " +
+                                        $"Privilegi = {(int)registerCredential.Privilege} " +
+                                        $"Email = '{registerCredential.Email}' " +
+                                        $"WHERE Id = {registerCredential.IdUser}");
+        }
+
+        public async Task DeleteUser(int user)
+        {
+            using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
+            await connection.QueryAsync($"DELETE from [dbo].[Utenti] WHERE Id = {user}");
         }
     }
 }

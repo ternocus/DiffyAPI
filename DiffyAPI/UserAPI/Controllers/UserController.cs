@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-using DiffyAPI.UserAPI.Controllers.Model;
+﻿using DiffyAPI.UserAPI.Controllers.Model;
 using DiffyAPI.UserAPI.Core;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace DiffyAPI.UserAPI.Controllers
 {
@@ -33,11 +33,11 @@ namespace DiffyAPI.UserAPI.Controllers
         }
 
         [HttpGet("UserInfo")]
-        public async Task<IActionResult> UserInformation([FromQuery] [Required, MinLength(1)] string username)
+        public async Task<IActionResult> UserInformation([FromQuery][Required] int IdUser)
         {
             try
             {
-                return Ok(await _userManager.GetUserInfo(username));
+                return Ok(await _userManager.GetUserInfo(IdUser));
             }
             catch (Exception ex)
             {
@@ -46,17 +46,31 @@ namespace DiffyAPI.UserAPI.Controllers
             }
         }
 
-        [HttpPut("UploadUser")]
-        public async Task<IActionResult> UploadUser([FromBody] UploadUserRequest request)
+        [HttpPut("UpdateUser")]
+        public async Task<IActionResult> UploadUser([FromBody] UserRequest request)
         {
             try
             {
                 var validate = request.Validate();
 
-                if(validate.IsValid)
+                if (validate.IsValid)
                     return Ok(await _userManager.UploadUser(request.ToCore()));
 
                 return BadRequest(new { ErrorType = "InvalidUserObject", Error = validate.GetErrorMessage().Replace("[", "").Replace("]", "") });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return BadRequest(new { ErrorType = ex.GetType().Name, Error = ex.Message });
+            }
+        }
+
+        [HttpGet("DeleteUser")]
+        public async Task<IActionResult> DeleteUser([FromQuery][Required] int IdUser)
+        {
+            try
+            {
+                return Ok(await _userManager.DeleteUser(IdUser));
             }
             catch (Exception ex)
             {

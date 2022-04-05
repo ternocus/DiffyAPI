@@ -5,32 +5,23 @@ namespace DiffyAPI.UserAPI.Database.Model
 {
     public class UserData
     {
-        public string Name { get; set; }
-        public string Surname { get; set; }
+        public string Nome { get; set; }
+        public string Cognome { get; set; }
         public string Username { get; set; }
-        public string Privilege { get; set; }
+        public int Privilegi { get; set; }
         public string Email { get; set; }
-        public int IdUser { get; set; }
+        public int Id { get; set; }
 
-        public UserResult ToCoreUserResult()
-        {
-            return new UserResult
-            {
-                Username = Username,
-                Privilege = (Privileges)Enum.Parse(typeof(Privileges), Privilege),
-            };
-        }
-
-        public UserInfo ToCoreUserInfo()
+        public UserInfo ToCore()
         {
             return new UserInfo
             {
-                Name = Name,
-                Surname = Surname,
+                Name = Nome,
+                Surname = Cognome,
                 Username = Username,
-                Privilege = (Privileges)Enum.Parse(typeof(Privileges), Privilege),
+                Privilege = (Privileges)Privilegi,
                 Email = Email,
-                IdUser = IdUser,
+                IdUser = Id,
             };
         }
     }
