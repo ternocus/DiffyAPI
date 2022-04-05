@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-using DiffyAPI.CommunicationAPI.Controller.Model;
+﻿using DiffyAPI.CommunicationAPI.Controller.Model;
 using DiffyAPI.CommunicationAPI.Core;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace DiffyAPI.CommunicationAPI.Controller
 {
@@ -18,7 +18,7 @@ namespace DiffyAPI.CommunicationAPI.Controller
             _logger = logger;
         }
 
-        [HttpGet("Category")]
+        [HttpGet("IdCategory")]
         public async Task<IActionResult> GetCategory()
         {
             try
@@ -67,7 +67,7 @@ namespace DiffyAPI.CommunicationAPI.Controller
             {
                 var validate = message.Validate();
 
-                if(validate.IsValid)
+                if (validate.IsValid)
                     return Ok(await _communicationManager.AddMessage(message.ToCore()));
 
                 return BadRequest(new { ErrorType = "InvalidMessageObject", Error = validate.GetErrorMessage().Replace("[", "").Replace("]", "") });
@@ -79,14 +79,14 @@ namespace DiffyAPI.CommunicationAPI.Controller
             }
         }
 
-        [HttpGet("BodyMessage")]
-        public async Task<IActionResult> GetBodyMessage([FromQuery] BodyMessageRequest messageRequest)
+        [HttpGet("NewMessage")]
+        public async Task<IActionResult> GetBodyMessage([FromQuery] HeaderMessageRequest messageRequest)
         {
             try
             {
                 var validate = messageRequest.Validate();
 
-                if(validate.IsValid)
+                if (validate.IsValid)
                     return Ok(await _communicationManager.GetBodyMessage(messageRequest.ToCore()));
 
                 return BadRequest(new { ErrorType = "InvalidBodyMessageObject", Error = validate.GetErrorMessage().Replace("[", "").Replace("]", "") });
@@ -105,10 +105,41 @@ namespace DiffyAPI.CommunicationAPI.Controller
             {
                 var validate = request.Validate();
 
-                if(validate.IsValid)
-                    return Ok(await _communicationManager.UploadMessage(request.ToCore()));
+                if (validate.IsValid)
+                {
+                    await _communicationManager.UploadMessage(request.ToCore());
+                    Ok();
+                }
 
                 return BadRequest(new { ErrorType = "InvalidMessageObject", Error = validate.GetErrorMessage().Replace("[", "").Replace("]", "") });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return BadRequest(new { ErrorType = ex.GetType().Name, Error = ex.Message });
+            }
+        }
+
+        [HttpGet("DeleteMessage")]
+        public async Task<IActionResult> DeleteMessage([FromQuery][Required] int idMessage)
+        {
+            try
+            {
+                return Ok(await _communicationManager.DeleteMessage(idMessage));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return BadRequest(new { ErrorType = ex.GetType().Name, Error = ex.Message });
+            }
+        }
+
+        [HttpGet("DeleteCategory")]
+        public async Task<IActionResult> DeleteCategory([FromQuery][Required] int idCategory)
+        {
+            try
+            {
+                return Ok(await _communicationManager.DeleteCategory(idCategory));
             }
             catch (Exception ex)
             {

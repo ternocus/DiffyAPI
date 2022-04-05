@@ -1,50 +1,109 @@
-﻿using DiffyAPI.CommunicationAPI.Controller.Model;
+﻿using Dapper;
 using DiffyAPI.CommunicationAPI.Core.Model;
+using DiffyAPI.CommunicationAPI.Database.Model;
+using DiffyAPI.Utils;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace DiffyAPI.CommunicationAPI.Database
 {
     public class CommunicationDataRepository : ICommunicationDataRepository
     {
-        public async Task AddNewMessage(BodyMessage message) { }
-
-        public async Task CreateNewCategory(string name) { }
-
-        public async Task<IEnumerable<string>> GetListMessage()
+        public async Task<bool> IsCategoryExist(string category)
         {
-            var list = new List<string>();
-            list.Add("Nome");
-            list.Add("Cognome");
-            list.Add("Marco");
-            list.Add("Tomas");
-
-            return list;
+            using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
+            var result = await connection.QueryAsync<string>("SELECT Categoria FROM [dbo].[Categoria] " +
+                                                             $"WHERE Categoria = '{category}';");
+            return result.FirstOrDefault() != null;
         }
 
-        public async Task<MessageResponse> GetMessage(HeaderMessage messageRequest)
+        public async Task<bool> IsCategoryExist(int idCategory)
         {
-            return new MessageResponse
-            {
-                Category = messageRequest.Category,
-                Title = messageRequest.Title,
-                Message = "Questo è il body del messaggio che è stato inviato dal backend",
-            };
+            using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
+            var result = await connection.QueryAsync<string>("SELECT Categoria FROM [dbo].[Categoria] " +
+                                                             $"WHERE ID = {idCategory};");
+            return result.FirstOrDefault() != null;
         }
 
-        public async Task<bool> IsCategoryExist(string name)
+        public async Task CreateNewCategory(string name)
         {
-            var random = new Random();
-            return random.Next(0, 2) != 0;
+            using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
+            await connection.QueryAsync<string>($"INSERT INTO [dbo].[Categoria] (Categoria) VALUES('{name}')");
         }
 
-        public async Task<bool> IsMessageExist(BodyMessage message)
+        public async Task<bool> IsMessageExist(int idMessage)
         {
-            var random = new Random();
-            return random.Next(0, 2) != 0;
+            using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
+            var result = await connection.QueryAsync<string>("SELECT Titolo FROM [dbo].[Comunicazioni] " +
+                                                             $"WHERE IDTitolo = {idMessage};");
+            return result.FirstOrDefault() != null;
         }
 
-        public async Task<bool> UploadMessage(UploadMessage uploadMessage)
+        public async Task<bool> IsMessageExist(string title)
         {
-            return true;
+            using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
+            var result = await connection.QueryAsync<string>("SELECT Titolo FROM [dbo].[Comunicazioni] " +
+                                                             $"WHERE Titolo = '{title}';");
+            return result.FirstOrDefault() != null;
+        }
+
+        public async Task AddNewMessage(NewMessage message)
+        {
+            using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
+            await connection.QueryAsync<string>("INSERT INTO [dbo].[Comunicazioni] (IDCategoria, Titolo, Testo, Data, Username) VALUES" +
+                                                $"({message.IDCategory}, '{message.Title}', '{message.Message}', {message.Date}, '{message.Username}'); ");
+        }
+
+        public async Task<MessageData?> GetMessage(HeaderMessage messageRequest)
+        {
+            using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
+            IEnumerable<MessageData?> result = await connection.QueryAsync<MessageData>("SELECT IDTitolo, Data, Username, Titolo, Testo " +
+                "FROM [dbo].[Comunicazioni] WHERE " + $"IDCategoria = {messageRequest.IdCategory} && IDTitolo = {messageRequest.IdTitle}");
+
+            return result.FirstOrDefault();
+        }
+
+        public async Task<IEnumerable<TitleData>> GetListMessage()
+        {
+            using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
+            return await connection.QueryAsync<TitleData>("SELECT IDTitolo, Titolo FROM [dbo].[Comunicazioni]");
+        }
+
+        public async Task UploadMessage(UploadMessage uploadMessage)
+        {
+            using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
+            await connection.QueryAsync("UPDATE [dbo].[Comunicazioni] SET " +
+                                        $"IDCategoria = {uploadMessage.IdCategory}, " +
+                                        $"Titolo = '{uploadMessage.Title}', " +
+                                        $"Testo = '{uploadMessage.Message}' " +
+                                        $"Data = {uploadMessage.Date} " +
+                                        $"Username = '{uploadMessage.Username}';");
+        }
+
+        public async Task<IEnumerable<CategoryData>> GetListCategory()
+        {
+            using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
+            return await connection.QueryAsync<CategoryData>("SELECT * FROM [dbo].[Categoria]");
+        }
+
+        public async Task DeleteMessage(int idMessage)
+        {
+            using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
+            await connection.QueryAsync<CategoryData>($"DELETE FROM[dbo].[Comunicazioni] WHERE IDTitolo = {idMessage};");
+        }
+
+        public async Task DeleteCategory(int idCategory)
+        {
+            using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
+            await connection.QueryAsync<CategoryData>($"DELETE FROM[dbo].[Categoria] WHERE ID = {idCategory};");
+        }
+
+        public async Task<bool> IsCategoryEmpty(int idCategory)
+        {
+            using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
+            var result = await connection.QueryAsync<string>($"SELECT Titolo FROM [dbo].[Comunicazioni] WHERE IDCategoria = {idCategory};");
+
+            return !result.Any();
         }
     }
 }

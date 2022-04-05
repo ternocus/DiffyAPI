@@ -1,9 +1,8 @@
 ﻿namespace DiffyAPI.CommunicationAPI.Core.Model
 {
-    public class UploadMessage
+    public class NewMessage
     {
-        public int IdCategory { get; set; }
-        public int IdTitle { get; set; }
+        public int IDCategory { get; set; }
         public string Title { get; set; }
         public string Message { get; set; }
         public DateTime Date { get; set; }

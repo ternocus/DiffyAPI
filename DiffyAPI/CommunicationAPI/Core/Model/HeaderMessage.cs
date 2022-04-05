@@ -2,7 +2,7 @@
 {
     public class HeaderMessage
     {
-        public string Category { get; set; }
-        public string Title { get; set; }
+        public int IdCategory { get; set; }
+        public int IdTitle { get; set; }
     }
 }
