@@ -50,15 +50,17 @@ namespace DiffyAPI.CommunicationAPI.Database
         public async Task AddNewMessage(NewMessage message)
         {
             using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
+            var time = message.Date.Day +"/"+ message.Date.Month + "/"+ message.Date.Year;
+            
             await connection.QueryAsync<string>("INSERT INTO [dbo].[Comunicazioni] (IDCategoria, Titolo, Testo, Data, Username) VALUES" +
-                                                $"({message.IDCategory}, '{message.Title}', '{message.Message}', {message.Date}, '{message.Username}'); ");
+                                                $"({message.IDCategory}, '{message.Title}', '{message.Message}', '{time}', '{message.Username}'); ");
         }
 
         public async Task<MessageData?> GetMessage(HeaderMessage messageRequest)
         {
             using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
-            IEnumerable<MessageData?> result = await connection.QueryAsync<MessageData>("SELECT IDTitolo, Data, Username, Titolo, Testo " +
-                "FROM [dbo].[Comunicazioni] WHERE " + $"IDCategoria = {messageRequest.IdCategory} && IDTitolo = {messageRequest.IdTitle}");
+            IEnumerable<MessageData?> result = await connection.QueryAsync<MessageData>("SELECT IDTitolo, Data, Username, Titolo, Testo FROM [dbo].[Comunicazioni] WHERE " 
+                + $"IDCategoria = {messageRequest.IdCategory} AND IDTitolo = {messageRequest.IdTitle}");
 
             return result.FirstOrDefault();
         }
@@ -72,11 +74,13 @@ namespace DiffyAPI.CommunicationAPI.Database
         public async Task UploadMessage(UploadMessage uploadMessage)
         {
             using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
+            var time = uploadMessage.Date.Day + "/" + uploadMessage.Date.Month + "/" + uploadMessage.Date.Year;
+
             await connection.QueryAsync("UPDATE [dbo].[Comunicazioni] SET " +
                                         $"IDCategoria = {uploadMessage.IdCategory}, " +
                                         $"Titolo = '{uploadMessage.Title}', " +
-                                        $"Testo = '{uploadMessage.Message}' " +
-                                        $"Data = {uploadMessage.Date} " +
+                                        $"Testo = '{uploadMessage.Message}', " +
+                                        $"Data = '{time}', " +
                                         $"Username = '{uploadMessage.Username}';");
         }
 

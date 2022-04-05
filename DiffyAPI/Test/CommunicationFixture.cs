@@ -342,10 +342,14 @@ namespace DiffyAPI.Test
                 IdTitle = 1,
             };
 
+            var date = DateTime.Now;
+
+            var res = date.Day + "/" + date.Month + "/" + date.Year;
+
             var result = new MessageData
             {
                 IDTitolo = 1,
-                Data = DateTime.Now,
+                Data = res,
                 Username = "UserTest",
                 Titolo = "Titolo",
                 Testo = "Testo",
@@ -573,7 +577,7 @@ namespace DiffyAPI.Test
             Assert.IsNotNull(mess);
             Assert.AreEqual(obj3.Title, mess.Titolo);
             Assert.AreEqual(obj3.Message, mess.Testo);
-            Assert.AreEqual(obj3.Date, mess.Data);
+            Assert.AreEqual(obj3.Date.Date, DateTime.Parse(mess.Data));
             Assert.AreEqual(obj3.Username, mess.Username);
 
             await database.DeleteMessage(obj4.IdTitle);

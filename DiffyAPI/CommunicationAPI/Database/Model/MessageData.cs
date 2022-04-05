@@ -5,7 +5,7 @@ namespace DiffyAPI.CommunicationAPI.Database
     public class MessageData
     {
         public int IDTitolo { get; set; }
-        public DateTime Data { get; set; }
+        public string Data { get; set; }
         public string Username { get; set; }
         public string Titolo { get; set; }
         public string Testo { get; set; }
@@ -15,7 +15,7 @@ namespace DiffyAPI.CommunicationAPI.Database
             return new MessageResponse
             {
                 IdTitle = IDTitolo,
-                Data = Data,
+                Data = DateTime.Parse(Data),
                 Username = Username,
                 Title = Titolo,
                 Text = Testo,

@@ -18,7 +18,7 @@ namespace DiffyAPI.CommunicationAPI.Controller.Model
                 IDCategory = IdCategory!.Value,
                 Title = Title!,
                 Message = Message!,
-                Date = Date!.Value,
+                Date = Date!.Value.Date,
                 Username = Username!,
             };
         }
