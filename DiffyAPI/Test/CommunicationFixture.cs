@@ -234,7 +234,6 @@ namespace DiffyAPI.Test
         }
 
         [Test]
-        [ExpectedException(typeof(CategoryAlreadyCreatedException))]
         public async Task AddCategory_CategoryAlreadyCreatedException()
         {
             var logger = new Mock<ILogger<CommunicationManager>>();
@@ -246,8 +245,15 @@ namespace DiffyAPI.Test
                 .Setup(x => x.CreateNewCategory("Category"));
 
             var communicationManager = new CommunicationManager(communicationData.Object, logger.Object);
-
-            await communicationManager.AddCategory("Category");
+            try
+            {
+                await communicationManager.AddCategory("Category");
+            }
+            catch (CategoryAlreadyCreatedException) { }
+            catch (Exception)
+            {
+                Assert.Fail();
+            }
         }
 
         [Test]
@@ -308,7 +314,6 @@ namespace DiffyAPI.Test
         }
 
         [Test]
-        [ExpectedException(typeof(MessageAlreadyCreatedException))]
         public async Task AddMessage_MessageAlreadyCreatedException()
         {
             var obj = new NewMessage
@@ -330,7 +335,15 @@ namespace DiffyAPI.Test
 
             var communicationManager = new CommunicationManager(communicationData.Object, logger.Object);
 
-            await communicationManager.AddMessage(obj);
+            try
+            {
+                await communicationManager.AddMessage(obj);
+            }
+            catch (MessageAlreadyCreatedException) { }
+            catch (Exception)
+            {
+                Assert.Fail();
+            }
         }
 
         [Test]
@@ -370,7 +383,6 @@ namespace DiffyAPI.Test
         }
 
         [Test]
-        [ExpectedException(typeof(MessageNotFoundException))]
         public async Task GetBodyMessage_MessageNotFoundException()
         {
             var obj = new HeaderMessage
@@ -386,11 +398,18 @@ namespace DiffyAPI.Test
 
             var communicationManager = new CommunicationManager(communicationData.Object, logger.Object);
 
-            await communicationManager.GetBodyMessage(obj);
+            try
+            {
+                await communicationManager.GetBodyMessage(obj);
+            }
+            catch (MessageNotFoundException) { }
+            catch (Exception)
+            {
+                Assert.Fail();
+            }
         }
 
         [Test]
-        [ExpectedException(typeof(MessageNotFoundException))]
         public async Task UploadMessage_MessageNotFoundException()
         {
             var obj = new UploadMessage
@@ -408,10 +427,18 @@ namespace DiffyAPI.Test
             communicationData
                 .Setup(x => x.IsMessageExist(obj.Title))
                 .ReturnsAsync(false);
-            
+
             var communicationManager = new CommunicationManager(communicationData.Object, logger.Object);
 
-            await communicationManager.UploadMessage(obj);
+            try
+            {
+                await communicationManager.UploadMessage(obj);
+            }
+            catch (MessageNotFoundException) { }
+            catch (Exception)
+            {
+                Assert.Fail();
+            }
         }
 
         [Test]
@@ -424,14 +451,13 @@ namespace DiffyAPI.Test
                 .ReturnsAsync(true);
             communicationData
                 .Setup(x => x.DeleteMessage(1));
-            
+
             var communicationManager = new CommunicationManager(communicationData.Object, logger.Object);
 
             Assert.IsTrue(communicationManager.DeleteMessage(1).Result);
         }
 
         [Test]
-        [ExpectedException(typeof(MessageNotFoundException))]
         public async Task DeleteMessage_MessageNotFoundException()
         {
             var logger = new Mock<ILogger<CommunicationManager>>();
@@ -444,7 +470,15 @@ namespace DiffyAPI.Test
 
             var communicationManager = new CommunicationManager(communicationData.Object, logger.Object);
 
-            await communicationManager.DeleteMessage(1);
+            try
+            {
+                await communicationManager.DeleteMessage(1);
+            }
+            catch (MessageNotFoundException) { }
+            catch (Exception)
+            {
+                Assert.Fail();
+            }
         }
 
         [Test]
@@ -467,7 +501,6 @@ namespace DiffyAPI.Test
         }
 
         [Test]
-        [ExpectedException(typeof(MessageNotFoundException))]
         public async Task DeleteCategory_CategoryNotFoundException()
         {
             var logger = new Mock<ILogger<CommunicationManager>>();
@@ -475,14 +508,21 @@ namespace DiffyAPI.Test
             communicationData
                 .Setup(x => x.IsCategoryExist(1))
                 .ReturnsAsync(false);
-            
+
             var communicationManager = new CommunicationManager(communicationData.Object, logger.Object);
 
-            await communicationManager.DeleteCategory(1);
+            try
+            {
+                await communicationManager.DeleteCategory(1);
+            }
+            catch (CategoryNotFoundException) { }
+            catch (Exception)
+            {
+                Assert.Fail();
+            }
         }
 
         [Test]
-        [ExpectedException(typeof(CategoryNotEmptyException))]
         public async Task DeleteCategory_CategoryNotEmptyException()
         {
             var logger = new Mock<ILogger<CommunicationManager>>();
@@ -496,7 +536,15 @@ namespace DiffyAPI.Test
 
             var communicationManager = new CommunicationManager(communicationData.Object, logger.Object);
 
-            await communicationManager.DeleteCategory(1);
+            try
+            {
+                await communicationManager.DeleteCategory(1);
+            }
+            catch (CategoryNotEmptyException) { }
+            catch (Exception)
+            {
+                Assert.Fail();
+            }
         }
         #endregion
 

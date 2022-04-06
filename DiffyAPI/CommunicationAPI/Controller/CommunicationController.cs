@@ -18,7 +18,7 @@ namespace DiffyAPI.CommunicationAPI.Controller
             _logger = logger;
         }
 
-        [HttpGet("IdCategory")]
+        [HttpGet("GetCategory")]
         public async Task<IActionResult> GetCategory()
         {
             try

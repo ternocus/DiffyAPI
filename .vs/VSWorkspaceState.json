@@ -1,18 +1,7 @@
 {
   "ExpandedNodes": [
-    "",
-    "\\DiffyAPI",
-    "\\DiffyAPI\\AccessAPI",
-    "\\DiffyAPI\\AccessAPI\\Core",
-    "\\DiffyAPI\\AccessAPI\\Database",
-    "\\DiffyAPI\\CalendarAPI",
-    "\\DiffyAPI\\CalendarAPI\\Core",
-    "\\DiffyAPI\\CommunicationAPI",
-    "\\DiffyAPI\\CommunicationAPI\\Core",
-    "\\DiffyAPI\\UserAPI",
-    "\\DiffyAPI\\UserAPI\\Core",
-    "\\DiffyAPI\\UserAPI\\Core\\Model"
+    ""
   ],
-  "SelectedNode": "\\DiffyAPI\\UserAPI\\Core\\UserManager.cs",
+  "SelectedNode": "\\DiffyAPI.sln",
   "PreviewInSolutionExplorer": false
 }
