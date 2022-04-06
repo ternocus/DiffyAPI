@@ -4,6 +4,7 @@ using DiffyAPI.UserAPI.Database.Model;
 using DiffyAPI.Utils;
 using System.Data;
 using System.Data.SqlClient;
+using DiffyAPI.Model;
 
 namespace DiffyAPI.UserAPI.Database
 {
@@ -22,7 +23,7 @@ namespace DiffyAPI.UserAPI.Database
         {
             using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
             var result = await connection.QueryAsync<UserInfoData>(
-                "SELECT Username, Privilegi, Id FROM [dbo].[Utenti] ");
+                "SELECT Username, Privilegi, Id FROM [dbo].[Utenti];");
             return result;
         }
 
@@ -34,14 +35,47 @@ namespace DiffyAPI.UserAPI.Database
         public async Task UploadUserData(UpdateUser registerCredential)
         {
             using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
-            await connection.QueryAsync("UPDATE [dbo].[Utenti] SET " +
-                                        $"Nome = '{registerCredential.Name}', " +
-                                        $"Cognome = '{registerCredential.Surname}', " +
-                                        $"Username = '{registerCredential.Username}', " +
-                                        $"Password = '{registerCredential.Password}', " +
-                                        $"Privilegi = {(int)registerCredential.Privilege}, " +
-                                        $"Email = '{registerCredential.Email}' " +
-                                        $"WHERE Id = {registerCredential.IdUser};");
+            
+            var index = 0;
+            var query = "UPDATE[dbo].[Utenti] SET ";
+            if (!string.IsNullOrEmpty(registerCredential.Name))
+            {
+                query += $"Nome = '{registerCredential.Name}'";
+                index++;
+            }
+            if (!string.IsNullOrEmpty(registerCredential.Surname))
+            {
+                if (index++ > 0)
+                    query += ", ";
+                query += $"Cognome = '{registerCredential.Surname}'";
+            }
+            if (!string.IsNullOrEmpty(registerCredential.Username))
+            {
+                if (index++ > 0)
+                    query += ", ";
+                query += $"Username = '{registerCredential.Username}'";
+            }
+            if (!string.IsNullOrEmpty(registerCredential.Password))
+            {
+                if (index++ > 0)
+                    query += ", ";
+                query += $"Password = '{registerCredential.Password}'";
+            }
+            if (registerCredential.Privilege != Privileges.NULL)
+            {
+                if (index++ > 0)
+                    query += ", ";
+                query += $"Privilegi = {(int) registerCredential.Privilege}";
+            }
+            if (!string.IsNullOrEmpty(registerCredential.Email))
+            {
+                if (index > 0)
+                    query += ", ";
+                query += $"Email = '{registerCredential.Email}'";
+            }
+            query += $" WHERE Id = {registerCredential.IdUser};";
+
+            await connection.QueryAsync(query);
         }
 
         public async Task DeleteUser(int user)

@@ -2,11 +2,12 @@
 {
     public enum Privileges
     {
+        NULL,
         Guest,
         Associate,
         Athlete,
         Instructor,
         Councillor,
-        Admin
+        Admin,
     }
 }

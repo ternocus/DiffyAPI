@@ -18,8 +18,6 @@ namespace DiffyAPI.CommunicationAPI.Core
 
         public async Task<IEnumerable<CategoryResult>> GetCategory()
         {
-            _logger.LogInformation("Richiesto l'elenco delle categorie.");
-
             var result = await _communicationDataRepository.GetListCategory();
 
             return (result.Select(title => title.ToController())).ToList();
@@ -27,8 +25,6 @@ namespace DiffyAPI.CommunicationAPI.Core
 
         public async Task<bool> AddCategory(string category)
         {
-            _logger.LogInformation($"Richiesto l'inserimento di una nuova categoria {category}.");
-
             if (await _communicationDataRepository.IsCategoryExist(category))
             {
                 _logger.LogError($"La categoria {category} è già presente nel database.");
@@ -42,8 +38,6 @@ namespace DiffyAPI.CommunicationAPI.Core
 
         public async Task<IEnumerable<TitleResult>> GetListMessage(string name)
         {
-            _logger.LogInformation("Richiesta la lista di messaggi.");
-
             var result = await _communicationDataRepository.GetListMessage();
 
             return (result.Select(title => title.ToController())).ToList();
@@ -51,8 +45,6 @@ namespace DiffyAPI.CommunicationAPI.Core
 
         public async Task<bool> AddMessage(NewMessage message)
         {
-            _logger.LogInformation("Richiesto l'inserimento di un nuovo messaggio.", message);
-
             if (await _communicationDataRepository.IsMessageExist(message.Title))
             {
                 _logger.LogError($"Il messaggio {message.Title} è già presente nel database");
@@ -66,13 +58,11 @@ namespace DiffyAPI.CommunicationAPI.Core
 
         public async Task<MessageResponse> GetBodyMessage(HeaderMessage messageRequest)
         {
-            _logger.LogInformation("Richiesto l'invio di un messaggio", messageRequest);
-
             var result = await _communicationDataRepository.GetMessage(messageRequest);
 
             if (result == null)
             {
-                _logger.LogError("Il messaggio non è presente nel database.");
+                _logger.LogError($"Il messaggio [{messageRequest.IdCategory} - {messageRequest.IdTitle}]. non è presente nel database.");
                 throw new MessageNotFoundException("The message is not present in the databases.");
             }
 
@@ -81,8 +71,6 @@ namespace DiffyAPI.CommunicationAPI.Core
 
         public async Task UploadMessage(UploadMessage uploadMessage)
         {
-            _logger.LogInformation("Richiesta la modifica di un messaggio.");
-
             if (!await _communicationDataRepository.IsMessageExist(uploadMessage.Title))
             {
                 _logger.LogError($"Il messaggio {uploadMessage.Title} non è  presente nel database");
@@ -94,11 +82,9 @@ namespace DiffyAPI.CommunicationAPI.Core
 
         public async Task<bool> DeleteMessage(int idMessage)
         {
-            _logger.LogInformation("Richiesta di eliminazione del messaggio.");
-
             if (!await _communicationDataRepository.IsMessageExist(idMessage))
             {
-                _logger.LogError("Il messaggio è già presente nel database");
+                _logger.LogError($"Il messaggio [id: {idMessage}] è già presente nel database");
                 throw new MessageNotFoundException("The message is already present in the database.");
             }
 
@@ -109,17 +95,15 @@ namespace DiffyAPI.CommunicationAPI.Core
 
         public async Task<bool> DeleteCategory(int idCategory)
         {
-            _logger.LogInformation("Richiesta di eliminazione di una categoria.");
-
             if (!await _communicationDataRepository.IsCategoryExist(idCategory))
             {
-                _logger.LogError("La categoria da eliminare non è presente nel database.");
+                _logger.LogError($"La categoria da eliminare [id: {idCategory}] non è presente nel database.");
                 throw new CategoryNotFoundException("The category to be deleted is not in the database.");
             }
 
             if (!await _communicationDataRepository.IsCategoryEmpty(idCategory))
             {
-                _logger.LogError("La categoria da eliminare contiene ancora dei messaggi.");
+                _logger.LogError($"La categoria da eliminare [id: {idCategory}] contiene ancora dei messaggi.");
                 throw new CategoryNotEmptyException("The category to be deleted still contains messages.");
             }
 

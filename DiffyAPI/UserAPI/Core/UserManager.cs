@@ -35,7 +35,7 @@ namespace DiffyAPI.UserAPI.Core
         {
             if (await _userDataRepository.IsUserExist(registerCredential.IdUser))
             {
-                _logger.LogError($"L'utente {registerCredential.Username} richiesto non è presente nel database");
+                _logger.LogError($"L'utente [id: {registerCredential.IdUser}] richiesto non è presente nel database");
                 throw new UserNotFoundException("UpdateUser not found in dabatase");
             }
 
@@ -46,9 +46,9 @@ namespace DiffyAPI.UserAPI.Core
 
         public async Task<UserInfoResult> GetUserInfo(int id)
         {
-            if (await _userDataRepository.IsUserExist(id))
+            if (!await _userDataRepository.IsUserExist(id))
             {
-                _logger.LogError($"L'utente non è presente nel database");
+                _logger.LogError($"L'utente [id: {id}] non è presente nel database");
                 throw new UserNotFoundException("User not found in database");
             }
 
@@ -61,7 +61,7 @@ namespace DiffyAPI.UserAPI.Core
         {
             if (!await _userDataRepository.IsUserExist(user))
             {
-                _logger.LogError($"L'utente non è presente nel database, impossibile eliminarlo");
+                _logger.LogError($"L'utente [id: {user}] non è presente nel database, impossibile eliminarlo");
                 throw new UserNotFoundException($"UpdateUser not found in database, impossible to delete");
             }
 

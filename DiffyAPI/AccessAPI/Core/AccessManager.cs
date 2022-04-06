@@ -21,8 +21,6 @@ namespace DiffyAPI.AccessAPI.Core
 
         public async Task<Result> AccessLogin(LoginCredential loginRequestCore)
         {
-            _logger.LogInformation($"Richiesto l'accesso per {loginRequestCore.Username}.");
-
             if (!await _dataRepository.IsRegistered(loginRequestCore.Username))
             {
                 _logger.LogError($"UserNotFoundException: Utente '{loginRequestCore.Username}' non trovato nel database.");
@@ -48,8 +46,6 @@ namespace DiffyAPI.AccessAPI.Core
 
         public async Task<Result> AccessUserRegister(RegisterCredential registerRequestCore)
         {
-            _logger.LogInformation("Richiesto inserimento di un nuovo utente.");
-
             if (await _dataRepository.IsRegistered(registerRequestCore.Username))
             {
                 _logger.LogError($"UserAlreadyExistException: l'utente {registerRequestCore.Username} è già presente nel database.");

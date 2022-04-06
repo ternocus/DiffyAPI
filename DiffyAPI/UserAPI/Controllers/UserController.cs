@@ -33,11 +33,11 @@ namespace DiffyAPI.UserAPI.Controllers
         }
 
         [HttpGet("UserInfo")]
-        public async Task<IActionResult> UserInformation([FromQuery][Required] int IdUser)
+        public async Task<IActionResult> UserInformation([FromQuery][Required] int idUser)
         {
             try
             {
-                return Ok(await _userManager.GetUserInfo(IdUser));
+                return Ok(await _userManager.GetUserInfo(idUser));
             }
             catch (Exception ex)
             {

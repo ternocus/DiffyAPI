@@ -19,12 +19,12 @@ namespace DiffyAPI.UserAPI.Controllers.Model
         {
             return new UpdateUser
             {
-                Name = Name!,
-                Surname = Surname!,
-                Username = Username!,
-                Password = Password!,
-                Privilege = (Privileges)Enum.Parse(typeof(Privileges), Privilege!),
-                Email = Email!,
+                Name = Name == null ? string.Empty : Name!,
+                Surname = Surname == null ? string.Empty : Surname!,
+                Username = Username == null ? string.Empty : Username!,
+                Password = Password == null ? string.Empty : Password!,
+                Privilege = Privilege == null ? Privileges.NULL : (Privileges)Enum.Parse(typeof(Privileges), Privilege!),
+                Email = Email == null ? string.Empty : Email!,
                 IdUser = IdUser!.Value,
             };
         }
@@ -33,19 +33,13 @@ namespace DiffyAPI.UserAPI.Controllers.Model
         {
             var result = new ValidateResult();
 
-            if (string.IsNullOrEmpty(Name))
-                result.ErrorMessage("Nome", "The Nome must contain a value");
-            else if (Name.Length > 18)
-                    result.ErrorMessage("Nome", "The Nome must be a maximum of 18 characters");
+            if (!string.IsNullOrEmpty(Name) && Name.Length > 18)
+                result.ErrorMessage("Nome", "The Nome must be a maximum of 18 characters");
 
-            if (string.IsNullOrEmpty(Surname))
+            if (!string.IsNullOrEmpty(Surname) && Surname.Length > 18)
                 result.ErrorMessage("Cognome", "The Cognome must contain a value");
-            else if (Surname.Length > 18)
-                    result.ErrorMessage("Cognome", "The Cognome must be a maximum of 18 characters");
 
-            if (string.IsNullOrEmpty(Password))
-                result.ErrorMessage("Password", "The Password must contain a value");
-            else
+            if (!string.IsNullOrEmpty(Password))
             {
                 if (Password.Length < 8)
                     result.ErrorMessage("Password", "The Password must have a minimum of 8 characters");
@@ -53,22 +47,15 @@ namespace DiffyAPI.UserAPI.Controllers.Model
                     result.ErrorMessage("Password", "The Password must be a maximum of 18 characters");
             }
 
-            if (string.IsNullOrEmpty(Username))
-                result.ErrorMessage("Username", "The username must contain a value");
-            else if (Username.Length > 18)
+            if (!string.IsNullOrEmpty(Username) && Username.Length > 18)
                 result.ErrorMessage("Username", "The username must be a maximum of 18 characters");
 
-            if (string.IsNullOrEmpty(Privilege))
-                result.ErrorMessage("Privilegi", "The Privilegi must contain a value");
-            else
+            if (!string.IsNullOrEmpty(Privilege))
             {
                 if(Privilege != Privileges.Guest.ToString() && Privilege != Privileges.Admin.ToString() && Privilege != Privileges.Associate.ToString() && Privilege != Privileges.Athlete.ToString() 
                    && Privilege != Privileges.Councillor.ToString() && Privilege != Privileges.Instructor.ToString())
                     result.ErrorMessage("Privilegi", "The Privilegi must contain an enum value");
             }
-
-            if (string.IsNullOrEmpty(Email))
-                result.ErrorMessage("Email", "The Email must contain a value");
 
             if(IdUser == null)
                 result.ErrorMessage("Id", "The Id must contain a value");

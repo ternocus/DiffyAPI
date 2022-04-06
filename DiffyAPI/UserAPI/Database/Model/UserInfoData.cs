@@ -6,7 +6,7 @@ namespace DiffyAPI.UserAPI.Database.Model
     public class UserInfoData
     {
         public string Username { get; set; }
-        public int Privilege { get; set; }
+        public int Privilegi { get; set; }
         public int Id { get; set; }
 
         public UserResult ToCore()
@@ -14,7 +14,7 @@ namespace DiffyAPI.UserAPI.Database.Model
             return new UserResult
             {
                 Username = Username,
-                Privilege = (Privileges)Privilege,
+                Privilege = (Privileges)Privilegi,
                 Id = Id,
             };
         }

@@ -116,13 +116,13 @@ namespace DiffyAPI.Test
             data.Add(new UserInfoData
             {
                 Username = "Admin",
-                Privilege = 5,
+                Privilegi = 5,
                 Id = 1,
             });
             data.Add(new UserInfoData
             {
                 Username = "Guest",
-                Privilege = 0,
+                Privilegi = 0,
                 Id = 2,
             });
 

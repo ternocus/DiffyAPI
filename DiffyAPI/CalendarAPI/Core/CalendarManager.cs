@@ -18,7 +18,6 @@ namespace DiffyAPI.CalendarAPI.Core
 
         public async Task<bool> AddNewEvent(Event myEvent)
         {
-            _logger.LogInformation($"Richiesto l'inserimento di un nuovo evento", myEvent);
             if (await _calendarDataRepository.IsEventExist(myEvent))
             {
                 _logger.LogError($"L'evento {myEvent.Header.Title} in data {myEvent.Header.Date} è già presente nel database.");
@@ -32,7 +31,6 @@ namespace DiffyAPI.CalendarAPI.Core
 
         public async Task<bool> AddNewPoll(Poll poll)
         {
-            _logger.LogInformation($"Richiesto l'inserimento di un nuovo sondaggio", poll);
             if (await _calendarDataRepository.IsPollAlreadyCreated(poll.IdEvent))
             {
                 _logger.LogError($"Il sondaggio di {poll.Username} è già presente nel database.");
@@ -56,7 +54,6 @@ namespace DiffyAPI.CalendarAPI.Core
 
         public async Task<EventResult> GetSingleEvent(EventHeaderRequest request)
         {
-            _logger.LogInformation($"Richiesto singolo evento: ", request);
             return (await _calendarDataRepository.GetSingleEvent(request)).ToController();
         }
 
