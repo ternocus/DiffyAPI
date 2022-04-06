@@ -81,13 +81,22 @@ namespace DiffyAPI.Test
 
             Assert.IsFalse(obj.IsValid);
             Assert.IsNotEmpty(obj._errors);
-            Assert.AreEqual(7, obj._errors.Count);
+            Assert.AreEqual(2, obj._errors.Count);
 
-            obj = new UserRequest().Validate(); ;
+            obj = new UserRequest
+            {
+                Name = null,
+                Surname = null,
+                Username = null,
+                Password = null,
+                Privilege = null,
+                Email = null,
+                IdUser = 1,
+            }.Validate(); ;
 
             Assert.IsFalse(obj.IsValid);
             Assert.IsNotEmpty(obj._errors);
-            Assert.AreEqual(7, obj._errors.Count);
+            Assert.AreEqual(1, obj._errors.Count);
         }
 
         [Test]
@@ -115,15 +124,75 @@ namespace DiffyAPI.Test
             var data = new List<UserInfoData>();
             data.Add(new UserInfoData
             {
-                Username = "Admin",
-                Privilegi = 5,
+                Username = "BCouncillor",
+                Privilegi = (int)Privileges.Councillor,
+                Id = 5,
+            });
+            data.Add(new UserInfoData
+            {
+                Username = "AAssociate",
+                Privilegi = (int)Privileges.Associate,
                 Id = 1,
             });
             data.Add(new UserInfoData
             {
-                Username = "Guest",
-                Privilegi = 0,
+                Username = "AGuest",
+                Privilegi = (int)Privileges.Guest,
                 Id = 2,
+            });
+            data.Add(new UserInfoData
+            {
+                Username = "BAdmin",
+                Privilegi = (int)Privileges.Admin,
+                Id = 1,
+            });
+            data.Add(new UserInfoData
+            {
+                Username = "BGuest",
+                Privilegi = (int)Privileges.Guest,
+                Id = 3,
+            });
+            data.Add(new UserInfoData
+            {
+                Username = "AInstructor",
+                Privilegi = (int)Privileges.Instructor,
+                Id = 6,
+            });
+            data.Add(new UserInfoData
+            {
+                Username = "BAthlete",
+                Privilegi = (int)Privileges.Athlete,
+                Id = 4,
+            });
+            data.Add(new UserInfoData
+            {
+                Username = "AAthlete",
+                Privilegi = (int)Privileges.Athlete,
+                Id = 4,
+            });
+            data.Add(new UserInfoData
+            {
+                Username = "ACouncillor",
+                Privilegi = (int)Privileges.Councillor,
+                Id = 5,
+            });
+            data.Add(new UserInfoData
+            {
+                Username = "AAdmin",
+                Privilegi = (int)Privileges.Admin,
+                Id = 1,
+            });
+            data.Add(new UserInfoData
+            {
+                Username = "BInstructor",
+                Privilegi = (int)Privileges.Instructor,
+                Id = 6,
+            });
+            data.Add(new UserInfoData
+            {
+                Username = "BAssociate",
+                Privilegi = (int)Privileges.Associate,
+                Id = 1,
             });
 
             var logger = new Mock<ILogger<UserManager>>();
@@ -136,13 +205,48 @@ namespace DiffyAPI.Test
 
             var output = userManager.GetUserList();
 
-            Assert.AreEqual(2, output.Result.Count());
-            Assert.AreEqual("Guest", output.Result.First().Username);
-            Assert.AreEqual(2, output.Result.First().Id);
+            Assert.IsTrue(output.Result.Any());
+            Assert.AreEqual("AGuest", output.Result.First().Username);
+            Assert.AreEqual(2, output.Result.First().IdUser);
             Assert.AreEqual(Privileges.Guest.ToString(), output.Result.First().Privilege);
-            Assert.AreEqual("Admin", output.Result.ToList()[1].Username);
-            Assert.AreEqual(1, output.Result.ToList()[1].Id);
-            Assert.AreEqual(Privileges.Admin.ToString(), output.Result.ToList()[1].Privilege);
+            Assert.AreEqual("BGuest", output.Result.ToList()[1].Username);
+            Assert.AreEqual(3, output.Result.ToList()[1].IdUser);
+            Assert.AreEqual(Privileges.Guest.ToString(), output.Result.ToList()[1].Privilege);
+
+            Assert.AreEqual("AAdmin", output.Result.ToList()[2].Username);
+            Assert.AreEqual(1, output.Result.ToList()[2].IdUser);
+            Assert.AreEqual(Privileges.Admin.ToString(), output.Result.ToList()[2].Privilege);
+            Assert.AreEqual("BAdmin", output.Result.ToList()[3].Username);
+            Assert.AreEqual(1, output.Result.ToList()[3].IdUser);
+            Assert.AreEqual(Privileges.Admin.ToString(), output.Result.ToList()[3].Privilege);
+
+            Assert.AreEqual("ACouncillor", output.Result.ToList()[4].Username);
+            Assert.AreEqual(5, output.Result.ToList()[4].IdUser);
+            Assert.AreEqual(Privileges.Councillor.ToString(), output.Result.ToList()[4].Privilege);
+            Assert.AreEqual("BCouncillor", output.Result.ToList()[5].Username);
+            Assert.AreEqual(5, output.Result.ToList()[5].IdUser);
+            Assert.AreEqual(Privileges.Councillor.ToString(), output.Result.ToList()[5].Privilege);
+
+            Assert.AreEqual("AInstructor", output.Result.ToList()[6].Username);
+            Assert.AreEqual(6, output.Result.ToList()[6].IdUser);
+            Assert.AreEqual(Privileges.Instructor.ToString(), output.Result.ToList()[6].Privilege);
+            Assert.AreEqual("BInstructor", output.Result.ToList()[7].Username);
+            Assert.AreEqual(6, output.Result.ToList()[7].IdUser);
+            Assert.AreEqual(Privileges.Instructor.ToString(), output.Result.ToList()[7].Privilege);
+
+            Assert.AreEqual("AAthlete", output.Result.ToList()[8].Username);
+            Assert.AreEqual(4, output.Result.ToList()[8].IdUser);
+            Assert.AreEqual(Privileges.Athlete.ToString(), output.Result.ToList()[8].Privilege);
+            Assert.AreEqual("BAthlete", output.Result.ToList()[9].Username);
+            Assert.AreEqual(4, output.Result.ToList()[9].IdUser);
+            Assert.AreEqual(Privileges.Athlete.ToString(), output.Result.ToList()[9].Privilege);
+
+            Assert.AreEqual("AAssociate", output.Result.ToList()[10].Username);
+            Assert.AreEqual(1, output.Result.ToList()[10].IdUser);
+            Assert.AreEqual(Privileges.Associate.ToString(), output.Result.ToList()[10].Privilege);
+            Assert.AreEqual("BAssociate", output.Result.ToList()[11].Username);
+            Assert.AreEqual(1, output.Result.ToList()[11].IdUser);
+            Assert.AreEqual(Privileges.Associate.ToString(), output.Result.ToList()[11].Privilege);
         }
 
         [Test]
@@ -162,8 +266,8 @@ namespace DiffyAPI.Test
             var logger = new Mock<ILogger<UserManager>>();
             var userData = new Mock<IUserDataRepository>();
             userData
-                .Setup(x => x.IsUserExist(0))
-                .ReturnsAsync(false);
+                .Setup(x => x.IsUserExist(12))
+                .ReturnsAsync(true);
             userData
                 .Setup(x => x.UploadUserData(upload));
 
@@ -171,7 +275,7 @@ namespace DiffyAPI.Test
 
             var output = userManager.UploadUser(upload);
 
-            Assert.IsFalse(output.Result);
+            Assert.IsTrue(output.Result);
         }
 
         [Test]
@@ -261,7 +365,6 @@ namespace DiffyAPI.Test
         #endregion
 
         #region UserDataRepository
-
         [Test]
         public async Task UserDataRepo()
         {
@@ -279,7 +382,7 @@ namespace DiffyAPI.Test
 
             await dbAccess.AddNewUserAccess(user);
 
-            UserInfoData output = null;
+            UserInfoData? output = null;
             var list = await database.GetUserListData();
             foreach (var users in list)
             {
@@ -288,13 +391,13 @@ namespace DiffyAPI.Test
             }
             Assert.NotNull(output);
             Assert.AreNotEqual(0, list.Count());
-            Assert.IsTrue(database.IsUserExist(output.Id).Result);
+            Assert.IsTrue(database.IsUserExist(output!.Id).Result);
 
             var outputData = await database.GetUserData(output.Id);
 
             Assert.NotNull(output);
-            Assert.AreEqual(user.Username, outputData.Username);
-            Assert.AreEqual(0, outputData.Privilegi);
+            Assert.AreEqual(user.Username, outputData!.Username);
+            Assert.AreEqual((int)Privileges.Guest, outputData.Privilegi);
 
             var obj = new UpdateUser
             {
@@ -312,7 +415,7 @@ namespace DiffyAPI.Test
             var output2 = await database.GetUserData(output.Id);
 
             Assert.NotNull(output);
-            Assert.AreEqual(obj.Name, output2.Nome);
+            Assert.AreEqual(obj.Name, output2!.Nome);
             Assert.AreEqual(obj.Surname, output2.Cognome);
             Assert.AreEqual(obj.Username, output2.Username);
             Assert.AreEqual((int)obj.Privilege, output2.Privilegi);

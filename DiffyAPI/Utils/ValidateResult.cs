@@ -17,7 +17,7 @@
 
         public string GetErrorMessage()
         {
-            return IsValid ? "" : string.Join(", ", _errors);
+            return IsValid ? string.Empty : string.Join(", ", _errors);
         }
     }
 }

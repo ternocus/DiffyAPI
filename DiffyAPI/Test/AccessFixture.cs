@@ -4,6 +4,8 @@ using DiffyAPI.AccessAPI.Core.Model;
 using DiffyAPI.AccessAPI.Database;
 using DiffyAPI.AccessAPI.Database.Model;
 using DiffyAPI.Exceptions;
+using DiffyAPI.Model;
+using DiffyAPI.UserAPI.Database;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NUnit.Framework;
@@ -192,14 +194,14 @@ namespace DiffyAPI.Test
         }
         #endregion
 
-        #region LoginRequest
+        #region AccessManager
         [Test]
         public void LoginAccessRequest_CorrectInput()
         {
             var data = new AccessData
             {
                 Username = "Username",
-                Privilegi = 5,
+                Privilegi = (int)Privileges.Admin,
                 Password = "Password",
             };
             var login = new LoginCredential
@@ -299,16 +301,14 @@ namespace DiffyAPI.Test
 
             var _ = accessManager.AccessLogin(login);
         }
-        #endregion
 
-        #region RegisterRequest
         [Test]
         public void RegisterAccessRequest_CorrectInput()
         {
             var data = new AccessData
             {
                 Username = "Username",
-                Privilegi = 5,
+                Privilegi = (int)Privileges.Admin,
                 Password = "Password",
             };
             var register = new RegisterCredential
@@ -378,7 +378,7 @@ namespace DiffyAPI.Test
         [ExpectedException(typeof(RegisterFailedException))]
         public void RegisterAccessRequest_InvalidLogin()
         {
-            AccessData data = null;
+            AccessData? data = null;
             var login = new LoginCredential
             {
                 Username = "Username",
@@ -407,9 +407,10 @@ namespace DiffyAPI.Test
 
         #region AccessDataRepository
         [Test]
-        public void AddNewUser_CorrectInput()
+        public async Task AccessData()
         {
             var database = new AccessDataRepository();
+            var dbDelete = new UserDataRepository();
 
             var obj = new RegisterCredential
             {
@@ -420,79 +421,26 @@ namespace DiffyAPI.Test
                 Password = "admin1234",
             };
 
-            var _ = database.AddNewUserAccess(obj);
+            await database.AddNewUserAccess(obj);
 
-            var output = database.GetAccessData("TestUser").Result;
+            var output = await database.GetAccessData("TestUser");
 
             Assert.NotNull(output);
-            Assert.AreEqual(obj.Username, output.Username);
-            Assert.AreEqual(0, output.Privilegi);
+            Assert.AreEqual(obj.Username, output!.Username);
+            Assert.AreEqual((int)Privileges.Guest, output.Privilegi);
             Assert.AreEqual(obj.Password, output.Password);
-        }
 
-        [Test]
-        public void GetAccessData_CorrectInput_AccessData()
-        {
-            var database = new AccessDataRepository();
+            Assert.IsTrue(await database.IsRegistered("TestUser"));
+            Assert.IsNull(await database.GetAccessData("TestUserNULL"));
 
-            var obj = new RegisterCredential
+            var id = -1;
+            foreach (var user in await dbDelete.GetUserListData())
             {
-                Name = "TestName",
-                Surname = "TestSurname",
-                Username = "TestUser",
-                Email = "a@gmail.com",
-                Password = "admin1234",
-            };
+                if (user.Username == "TestUser")
+                    id = user.Id;
+            }
 
-            var output = database.GetAccessData("TestUser").Result;
-
-            Assert.NotNull(output);
-            Assert.AreEqual(obj.Username, output.Username);
-            Assert.AreEqual(0, output.Privilegi);
-            Assert.AreEqual(obj.Password, output.Password);
-        }
-
-        [Test]
-        public void GetAccessData_CorrectInput_AccessDataWithPrivileges()
-        {
-            var database = new AccessDataRepository();
-
-            var output = database.GetAccessData("Ternocus").Result;
-
-            Assert.NotNull(output);
-            Assert.AreEqual("Ternocus", output.Username);
-            Assert.AreEqual(5, output.Privilegi);
-            Assert.AreEqual("admin1234", output.Password);
-        }
-
-        [Test]
-        public void GetAccessData_CorrectInput_Null()
-        {
-            var database = new AccessDataRepository();
-
-            var output = database.GetAccessData("TestUserNULL").Result;
-
-            Assert.IsNull(output);
-        }
-
-        [Test]
-        public void IsRegistered_True()
-        {
-            var database = new AccessDataRepository();
-
-            var output = database.IsRegistered("TestUser");
-
-            Assert.IsTrue(output.Result);
-        }
-
-        [Test]
-        public void IsRegistered_False()
-        {
-            var database = new AccessDataRepository();
-
-            var output = database.IsRegistered("TestUserNULL");
-
-            Assert.IsFalse(output.Result);
+            await dbDelete.DeleteUser(id);
         }
         #endregion
     }

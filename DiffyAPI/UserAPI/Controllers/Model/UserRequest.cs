@@ -23,7 +23,7 @@ namespace DiffyAPI.UserAPI.Controllers.Model
                 Surname = Surname == null ? string.Empty : Surname!,
                 Username = Username == null ? string.Empty : Username!,
                 Password = Password == null ? string.Empty : Password!,
-                Privilege = Privilege == null ? Privileges.NULL : (Privileges)Enum.Parse(typeof(Privileges), Privilege!),
+                Privilege = Privilege == null ? Privileges.Null : (Privileges)Enum.Parse(typeof(Privileges), Privilege!),
                 Email = Email == null ? string.Empty : Email!,
                 IdUser = IdUser!.Value,
             };
@@ -52,15 +52,19 @@ namespace DiffyAPI.UserAPI.Controllers.Model
 
             if (!string.IsNullOrEmpty(Privilege))
             {
-                if(Privilege != Privileges.Guest.ToString() && Privilege != Privileges.Admin.ToString() && Privilege != Privileges.Associate.ToString() && Privilege != Privileges.Athlete.ToString() 
-                   && Privilege != Privileges.Councillor.ToString() && Privilege != Privileges.Instructor.ToString())
+                if(Privilege != Privileges.Guest.ToString() && Privilege != Privileges.Admin.ToString() && Privilege != Privileges.Associate.ToString() 
+                   && Privilege != Privileges.Athlete.ToString() && Privilege != Privileges.Councillor.ToString() && Privilege != Privileges.Instructor.ToString())
                     result.ErrorMessage("Privilegi", "The Privilegi must contain an enum value");
             }
 
             if(IdUser == null)
-                result.ErrorMessage("Id", "The Id must contain a value");
+                result.ErrorMessage("IdUser", "The IdUser must contain a value");
             else if(IdUser < 0)
-                result.ErrorMessage("Id", "The Id must contain a real value");
+                result.ErrorMessage("IdUser", "The IdUser must contain a real value");
+
+            if(string.IsNullOrEmpty(Name) && string.IsNullOrEmpty(Surname) && string.IsNullOrEmpty(Username) && 
+               string.IsNullOrEmpty(Password) && Privilege == null && string.IsNullOrEmpty(Email))
+                result.ErrorMessage("Parameters", "You must fill at least one other field.");
 
             return result;
         }

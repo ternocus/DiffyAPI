@@ -29,13 +29,13 @@ namespace DiffyAPI.AccessAPI.Core
 
             var accessData = await _dataRepository.GetAccessData(loginRequestCore.Username);
 
-            if (IsLoggedCorrectly(loginRequestCore, accessData))
+            if (IsLoggedCorrectly(loginRequestCore, accessData!))
             {
                 _logger.LogInformation($"Accesso consentito per {loginRequestCore.Username}.");
 
                 return new Result
                 {
-                    Username = accessData.Username,
+                    Username = accessData!.Username,
                     Privilege = ((Privileges)accessData.Privilegi).ToString(),
                 };
             }
@@ -70,7 +70,7 @@ namespace DiffyAPI.AccessAPI.Core
             throw new RegisterFailedException("Something gone wrong with register");
         }
 
-        private static bool IsLoggedCorrectly(LoginCredential loginRequestCore, AccessData? resultQuery)
+        private static bool IsLoggedCorrectly(LoginCredential loginRequestCore, AccessData resultQuery)
         {
             return string.Compare(resultQuery.Password, loginRequestCore.Password, StringComparison.Ordinal) == 0;
         }

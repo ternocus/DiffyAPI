@@ -15,7 +15,7 @@ namespace DiffyAPI.UserAPI.Core.Model
             {
                 Username = Username,
                 Privilege = Privilege.ToString(),
-                Id = Id
+                IdUser = Id
             };
         }
     }

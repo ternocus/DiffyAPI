@@ -23,7 +23,7 @@ namespace DiffyAPI.UserAPI.Database
         {
             using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
             var result = await connection.QueryAsync<UserInfoData>(
-                "SELECT Username, Privilegi, Id FROM [dbo].[Utenti];");
+                "SELECT Username, Privilegi, ID FROM [dbo].[Utenti];");
             return result;
         }
 
@@ -61,7 +61,7 @@ namespace DiffyAPI.UserAPI.Database
                     query += ", ";
                 query += $"Password = '{registerCredential.Password}'";
             }
-            if (registerCredential.Privilege != Privileges.NULL)
+            if (registerCredential.Privilege != Privileges.Null)
             {
                 if (index++ > 0)
                     query += ", ";

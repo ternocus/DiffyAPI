@@ -4,6 +4,7 @@ using DiffyAPI.AccessAPI.Database.Model;
 using DiffyAPI.Utils;
 using System.Data;
 using System.Data.SqlClient;
+using DiffyAPI.Model;
 
 namespace DiffyAPI.AccessAPI.Database
 {
@@ -23,7 +24,7 @@ namespace DiffyAPI.AccessAPI.Database
             using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
             await connection.QueryAsync("INSERT INTO [dbo].[Utenti] (Nome, Cognome, Username, Password, Privilegi, Email) VALUES " +
                                         $"('{registerRequestCore.Name}', '{registerRequestCore.Surname}', '{registerRequestCore.Username}', " +
-                                        $"'{registerRequestCore.Password}', 0, '{registerRequestCore.Email}');");
+                                        $"'{registerRequestCore.Password}', {(int)Privileges.Guest}, '{registerRequestCore.Email}');");
         }
 
         public async Task<bool> IsRegistered(string username)

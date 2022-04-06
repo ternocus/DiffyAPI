@@ -24,16 +24,19 @@ namespace DiffyAPI.UserAPI.Core
             var result = new List<ExportLineResult>();
             var userResult = ConvertUserResult(await _userDataRepository.GetUserListData());
 
-            result.AddRange(AddGuestUser(userResult));
-            result.AddRange(AddAllUser(userResult));
+            result.AddRange(OrderList(AddGuestUser(userResult)));
+            result.AddRange(OrderList(AddAdminUser(userResult)));
+            result.AddRange(OrderList(AddCouncillorUser(userResult)));
+            result.AddRange(OrderList(AddInstructorUser(userResult)));
+            result.AddRange(OrderList(AddAthleteUser(userResult)));
+            result.AddRange(OrderList(AddAssociateUser(userResult)));
 
-            _logger.LogInformation($"Numero di utenti trovati: {result.Count()}");
             return result;
         }
 
         public async Task<bool> UploadUser(UpdateUser registerCredential)
         {
-            if (await _userDataRepository.IsUserExist(registerCredential.IdUser))
+            if (!await _userDataRepository.IsUserExist(registerCredential.IdUser))
             {
                 _logger.LogError($"L'utente [id: {registerCredential.IdUser}] richiesto non è presente nel database");
                 throw new UserNotFoundException("UpdateUser not found in dabatase");
@@ -83,20 +86,73 @@ namespace DiffyAPI.UserAPI.Core
                    {
                        Username = user.Username,
                        Privilege = user.Privilege.ToString(),
-                       Id = user.Id,
+                       IdUser = user.Id,
                    };
         }
 
-        private IEnumerable<ExportLineResult> AddAllUser(IEnumerable<UserResult> userResult)
+        private IEnumerable<ExportLineResult> AddAssociateUser(IEnumerable<UserResult> userResult)
         {
             return from user in userResult
-                   where user.Privilege != Privileges.Guest
+                   where user.Privilege == Privileges.Associate
                    select new ExportLineResult
                    {
                        Username = user.Username,
                        Privilege = user.Privilege.ToString(),
-                       Id = user.Id,
+                       IdUser = user.Id,
                    };
+        }
+
+        private IEnumerable<ExportLineResult> AddAthleteUser(IEnumerable<UserResult> userResult)
+        {
+            return from user in userResult
+                   where user.Privilege == Privileges.Athlete
+                   select new ExportLineResult
+                   {
+                       Username = user.Username,
+                       Privilege = user.Privilege.ToString(),
+                       IdUser = user.Id,
+                   };
+        }
+
+        private IEnumerable<ExportLineResult> AddInstructorUser(IEnumerable<UserResult> userResult)
+        {
+            return from user in userResult
+                   where user.Privilege == Privileges.Instructor
+                   select new ExportLineResult
+                   {
+                       Username = user.Username,
+                       Privilege = user.Privilege.ToString(),
+                       IdUser = user.Id,
+                   };
+        }
+
+        private IEnumerable<ExportLineResult> AddCouncillorUser(IEnumerable<UserResult> userResult)
+        {
+            return from user in userResult
+                   where user.Privilege == Privileges.Councillor
+                   select new ExportLineResult
+                   {
+                       Username = user.Username,
+                       Privilege = user.Privilege.ToString(),
+                       IdUser = user.Id,
+                   };
+        }
+
+        private IEnumerable<ExportLineResult> AddAdminUser(IEnumerable<UserResult> userResult)
+        {
+            return from user in userResult
+                   where user.Privilege == Privileges.Admin
+                   select new ExportLineResult
+                   {
+                       Username = user.Username,
+                       Privilege = user.Privilege.ToString(),
+                       IdUser = user.Id,
+                   };
+        }
+
+        private IEnumerable<ExportLineResult> OrderList(IEnumerable<ExportLineResult> userList)
+        {
+            return userList.OrderBy(line => line.Username);
         }
     }
 }

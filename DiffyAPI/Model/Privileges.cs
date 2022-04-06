@@ -2,7 +2,7 @@
 {
     public enum Privileges
     {
-        NULL,
+        Null,
         Guest,
         Associate,
         Athlete,
