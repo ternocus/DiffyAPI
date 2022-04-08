@@ -2,9 +2,11 @@
 {
     public class EventResult
     {
-        public EventHeaderResult Header { get; set; }
+        public string Title { get; set; }
+        public DateTime Date { get; set; }
         public string Description { get; set; }
-        public PollResult Poll { get; set; }
+        public string FileName { get; set; }
         public int IdEvent { get; set; }
+        public PollResult Poll { get; set; }
     }
 }

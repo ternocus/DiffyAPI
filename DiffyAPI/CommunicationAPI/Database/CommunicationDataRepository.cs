@@ -74,14 +74,41 @@ namespace DiffyAPI.CommunicationAPI.Database
         public async Task UploadMessage(UploadMessage uploadMessage)
         {
             using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
-            var time = uploadMessage.Date.Day + "/" + uploadMessage.Date.Month + "/" + uploadMessage.Date.Year;
 
-            await connection.QueryAsync("UPDATE [dbo].[Comunicazioni] SET " +
-                                        $"IDCategoria = {uploadMessage.IdCategory}, " +
-                                        $"Titolo = '{uploadMessage.Title}', " +
-                                        $"Testo = '{uploadMessage.Message}', " +
-                                        $"Data = '{time}', " +
-                                        $"Username = '{uploadMessage.Username}';");
+            var index = 0;
+            var query = "UPDATE [dbo].[Comunicazioni] SET ";
+            if (!string.IsNullOrEmpty(uploadMessage.Title))
+            {
+                query += $"IDCategoria = '{uploadMessage.IdCategory}'";
+                index++;
+            }
+            if (!string.IsNullOrEmpty(uploadMessage.Title))
+            {
+                if (index++ > 0)
+                    query += ", ";
+                query += $"Titolo = '{uploadMessage.Title}'";
+            }
+            if (!string.IsNullOrEmpty(uploadMessage.Message))
+            {
+                if (index++ > 0)
+                    query += ", ";
+                query += $"Testo = '{uploadMessage.Message}'";
+            }
+            if (uploadMessage.Date != DateTime.MinValue)
+            {
+                if (index++ > 0)
+                    query += ", ";
+                query += $"Data = '{uploadMessage.Date.Day + "/" + uploadMessage.Date.Month + "/" + uploadMessage.Date.Year}'";
+            }
+            if (!string.IsNullOrEmpty(uploadMessage.Username))
+            {
+                if (index++ > 0)
+                    query += ", ";
+                query += $"Username = '{uploadMessage.Username}'";
+            }
+            query += $" WHERE IDTitolo = {uploadMessage.IdTitle};";
+
+            await connection.QueryAsync(query);
         }
 
         public async Task<IEnumerable<CategoryData>> GetListCategory()

@@ -4,5 +4,7 @@
     {
         public string Title { get; set; }
         public DateTime Date { get; set; }
+        public int IdEvent { get; set; }
+        public int IdPoll { get; set; }
     }
 }

@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-using DiffyAPI.CalendarAPI.Controllers.Model;
+﻿using DiffyAPI.CalendarAPI.Controllers.Model;
 using DiffyAPI.CalendarAPI.Core;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace DiffyAPI.CalendarAPI.Controllers
 {
@@ -18,7 +18,7 @@ namespace DiffyAPI.CalendarAPI.Controllers
             _logger = logger;
         }
 
-        [HttpGet("MonthEvents")]
+        [HttpGet("GetMonthEvents")]
         public async Task<IActionResult> GetMonthEvents([FromQuery, Required] DateTime filter)
         {
             try
@@ -51,17 +51,12 @@ namespace DiffyAPI.CalendarAPI.Controllers
             }
         }
 
-        [HttpGet("Event")]
-        public async Task<IActionResult> GetSingleEvent([FromQuery] EventHeaderRequest request)
+        [HttpGet("GetSingleEvent")]
+        public async Task<IActionResult> GetSingleEvent([FromQuery][Required] int idEvent, [Required] string username)
         {
             try
             {
-                var validate = request.Validate();
-
-                if(validate.IsValid)
-                    return Ok(await _calendarManager.GetSingleEvent(request));
-
-                return BadRequest(new { ErrorType = "InvalidEventObject", Error = validate.GetErrorMessage().Replace("[", "").Replace("]", "") });
+                return Ok(await _calendarManager.GetSingleEvent(idEvent, username));
             }
             catch (Exception ex)
             {
@@ -71,14 +66,17 @@ namespace DiffyAPI.CalendarAPI.Controllers
         }
 
         [HttpPut("UploadEvent")]
-        public async Task<IActionResult> UploadMessage([FromBody] EventRequest request)
+        public async Task<IActionResult> UploadEvent([FromBody] UploadRequest request)
         {
             try
             {
                 var validate = request.Validate();
 
-                if(validate.IsValid)
-                    return Ok(await _calendarManager.UploadEvent(request.ToCore()));
+                if (validate.IsValid)
+                {
+                    await _calendarManager.UploadEvent(request.ToCore());
+                    return Ok();
+                }
 
                 return BadRequest(new { ErrorType = "InvalidEventObject", Error = validate.GetErrorMessage().Replace("[", "").Replace("]", "") });
             }
@@ -89,17 +87,67 @@ namespace DiffyAPI.CalendarAPI.Controllers
             }
         }
 
-        [HttpPost("Poll")]
+        [HttpGet("DeleteEvent")]
+        public async Task<IActionResult> DeleteEvent([FromQuery][Required] int idEvent)
+        {
+            try
+            {
+                return Ok(await _calendarManager.DeleteEvent(idEvent));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return BadRequest(new { ErrorType = ex.GetType().Name, Error = ex.Message });
+            }
+        }
+
+        [HttpPost("AddNewPoll")]
         public async Task<IActionResult> AddPoll([FromBody] PollRequest request)
         {
             try
             {
                 var validate = request.Validate();
 
-                if(validate.IsValid)
+                if (validate.IsValid)
                     return Ok(await _calendarManager.AddNewPoll(request.ToCore()));
 
                 return BadRequest(new { ErrorType = "InvalidEventObject", Error = validate.GetErrorMessage().Replace("[", "").Replace("]", "") });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return BadRequest(new { ErrorType = ex.GetType().Name, Error = ex.Message });
+            }
+        }
+
+        [HttpPut("UploadPoll")]
+        public async Task<IActionResult> UploadPoll([FromBody] PollRequest request)
+        {
+            try
+            {
+                var validate = request.Validate();
+
+                if (validate.IsValid)
+                {
+                    await _calendarManager.UploadPoll(request.ToCore());
+                    return Ok();
+                }
+
+                return BadRequest(new { ErrorType = "InvalidEventObject", Error = validate.GetErrorMessage().Replace("[", "").Replace("]", "") });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return BadRequest(new { ErrorType = ex.GetType().Name, Error = ex.Message });
+            }
+        }
+
+        [HttpGet("DeletePoll")]
+        public async Task<IActionResult> DeletePoll([FromQuery][Required] int idEvent)
+        {
+            try
+            {
+                return Ok(await _calendarManager.DeletePoll(idEvent));
             }
             catch (Exception ex)
             {

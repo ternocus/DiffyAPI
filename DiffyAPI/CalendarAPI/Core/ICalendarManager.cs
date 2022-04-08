@@ -7,8 +7,11 @@ namespace DiffyAPI.CalendarAPI.Core
     {
         public Task<bool> AddNewEvent(Event myEvent);
         public Task<IEnumerable<EventHeaderResult>> GetMothEvents(DateTime filter);
-        public Task<bool> UploadEvent(Event uploadEvent);
-        public Task<EventResult> GetSingleEvent(EventHeaderRequest request);
+        public Task UploadEvent(Event uploadEvent);
+        public Task<bool> DeleteEvent(int idEvent);
+        public Task<EventResult> GetSingleEvent(int idEvent, string username);
         public Task<bool> AddNewPoll(Poll poll);
+        public Task UploadPoll(Poll poll);
+        public Task<bool> DeletePoll(int idPoll);
     }
 }

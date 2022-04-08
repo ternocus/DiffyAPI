@@ -1,24 +1,25 @@
 ﻿using DiffyAPI.CalendarAPI.Core.Model;
 using DiffyAPI.Utils;
-using System.ComponentModel.DataAnnotations;
 
 namespace DiffyAPI.CalendarAPI.Controllers.Model
 {
     public class EventRequest : IValidateResult
     {
-        public EventHeaderRequest? Header { get; set; }
+        public string? Title { get; set; }
+        public DateTime? Date { get; set; }
         public string? Description { get; set; }
-        [Required]
+        public string? FileName { get; set; }
         public PollRequest? Poll { get; set; }
-        [Required]
         public int? IdEvent { get; set; }
 
         public Event ToCore()
         {
             return new Event
             {
-                Header = Header!.ToCore(),
+                Title = Title!,
+                Date = Date!.Value,
                 Description = Description!,
+                FileName = FileName!,
                 Poll = Poll!.ToCore(),
                 IdEvent = IdEvent!.Value,
             };
@@ -28,22 +29,25 @@ namespace DiffyAPI.CalendarAPI.Controllers.Model
         {
             var result = new ValidateResult();
 
-            if (Header == null)
-                result.ErrorMessage("Header", "The Header must contain a value");
-            else
-                result = Header.Validate();
+            if (string.IsNullOrEmpty(Title))
+                result.ErrorMessage("Title", "The Title must contain a value");
+
+            if (Date == null)
+                result.ErrorMessage("Date", "The Date must contain a value");
+            else if (Date.Value.Year < 2022)
+                result.ErrorMessage("Date", "The Date must contain a real value");
 
             if (string.IsNullOrEmpty(Description))
-                result.ErrorMessage("Nome", "The Nome must contain a value");
+                result.ErrorMessage("Description", "The Description must contain a value");
+
+            if (string.IsNullOrEmpty(FileName))
+                result.ErrorMessage("FileName", "The FileName must contain a value");
 
             if (Poll == null)
                 result.ErrorMessage("Poll", "The Poll must contain a value");
             else
                 foreach (var (key, value) in Poll.Validate()._errors)
-                {
                     result.ErrorMessage(key, value);
-                }
-
 
             if (IdEvent == null)
                 result.ErrorMessage("IdEvent", "The IdEvent must contain a value");

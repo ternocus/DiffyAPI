@@ -154,7 +154,7 @@ namespace DiffyAPI.Test
 
             Assert.IsFalse(obj.IsValid);
             Assert.IsNotEmpty(obj._errors);
-            Assert.AreEqual(4, obj._errors.Count);
+            Assert.AreEqual(1, obj._errors.Count);
 
             obj = new UploadMessageRequest
             {
@@ -166,7 +166,7 @@ namespace DiffyAPI.Test
 
             Assert.IsFalse(obj.IsValid);
             Assert.IsNotEmpty(obj._errors);
-            Assert.AreEqual(4, obj._errors.Count);
+            Assert.AreEqual(2, obj._errors.Count);
         }
 
         [Test]
@@ -454,7 +454,7 @@ namespace DiffyAPI.Test
 
             var communicationManager = new CommunicationManager(communicationData.Object, logger.Object);
 
-            Assert.IsTrue(communicationManager.DeleteMessage(1).Result);
+            Assert.IsFalse(communicationManager.DeleteMessage(1).Result);
         }
 
         [Test]
@@ -497,7 +497,7 @@ namespace DiffyAPI.Test
 
             var communicationManager = new CommunicationManager(communicationData.Object, logger.Object);
 
-            Assert.IsTrue(communicationManager.DeleteCategory(1).Result);
+            Assert.IsFalse(communicationManager.DeleteCategory(1).Result);
         }
 
         [Test]

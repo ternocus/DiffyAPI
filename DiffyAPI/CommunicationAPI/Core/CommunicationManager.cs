@@ -84,13 +84,13 @@ namespace DiffyAPI.CommunicationAPI.Core
         {
             if (!await _communicationDataRepository.IsMessageExist(idMessage))
             {
-                _logger.LogError($"Il messaggio [id: {idMessage}] è già presente nel database");
-                throw new MessageNotFoundException("The message is already present in the database.");
+                _logger.LogError($"Il messaggio [id: {idMessage}] non è presente nel database");
+                throw new MessageNotFoundException("The message is not present in the database.");
             }
 
             await _communicationDataRepository.DeleteMessage(idMessage);
 
-            return _communicationDataRepository.IsMessageExist(idMessage).Result;
+            return !await _communicationDataRepository.IsMessageExist(idMessage);
         }
 
         public async Task<bool> DeleteCategory(int idCategory)
@@ -109,7 +109,7 @@ namespace DiffyAPI.CommunicationAPI.Core
 
             await _communicationDataRepository.DeleteCategory(idCategory);
 
-            return _communicationDataRepository.IsCategoryExist(idCategory).Result;
+            return !await _communicationDataRepository.IsCategoryExist(idCategory);
         }
     }
 }
