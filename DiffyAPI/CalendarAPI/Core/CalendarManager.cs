@@ -38,20 +38,27 @@ namespace DiffyAPI.CalendarAPI.Core
             return (eventHeaderDatas.Select(data => data.ToController())).ToList();
         }
 
-        public async Task UploadEvent(Event uploadEvent)
+        public async Task UploadEvent(UploadEvent uploadEvent)
         {
             if (!await _calendarDataRepository.IsEventExist(uploadEvent.Title))
             {
-                _logger.LogError($"L'evento [id: {uploadEvent.IdEvent}, {uploadEvent.Title}] da modificare non è presente nel database");
-                throw new EventNotFoundException($"The event [id: {uploadEvent.IdEvent}, {uploadEvent.Title}] is not present in the database.");
+                _logger.LogError($"L'evento [id: {uploadEvent.IDEvent}, {uploadEvent.Title}] da modificare non è presente nel database");
+                throw new EventNotFoundException($"The event [id: {uploadEvent.IDEvent}, {uploadEvent.Title}] is not present in the database.");
             }
 
             await _calendarDataRepository.UploadEvent(uploadEvent);
         }
 
-        public async Task<EventResult> GetSingleEvent(int idEvent, string username)
+        public async Task<EventResult> GetSingleEvent(int idEvent, int idPoll)
         {
-            return (await _calendarDataRepository.GetSingleEvent(idEvent, username)).ToController();
+            var result = await _calendarDataRepository.GetSingleEvent(idEvent);
+
+            if (result == null)
+                return new EventResult();
+
+            result.Poll = await _calendarDataRepository.GetPollData(idPoll);
+
+            return result.ToController();
         }
 
         public async Task<bool> DeleteEvent(int idEvent)
@@ -93,13 +100,13 @@ namespace DiffyAPI.CalendarAPI.Core
 
         public async Task<bool> DeletePoll(int idPoll)
         {
-            if (!await _calendarDataRepository.IsEventExist(idPoll))
+            if (!await _calendarDataRepository.IsPollExist(idPoll))
             {
                 _logger.LogError($"Il sondaggio [id: {idPoll}] non è presente nel database");
                 throw new EventNotFoundException("The poll [id: {idPoll}] is not present in the database.");
             }
 
-            await _calendarDataRepository.DeleteEvent(idPoll);
+            await _calendarDataRepository.DeletePoll(idPoll);
 
             return !await _calendarDataRepository.IsEventExist(idPoll);
         }

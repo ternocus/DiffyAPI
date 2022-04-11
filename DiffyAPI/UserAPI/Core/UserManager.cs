@@ -24,12 +24,16 @@ namespace DiffyAPI.UserAPI.Core
             var result = new List<ExportLineResult>();
             var userResult = ConvertUserResult(await _userDataRepository.GetUserListData());
 
-            result.AddRange(OrderList(AddGuestUser(userResult)));
-            result.AddRange(OrderList(AddAdminUser(userResult)));
-            result.AddRange(OrderList(AddCouncillorUser(userResult)));
-            result.AddRange(OrderList(AddInstructorUser(userResult)));
-            result.AddRange(OrderList(AddAthleteUser(userResult)));
-            result.AddRange(OrderList(AddAssociateUser(userResult)));
+            var userResults = userResult.ToList();
+            if (!userResults.Any()) 
+                return result;
+
+            result.AddRange(OrderList(AddGuestUser(userResults)));
+            result.AddRange(OrderList(AddAdminUser(userResults)));
+            result.AddRange(OrderList(AddCouncillorUser(userResults)));
+            result.AddRange(OrderList(AddInstructorUser(userResults)));
+            result.AddRange(OrderList(AddAthleteUser(userResults)));
+            result.AddRange(OrderList(AddAssociateUser(userResults)));
 
             return result;
         }

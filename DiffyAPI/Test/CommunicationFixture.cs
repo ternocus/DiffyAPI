@@ -218,6 +218,22 @@ namespace DiffyAPI.Test
         }
 
         [Test]
+        public void GetCategory_Null()
+        {
+            var logger = new Mock<ILogger<CommunicationManager>>();
+            var communicationData = new Mock<ICommunicationDataRepository>();
+            communicationData
+                .Setup(x => x.GetListCategory());
+
+            var communicationManager = new CommunicationManager(communicationData.Object, logger.Object);
+
+            var output = communicationManager.GetCategory().Result;
+
+            Assert.NotNull(output);
+            Assert.AreEqual(0, output.Count());
+        }
+
+        [Test]
         public void AddCategory_bool()
         {
             var logger = new Mock<ILogger<CommunicationManager>>();
@@ -286,6 +302,22 @@ namespace DiffyAPI.Test
             Assert.AreEqual("Titolo1", output.Result.First().Title);
             Assert.AreEqual(2, output.Result.ToList()[1].IdTitle);
             Assert.AreEqual("Titolo2", output.Result.ToList()[1].Title);
+        }
+
+        [Test]
+        public void GetListMessage_Null()
+        {
+            var logger = new Mock<ILogger<CommunicationManager>>();
+            var communicationData = new Mock<ICommunicationDataRepository>();
+            communicationData
+                .Setup(x => x.GetListMessage());
+
+            var communicationManager = new CommunicationManager(communicationData.Object, logger.Object);
+
+            var output = communicationManager.GetListMessage("category").Result;
+
+            Assert.NotNull(output);
+            Assert.AreEqual(0, output.Count());
         }
 
         [Test]

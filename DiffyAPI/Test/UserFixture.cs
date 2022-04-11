@@ -250,6 +250,97 @@ namespace DiffyAPI.Test
         }
 
         [Test]
+        public void GetUserList_null()
+        {
+            var logger = new Mock<ILogger<UserManager>>();
+            var userData = new Mock<IUserDataRepository>();
+            userData
+                .Setup(x => x.GetUserListData());
+
+            var userManager = new UserManager(userData.Object, logger.Object);
+
+            var output = userManager.GetUserList();
+
+            Assert.IsNotNull(output);
+            Assert.AreEqual(0, output.Result.ToList().Count);
+        }
+
+        [Test]
+        public void GetUserInfo_UserInfoResult()
+        {
+            var obj = new UserData
+            {
+                Nome = "UserTest",
+                Cognome = "CognomeTest",
+                Username = "UserTest",
+                Privilegi = 6,
+                Email = "a@alice.it",
+                Id = 1,
+            };
+            var logger = new Mock<ILogger<UserManager>>();
+            var userData = new Mock<IUserDataRepository>();
+            userData
+                .Setup(x => x.IsUserExist(1))
+                .ReturnsAsync(true);
+            userData
+                .Setup(x => x.GetUserData(1))
+                .ReturnsAsync(obj);
+
+            var userManager = new UserManager(userData.Object, logger.Object);
+
+            var output = userManager.GetUserInfo(1).Result;
+
+            Assert.IsNotNull(output);
+            Assert.AreEqual(obj.Nome, output.Name);
+            Assert.AreEqual(obj.Cognome, output.Surname);
+            Assert.AreEqual(obj.Username, output.Username);
+            Assert.AreEqual("Admin", output.Privilege);
+            Assert.AreEqual(obj.Email, output.Email);
+            Assert.AreEqual(obj.Id, output.IdUser);
+        }
+
+        [Test]
+        [ExpectedException(typeof(UserNotFoundException))]
+        public void GetUserInfo_null()
+        {
+            var logger = new Mock<ILogger<UserManager>>();
+            var userData = new Mock<IUserDataRepository>();
+            userData
+                .Setup(x => x.IsUserExist(1))
+                .ReturnsAsync(true);
+            userData
+                .Setup(x => x.GetUserData(1));
+
+            var userManager = new UserManager(userData.Object, logger.Object);
+
+            var _ = userManager.GetUserInfo(1);
+        }
+
+        [Test]
+        [ExpectedException(typeof(UserNotFoundException))]
+        public void GetUserInfo_UserNotFoundException()
+        {
+            var obj = new UserData
+            {
+                Nome = "UserTest",
+                Cognome = "CognomeTest",
+                Username = "UserTest",
+                Privilegi = 6,
+                Email = "a@alice.it",
+                Id = 1,
+            };
+            var logger = new Mock<ILogger<UserManager>>();
+            var userData = new Mock<IUserDataRepository>();
+            userData
+                .Setup(x => x.IsUserExist(1))
+                .ReturnsAsync(false);
+
+            var userManager = new UserManager(userData.Object, logger.Object);
+
+            var _ = userManager.GetUserInfo(1);
+        }
+
+        [Test]
         public void UploadUser_CorrectInput_true()
         {
             var upload = new UpdateUser

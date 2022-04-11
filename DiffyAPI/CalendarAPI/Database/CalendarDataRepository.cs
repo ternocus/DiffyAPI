@@ -12,7 +12,7 @@ namespace DiffyAPI.CalendarAPI.Database
         public async Task<bool> IsEventExist(string title)
         {
             using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
-            var result = await connection.QueryAsync<EventData>($"SELECT * FROM [dbo].[Eventi] WHERE Titolo = {title};");
+            var result = await connection.QueryAsync<EventData>($"SELECT * FROM [dbo].[Eventi] WHERE Titolo = '{title}';");
             return result.FirstOrDefault() != null;
         }
 
@@ -23,12 +23,12 @@ namespace DiffyAPI.CalendarAPI.Database
             return result.FirstOrDefault() != null;
         }
 
-        public async Task AddNewEvent(Event myvent)
+        public async Task AddNewEvent(Event myEvent)
         {
             using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
-            var time = myvent.Date.Day + "/" + myvent.Date.Month + "/" + myvent.Date.Year;
-            await connection.QueryAsync<EventData>("INSERT INTO [dbo].[Eventi] (Titolo, Data, Testo, Filename) " +
-                                                                $"VALUES('{myvent.Title}', '{time}', '{myvent.Description}', '{myvent.FileName}');");
+            var time = myEvent.Date.Day + "/" + myEvent.Date.Month + "/" + myEvent.Date.Year;
+            await connection.QueryAsync<EventData>("INSERT INTO [dbo].[Eventi] (Titolo, Data, Luogo, Testo, Filename) " +
+                                                                $"VALUES('{myEvent.Title}', '{time}', '{myEvent.Location}', '{myEvent.Description}', '{myEvent.FileName}');");
         }
 
         public async Task<IEnumerable<EventHeaderData>> GetMonthEvents(DateTime filterData)
@@ -45,25 +45,23 @@ namespace DiffyAPI.CalendarAPI.Database
                           }).ToList();
 
             foreach (var myEvent in result)
-                myEvent.Title = (await connection.QueryAsync<string>($"SELECT Title FROM [dbo].[Eventi] WHERE IDEvent = {myEvent.IdEvent};")).First();
+                myEvent.Title = (await connection.QueryAsync<string>($"SELECT Titolo FROM [dbo].[Eventi] WHERE IDEvent = {myEvent.IdEvent};")).First();
 
             return result;
         }
 
-        public async Task<EventPollData> GetSingleEvent(int idEvent, string username)
+        public async Task<EventPollData?> GetSingleEvent(int idEvent)
         {
             using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
             var eventData = await connection.QueryAsync<EventData>($"SELECT * FROM [dbo].[Eventi] WHERE IDEvent = {idEvent};");
-            var pollData = await GetPollData(username);
             
             return new EventPollData()
             {
                 Event = eventData.FirstOrDefault(),
-                Poll = pollData ?? new PollData(),
             };
         }
 
-        public async Task UploadEvent(Event uploadEvent)
+        public async Task UploadEvent(UploadEvent uploadEvent)
         {
             using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
 
@@ -78,7 +76,13 @@ namespace DiffyAPI.CalendarAPI.Database
             {
                 if (index++ > 0)
                     query += ", ";
-                query += $"Data = '{uploadEvent.Date.Day + " / " + uploadEvent.Date.Month + " / " + uploadEvent.Date.Year}'";
+                query += $"Data = '{uploadEvent.Date.Day + "/" + uploadEvent.Date.Month + "/" + uploadEvent.Date.Year}'";
+            }
+            if (!string.IsNullOrEmpty(uploadEvent.Location))
+            {
+                if (index++ > 0)
+                    query += ", ";
+                query += $"Luogo = '{uploadEvent.Location}'";
             }
             if (!string.IsNullOrEmpty(uploadEvent.Description))
             {
@@ -92,7 +96,7 @@ namespace DiffyAPI.CalendarAPI.Database
                     query += ", ";
                 query += $"FileName = '{uploadEvent.FileName}'";
             }
-            query += $" WHERE Id = {uploadEvent.IdEvent};";
+            query += $" WHERE IDEvent = {uploadEvent.IDEvent};";
 
             await connection.QueryAsync(query);
         }
@@ -105,23 +109,88 @@ namespace DiffyAPI.CalendarAPI.Database
 
         public async Task<bool> IsPollExist(string username)
         {
-            return await GetPollData(username) != null;
+            using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
+            var result = await connection.QueryAsync<PollData>($"SELECT * FROM [dbo].[Sondaggio] WHERE Username = '{username}';");
+            return result.FirstOrDefault() != null;
+        }
+
+        public async Task<bool> IsPollExist(int idPoll)
+        {
+            using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
+            var result = await connection.QueryAsync<PollData>($"SELECT * FROM [dbo].[Sondaggio] WHERE IDPoll = '{idPoll}';");
+            return result.FirstOrDefault() != null;
         }
 
         public async Task AddNewPoll(Poll poll)
         {
-            throw new NotImplementedException("Mi serve ancora la struttura della poll");
+            using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
+            await connection.QueryAsync<EventData>("INSERT INTO [dbo].[Eventi] (IDEvent, Username, Partecipazione, Alloggio, Ruolo, Note, Luogo) " +
+                                                   $"VALUES({poll.IDEvent}, '{poll.Username}', {poll.Partecipazione}, '{poll.Alloggio}', '{poll.Ruolo}', '{poll.Note}', '{poll.Luogo}');");
         }
 
         public async Task UploadPoll(Poll poll)
         {
-            throw new NotImplementedException("Mi serve ancora la struttura della poll");
+            using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
+
+            var index = 0;
+            var query = "UPDATE [dbo].[Eventi] SET ";
+            if (poll.IDEvent >= 0)
+            {
+                query += $"IDEvent = {poll.IDEvent}";
+                index++;
+            }
+            if (!string.IsNullOrEmpty(poll.Username))
+            {
+                if (index++ > 0)
+                    query += ", ";
+                query += $"Username = '{poll.Username}'";
+            }
+            if (poll.Partecipazione == 1 || poll.Partecipazione == 2 || poll.Partecipazione == 3)
+            {
+                if (index++ > 0)
+                    query += ", ";
+                query += $"Partecipazione = {poll.Partecipazione}";
+            }
+            if (!string.IsNullOrEmpty(poll.Alloggio))
+            {
+                if (index++ > 0)
+                    query += ", ";
+                query += $"Alloggio = '{poll.Alloggio}'";
+            }
+            if (!string.IsNullOrEmpty(poll.Ruolo))
+            {
+                if (index++ > 0)
+                    query += ", ";
+                query += $"Ruolo = '{poll.Ruolo}'";
+            }
+            if (!string.IsNullOrEmpty(poll.Note))
+            {
+                if (index++ > 0)
+                    query += ", ";
+                query += $"Note = '{poll.Note}'";
+            }
+            if (!string.IsNullOrEmpty(poll.Luogo))
+            {
+                if (index++ > 0)
+                    query += ", ";
+                query += $"Luogo = '{poll.Luogo}'";
+            }
+
+            query += $" WHERE IDPoll = {poll.IDPoll};";
+
+            await connection.QueryAsync(query);
         }
 
-        private async Task<PollData?> GetPollData(string username)
+        public async Task DeletePoll(int idPoll)
         {
             using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
-            var result = await connection.QueryAsync<PollData>($"SELECT * FROM [dbo].[Sondaggio] WHERE Username = '{username}';");
+            await connection.QueryAsync<EventData>($"DELETE FROM [dbo].[Sondaggio] WHERE IDPoll = {idPoll};");
+        }
+
+        public async Task<PollData?> GetPollData(int idPoll)
+        {
+            using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
+            var result = await connection.QueryAsync<PollData>($"SELECT * FROM [dbo].[Sondaggio] WHERE Username = '{idPoll}';");
             return result.FirstOrDefault();
         }
     }

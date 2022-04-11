@@ -59,7 +59,7 @@ namespace DiffyAPI.CommunicationAPI.Database
         public async Task<MessageData?> GetMessage(HeaderMessage messageRequest)
         {
             using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
-            IEnumerable<MessageData?> result = await connection.QueryAsync<MessageData>("SELECT IDTitolo, Data, Username, Titolo, Testo FROM [dbo].[Comunicazioni] WHERE " 
+            var result = await connection.QueryAsync<MessageData>("SELECT IDTitolo, Data, Username, Titolo, Testo FROM [dbo].[Comunicazioni] WHERE " 
                 + $"IDCategoria = {messageRequest.IdCategory} AND IDTitolo = {messageRequest.IdTitle}");
 
             return result.FirstOrDefault();
@@ -102,7 +102,7 @@ namespace DiffyAPI.CommunicationAPI.Database
             }
             if (!string.IsNullOrEmpty(uploadMessage.Username))
             {
-                if (index++ > 0)
+                if (index > 0)
                     query += ", ";
                 query += $"Username = '{uploadMessage.Username}'";
             }

@@ -5,8 +5,9 @@ namespace DiffyAPI.CalendarAPI.Database.Model
 {
     public class EventData
     {
-        public string Title { get; set; }
-        public string Date { get; set; }
+        public string Titolo { get; set; }
+        public string Data { get; set; }
+        public string Luogo { get; set; }
         public string Testo { get; set; }
         public string FileName { get; set; }
         public int IdEvent { get; set; }

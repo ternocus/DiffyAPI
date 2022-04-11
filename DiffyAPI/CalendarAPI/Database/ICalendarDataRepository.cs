@@ -10,11 +10,15 @@ namespace DiffyAPI.CalendarAPI.Database
         public Task<bool> IsEventExist(int idEvent);
         public Task AddNewEvent(Event myEvent);
         public Task<IEnumerable<EventHeaderData>> GetMonthEvents(DateTime filterData);
-        public Task<EventPollData> GetSingleEvent(int idEvent, string username);
-        public Task<bool> IsPollExist(string username);
-        public Task AddNewPoll(Poll poll);
-        public Task UploadEvent(Event uploadEvent);
+        public Task<EventPollData?> GetSingleEvent(int idEvent);
+        public Task UploadEvent(UploadEvent uploadEvent);
         public Task DeleteEvent(int idEvent);
+
+        public Task<bool> IsPollExist(string username);
+        public Task<bool> IsPollExist(int idPoll);
+        public Task AddNewPoll(Poll poll);
+        public Task<PollData?> GetPollData(int idPoll);
         public Task UploadPoll(Poll poll);
+        public Task DeletePoll(int idPoll);
     }
 }

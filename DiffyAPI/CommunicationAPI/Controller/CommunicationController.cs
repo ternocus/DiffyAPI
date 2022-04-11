@@ -18,7 +18,7 @@ namespace DiffyAPI.CommunicationAPI.Controller
             _logger = logger;
         }
 
-        [HttpGet("GetCategory")]
+        [HttpGet("GetCategoryList")]
         public async Task<IActionResult> GetCategory()
         {
             try
@@ -46,7 +46,7 @@ namespace DiffyAPI.CommunicationAPI.Controller
             }
         }
 
-        [HttpGet("MessageList")]
+        [HttpGet("GetMessageList")]
         public async Task<IActionResult> GetListMessage([FromQuery, Required, MinLength(1)] string category)
         {
             try
@@ -79,7 +79,7 @@ namespace DiffyAPI.CommunicationAPI.Controller
             }
         }
 
-        [HttpGet("NewMessage")]
+        [HttpGet("GetMessage")]
         public async Task<IActionResult> GetBodyMessage([FromQuery] HeaderMessageRequest messageRequest)
         {
             try

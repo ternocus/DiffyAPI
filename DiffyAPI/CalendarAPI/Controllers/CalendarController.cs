@@ -52,11 +52,11 @@ namespace DiffyAPI.CalendarAPI.Controllers
         }
 
         [HttpGet("GetSingleEvent")]
-        public async Task<IActionResult> GetSingleEvent([FromQuery][Required] int idEvent, [Required] string username)
+        public async Task<IActionResult> GetSingleEvent([FromQuery][Required] int idEvent, int idPoll)
         {
             try
             {
-                return Ok(await _calendarManager.GetSingleEvent(idEvent, username));
+                return Ok(await _calendarManager.GetSingleEvent(idEvent, idPoll));
             }
             catch (Exception ex)
             {

@@ -7,10 +7,9 @@ namespace DiffyAPI.CalendarAPI.Controllers.Model
     {
         public string? Title { get; set; }
         public DateTime? Date { get; set; }
+        public string? Location { get; set; }
         public string? Description { get; set; }
         public string? FileName { get; set; }
-        public PollRequest? Poll { get; set; }
-        public int? IdEvent { get; set; }
 
         public Event ToCore()
         {
@@ -18,10 +17,9 @@ namespace DiffyAPI.CalendarAPI.Controllers.Model
             {
                 Title = Title!,
                 Date = Date!.Value,
+                Location = Location!,
                 Description = Description!,
                 FileName = FileName!,
-                Poll = Poll!.ToCore(),
-                IdEvent = IdEvent!.Value,
             };
         }
 
@@ -31,28 +29,28 @@ namespace DiffyAPI.CalendarAPI.Controllers.Model
 
             if (string.IsNullOrEmpty(Title))
                 result.ErrorMessage("Title", "The Title must contain a value");
+            else if (Title.Length > 255)
+                result.ErrorMessage("Title length", "The username must be a maximum of 255 characters");
 
             if (Date == null)
                 result.ErrorMessage("Date", "The Date must contain a value");
-            else if (Date.Value.Year < 2022)
+            else if (Date.Value.Year < DateTime.Now.Year)
                 result.ErrorMessage("Date", "The Date must contain a real value");
+
+            if (string.IsNullOrEmpty(Location))
+                result.ErrorMessage("Location", "The Location must contain a value");
+            else if (Location.Length > 100)
+                result.ErrorMessage("Location length", "The Location must be a maximum of 100 characters");
 
             if (string.IsNullOrEmpty(Description))
                 result.ErrorMessage("Description", "The Description must contain a value");
+            else if (Description.Length > 1000)
+                result.ErrorMessage("Description length", "The Description must be a maximum of 1000 characters");
 
             if (string.IsNullOrEmpty(FileName))
                 result.ErrorMessage("FileName", "The FileName must contain a value");
-
-            if (Poll == null)
-                result.ErrorMessage("Poll", "The Poll must contain a value");
-            else
-                foreach (var (key, value) in Poll.Validate()._errors)
-                    result.ErrorMessage(key, value);
-
-            if (IdEvent == null)
-                result.ErrorMessage("IdEvent", "The IdEvent must contain a value");
-            else if (IdEvent < 0)
-                result.ErrorMessage("IdEvent", "The IdEvent must contain a real value");
+            else if (FileName.Length > 20)
+                result.ErrorMessage("FileName length", "The FileName must be a maximum of 20 characters");
 
             return result;
         }

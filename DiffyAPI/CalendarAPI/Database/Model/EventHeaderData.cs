@@ -6,6 +6,7 @@ namespace DiffyAPI.CalendarAPI.Database.Model
     {
         public string Title { get; set; }
         public string Date { get; set; }
+        public string Luogo { get; set; }
         public int IdEvent { get; set; }
         public int IdPoll { get; set; }
 
@@ -16,6 +17,7 @@ namespace DiffyAPI.CalendarAPI.Database.Model
                 IdEvent = IdEvent,
                 Title = Title,
                 Date = DateTime.Parse(Date),
+                Location = Luogo,
                 IdPoll = IdPoll,
             };
         }
