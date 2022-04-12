@@ -1,5 +1,4 @@
-﻿using DiffyAPI.CalendarAPI.Controllers.Model;
-using DiffyAPI.CalendarAPI.Core.Model;
+﻿using DiffyAPI.CalendarAPI.Core.Model;
 using DiffyAPI.CalendarAPI.Database.Model;
 
 namespace DiffyAPI.CalendarAPI.Database

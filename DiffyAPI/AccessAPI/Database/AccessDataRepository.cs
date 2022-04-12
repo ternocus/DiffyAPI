@@ -1,10 +1,10 @@
 ﻿using Dapper;
 using DiffyAPI.AccessAPI.Core.Model;
 using DiffyAPI.AccessAPI.Database.Model;
+using DiffyAPI.Model;
 using DiffyAPI.Utils;
 using System.Data;
 using System.Data.SqlClient;
-using DiffyAPI.Model;
 
 namespace DiffyAPI.AccessAPI.Database
 {

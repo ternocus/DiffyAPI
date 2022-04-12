@@ -1,10 +1,10 @@
 ﻿using Dapper;
+using DiffyAPI.Model;
 using DiffyAPI.UserAPI.Core.Model;
 using DiffyAPI.UserAPI.Database.Model;
 using DiffyAPI.Utils;
 using System.Data;
 using System.Data.SqlClient;
-using DiffyAPI.Model;
 
 namespace DiffyAPI.UserAPI.Database
 {
@@ -35,7 +35,7 @@ namespace DiffyAPI.UserAPI.Database
         public async Task UploadUserData(UpdateUser registerCredential)
         {
             using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
-            
+
             var index = 0;
             var query = "UPDATE[dbo].[Utenti] SET ";
             if (!string.IsNullOrEmpty(registerCredential.Name))
@@ -65,7 +65,7 @@ namespace DiffyAPI.UserAPI.Database
             {
                 if (index++ > 0)
                     query += ", ";
-                query += $"Privilegi = {(int) registerCredential.Privilege}";
+                query += $"Privilegi = {(int)registerCredential.Privilege}";
             }
             if (!string.IsNullOrEmpty(registerCredential.Email))
             {

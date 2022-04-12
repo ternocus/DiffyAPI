@@ -1,6 +1,5 @@
-﻿using DiffyAPI.UserAPI.Core.Model;
-using System.ComponentModel.DataAnnotations;
-using DiffyAPI.Model;
+﻿using DiffyAPI.Model;
+using DiffyAPI.UserAPI.Core.Model;
 using DiffyAPI.Utils;
 
 namespace DiffyAPI.UserAPI.Controllers.Model
@@ -52,17 +51,17 @@ namespace DiffyAPI.UserAPI.Controllers.Model
 
             if (!string.IsNullOrEmpty(Privilege))
             {
-                if(Privilege != Privileges.Guest.ToString() && Privilege != Privileges.Admin.ToString() && Privilege != Privileges.Associate.ToString() 
+                if (Privilege != Privileges.Guest.ToString() && Privilege != Privileges.Admin.ToString() && Privilege != Privileges.Associate.ToString()
                    && Privilege != Privileges.Athlete.ToString() && Privilege != Privileges.Councillor.ToString() && Privilege != Privileges.Instructor.ToString())
                     result.ErrorMessage("Privilegi", "The Privilegi must contain an enum value");
             }
 
-            if(IdUser == null)
+            if (IdUser == null)
                 result.ErrorMessage("IdUser", "The IdUser must contain a value");
-            else if(IdUser < 0)
+            else if (IdUser < 0)
                 result.ErrorMessage("IdUser", "The IdUser must contain a real value");
 
-            if(string.IsNullOrEmpty(Name) && string.IsNullOrEmpty(Surname) && string.IsNullOrEmpty(Username) && 
+            if (string.IsNullOrEmpty(Name) && string.IsNullOrEmpty(Surname) && string.IsNullOrEmpty(Username) &&
                string.IsNullOrEmpty(Password) && Privilege == null && string.IsNullOrEmpty(Email))
                 result.ErrorMessage("Parameters", "You must fill at least one other field.");
 

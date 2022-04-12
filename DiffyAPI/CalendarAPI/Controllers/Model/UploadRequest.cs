@@ -46,7 +46,7 @@ namespace DiffyAPI.CalendarAPI.Controllers.Model
             if (!string.IsNullOrEmpty(FileName) && FileName.Length > 20)
                 result.ErrorMessage("FileName length", "The FileName must be a maximum of 20 characters");
 
-            if(Poll != null)
+            if (Poll != null)
                 foreach (var err in Poll.Validate()._errors)
                     result.ErrorMessage(err.Key, err.Value);
 

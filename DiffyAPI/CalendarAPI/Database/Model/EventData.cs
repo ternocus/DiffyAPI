@@ -1,7 +1,4 @@
-﻿using DiffyAPI.CalendarAPI.Controllers.Model;
-using DiffyAPI.CalendarAPI.Core.Model;
-
-namespace DiffyAPI.CalendarAPI.Database.Model
+﻿namespace DiffyAPI.CalendarAPI.Database.Model
 {
     public class EventData
     {

@@ -45,10 +45,10 @@ namespace DiffyAPI.CalendarAPI.Controllers.Model
 
             if (IDEvent == null)
                 result.ErrorMessage("IDEvent", "The IDEvent must contain a value");
-            else if(IDEvent < 0)
+            else if (IDEvent < 0)
                 result.ErrorMessage("IDEvent length", "The IDEvent must have a value >= 0");
 
-            if(Partecipazione == null)
+            if (Partecipazione == null)
                 result.ErrorMessage("Partecipazione", "The Partecipazione must contain a value");
             else if (Partecipazione != 1 && Partecipazione != 2 && Partecipazione != 3)
                 result.ErrorMessage("Partecipazione range", "The Partecipazione must have a real value [1-2-3]");

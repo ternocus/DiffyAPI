@@ -25,7 +25,7 @@ namespace DiffyAPI.UserAPI.Core
             var userResult = ConvertUserResult(await _userDataRepository.GetUserListData());
 
             var userResults = userResult.ToList();
-            if (!userResults.Any()) 
+            if (!userResults.Any())
                 return result;
 
             result.AddRange(OrderList(AddGuestUser(userResults)));

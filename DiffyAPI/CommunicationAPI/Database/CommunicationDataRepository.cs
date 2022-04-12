@@ -50,8 +50,8 @@ namespace DiffyAPI.CommunicationAPI.Database
         public async Task AddNewMessage(NewMessage message)
         {
             using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
-            var time = message.Date.Day +"/"+ message.Date.Month + "/"+ message.Date.Year;
-            
+            var time = message.Date.Day + "/" + message.Date.Month + "/" + message.Date.Year;
+
             await connection.QueryAsync<string>("INSERT INTO [dbo].[Comunicazioni] (IDCategoria, Titolo, Testo, Data, Username) VALUES" +
                                                 $"({message.IDCategory}, '{message.Title}', '{message.Message}', '{time}', '{message.Username}'); ");
         }
@@ -59,7 +59,7 @@ namespace DiffyAPI.CommunicationAPI.Database
         public async Task<MessageData?> GetMessage(HeaderMessage messageRequest)
         {
             using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
-            var result = await connection.QueryAsync<MessageData>("SELECT IDTitolo, Data, Username, Titolo, Testo FROM [dbo].[Comunicazioni] WHERE " 
+            var result = await connection.QueryAsync<MessageData>("SELECT IDTitolo, Data, Username, Titolo, Testo FROM [dbo].[Comunicazioni] WHERE "
                 + $"IDCategoria = {messageRequest.IdCategory} AND IDTitolo = {messageRequest.IdTitle}");
 
             return result.FirstOrDefault();

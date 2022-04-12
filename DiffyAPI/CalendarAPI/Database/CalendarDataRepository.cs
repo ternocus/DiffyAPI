@@ -54,7 +54,7 @@ namespace DiffyAPI.CalendarAPI.Database
         {
             using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
             var eventData = await connection.QueryAsync<EventData>($"SELECT * FROM [dbo].[Eventi] WHERE IDEvent = {idEvent};");
-            
+
             return new EventPollData()
             {
                 Event = eventData.FirstOrDefault(),

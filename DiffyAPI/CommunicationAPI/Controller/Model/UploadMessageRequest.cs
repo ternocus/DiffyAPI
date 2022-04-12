@@ -33,7 +33,7 @@ namespace DiffyAPI.CommunicationAPI.Controller.Model
                 result.ErrorMessage("IdMessage", "The IdMessage must contain a value");
             else if (IdMessage < 0)
                 result.ErrorMessage("IdMessage", "The IdMessage must contain a real value");
-            
+
             if (IdCategory != null && IdCategory < 0)
                 result.ErrorMessage("IdCategory", "The IdCategory must contain a real value");
 
@@ -46,7 +46,7 @@ namespace DiffyAPI.CommunicationAPI.Controller.Model
             if (!string.IsNullOrEmpty(Username) && Username.Length > 18)
                 result.ErrorMessage("Username", "The Username must contain at least 18 characters");
 
-            if(IdCategory == null && IdMessage == null && Title == null && Message == null && Data == null && Username == null)
+            if (IdCategory == null && IdMessage == null && Title == null && Message == null && Data == null && Username == null)
                 result.ErrorMessage("Parameters", "You must fill at least one other field.");
 
             return result;
