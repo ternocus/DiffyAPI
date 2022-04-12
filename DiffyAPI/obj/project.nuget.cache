@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ZMFQlr54IeVKZPVJ4PWxKF57/lAYDn2WP0JCCtRWxeB1xgDPOJXOtReDTnXFJrIZwGWbceUQ0XyYzvJWVsTylw==",
+  "dgSpecHash": "rl9P/fuQi4ngswqPLgo2ggu2L2AG3c9OkRh/yv7Vb1oBngE0BCzvP6A5D0Sm8OflEuM4sUBxDsOwkMW/NSQXSw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\apioggia\\Source\\Repos\\ternocus\\DiffyAPI\\DiffyAPI\\DiffyAPI.csproj",
+  "projectFilePath": "C:\\Users\\apioggia\\source\\repos\\ternocus\\DiffyAPI\\DiffyAPI\\DiffyAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\apioggia\\.nuget\\packages\\castle.core\\4.4.1\\castle.core.4.4.1.nupkg.sha512",
     "C:\\Users\\apioggia\\.nuget\\packages\\dapper\\2.0.123\\dapper.2.0.123.nupkg.sha512",

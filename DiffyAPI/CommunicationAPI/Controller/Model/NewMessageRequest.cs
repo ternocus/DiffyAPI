@@ -34,9 +34,13 @@ namespace DiffyAPI.CommunicationAPI.Controller.Model
 
             if (string.IsNullOrEmpty(Title))
                 result.ErrorMessage("Title", "The Title must contain a value");
+            else if(Title.Length > 100)
+                result.ErrorMessage("Title", "The Title must be a maximum of 100 characters");
 
             if (string.IsNullOrEmpty(Message))
                 result.ErrorMessage("Message", "The Message must contain a value");
+            else if(Message.Length > 1000)
+                result.ErrorMessage("Message", "The Message must be a maximum of 1000 characters");
 
             if (Date == null)
                 result.ErrorMessage("Date", "The Date must contain a value");

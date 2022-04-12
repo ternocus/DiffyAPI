@@ -124,8 +124,8 @@ namespace DiffyAPI.CalendarAPI.Database
         public async Task AddNewPoll(Poll poll)
         {
             using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
-            await connection.QueryAsync<EventData>("INSERT INTO [dbo].[Eventi] (IDEvent, Username, Partecipazione, Alloggio, Ruolo, Note, Luogo) " +
-                                                   $"VALUES({poll.IDEvent}, '{poll.Username}', {poll.Partecipazione}, '{poll.Alloggio}', '{poll.Ruolo}', '{poll.Note}', '{poll.Luogo}');");
+            await connection.QueryAsync<EventData>("INSERT INTO [dbo].[Sondaggio] (IDEvent, Username, Partecipazione, Alloggio, Ruolo, Note, Luogo) " +
+                                                   $"VALUES({ poll.IDEvent}, '{poll.Username}', {poll.Partecipazione}, '{poll.Alloggio}', '{poll.Ruolo}', '{poll.Note}', '{poll.Luogo}');");
         }
 
         public async Task UploadPoll(Poll poll)
@@ -133,7 +133,7 @@ namespace DiffyAPI.CalendarAPI.Database
             using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
 
             var index = 0;
-            var query = "UPDATE [dbo].[Eventi] SET ";
+            var query = "UPDATE [dbo].[Sondaggio] SET ";
             if (poll.IDEvent >= 0)
             {
                 query += $"IDEvent = {poll.IDEvent}";
@@ -190,7 +190,7 @@ namespace DiffyAPI.CalendarAPI.Database
         public async Task<PollData?> GetPollData(int idPoll)
         {
             using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
-            var result = await connection.QueryAsync<PollData>($"SELECT * FROM [dbo].[Sondaggio] WHERE Username = '{idPoll}';");
+            var result = await connection.QueryAsync<PollData>($"SELECT * FROM [dbo].[Sondaggio] WHERE IDPoll = '{idPoll}';");
             return result.FirstOrDefault();
         }
     }

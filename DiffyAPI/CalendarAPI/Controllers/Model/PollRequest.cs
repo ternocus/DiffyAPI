@@ -5,7 +5,7 @@ namespace DiffyAPI.CalendarAPI.Controllers.Model
 {
     public class PollRequest : IValidateResult
     {
-        public int IDPoll { get; set; }
+        public int? IDPoll { get; set; }
         public int? IDEvent { get; set; }
         public string? Username { get; set; }
         public int? Partecipazione { get; set; }
@@ -18,7 +18,7 @@ namespace DiffyAPI.CalendarAPI.Controllers.Model
         {
             return new Poll
             {
-                IDPoll = IDPoll,
+                IDPoll = IDPoll!.Value,
                 IDEvent = IDEvent!.Value,
                 Username = Username!,
                 Partecipazione = Partecipazione!.Value,
@@ -40,15 +40,17 @@ namespace DiffyAPI.CalendarAPI.Controllers.Model
 
             if (IDPoll == null)
                 result.ErrorMessage("IDPoll", "The IDPoll must contain a value");
+            else if (IDPoll < 0)
+                result.ErrorMessage("IDPoll length", "The IDPoll must have a value >= 0");
 
             if (IDEvent == null)
                 result.ErrorMessage("IDEvent", "The IDEvent must contain a value");
-            if(IDEvent < 0)
+            else if(IDEvent < 0)
                 result.ErrorMessage("IDEvent length", "The IDEvent must have a value >= 0");
 
             if(Partecipazione == null)
                 result.ErrorMessage("Partecipazione", "The Partecipazione must contain a value");
-            if (Partecipazione != 1 && Partecipazione != 2 && Partecipazione != 3)
+            else if (Partecipazione != 1 && Partecipazione != 2 && Partecipazione != 3)
                 result.ErrorMessage("Partecipazione range", "The Partecipazione must have a real value [1-2-3]");
 
             if (string.IsNullOrEmpty(Alloggio))

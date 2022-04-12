@@ -43,6 +43,7 @@ namespace DiffyAPI.Test
         {
             var obj = new PollRequest
             {
+                IDPoll = null,
                 IDEvent = null,
                 Username = null,
                 Partecipazione = null,
@@ -54,10 +55,11 @@ namespace DiffyAPI.Test
 
             Assert.IsFalse(obj.IsValid);
             Assert.IsNotEmpty(obj._errors);
-            Assert.AreEqual(7, obj._errors.Count);
+            Assert.AreEqual(8, obj._errors.Count);
 
             var obj2 = new PollRequest
             {
+                IDPoll = -1,
                 IDEvent = -1,
                 Username = "1234567890123456789",
                 Partecipazione = 4,
@@ -69,7 +71,7 @@ namespace DiffyAPI.Test
 
             Assert.IsFalse(obj2.IsValid);
             Assert.IsNotEmpty(obj2._errors);
-            Assert.AreEqual(7, obj2._errors.Count);
+            Assert.AreEqual(8, obj2._errors.Count);
         }
 
         [Test]
