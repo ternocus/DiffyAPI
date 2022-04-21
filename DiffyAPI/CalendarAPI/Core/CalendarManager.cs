@@ -40,7 +40,7 @@ namespace DiffyAPI.CalendarAPI.Core
 
         public async Task UploadEvent(UploadEvent uploadEvent)
         {
-            if (!await _calendarDataRepository.IsEventExist(uploadEvent.Title))
+            if (!await _calendarDataRepository.IsEventExist(uploadEvent.IDEvent))
             {
                 _logger.LogError($"L'evento [id: {uploadEvent.IDEvent}, {uploadEvent.Title}] da modificare non è presente nel database");
                 throw new EventNotFoundException($"The event [id: {uploadEvent.IDEvent}, {uploadEvent.Title}] is not present in the database.");

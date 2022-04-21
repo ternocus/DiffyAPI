@@ -1,4 +1,5 @@
-﻿using DiffyAPI.AccessAPI.Controllers.Model;
+﻿using System.ComponentModel.DataAnnotations;
+using DiffyAPI.AccessAPI.Controllers.Model;
 using DiffyAPI.AccessAPI.Core;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,7 +19,7 @@ namespace DiffyAPI.AccessAPI.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest request)
+        public async Task<IActionResult> Login([FromHeader] [Required] [FromBody] LoginRequest request)
         {
             try
             {
