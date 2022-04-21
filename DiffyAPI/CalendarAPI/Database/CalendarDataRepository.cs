@@ -37,7 +37,7 @@ namespace DiffyAPI.CalendarAPI.Database
             var data = await connection.QueryAsync<FilterData>($"SELECT IDEvent, Data FROM [dbo].[Eventi];");
 
             var result = (from filter in data
-                          where filterData >= DateTime.Parse(filter.Data)
+                          where filterData.Month == DateTime.Parse(filter.Data).Month
                           select new EventHeaderData
                           {
                               Date = filter.Data,
@@ -45,7 +45,10 @@ namespace DiffyAPI.CalendarAPI.Database
                           }).ToList();
 
             foreach (var myEvent in result)
-                myEvent.Title = (await connection.QueryAsync<string>($"SELECT Titolo FROM [dbo].[Eventi] WHERE IDEvent = {myEvent.IdEvent};")).First();
+            {
+                myEvent.Title = (await connection.QueryAsync<string>($"SELECT Titolo, Luogo FROM [dbo].[Eventi] WHERE IDEvent = {myEvent.IdEvent};")).First();
+                myEvent.Luogo = (await connection.QueryAsync<string>($"SELECT Luogo FROM [dbo].[Eventi] WHERE IDEvent = {myEvent.IdEvent};")).First();
+            }
 
             return result;
         }
@@ -93,7 +96,7 @@ namespace DiffyAPI.CalendarAPI.Database
             }
             if (!string.IsNullOrEmpty(uploadEvent.FileName))
             {
-                if (index++ > 0)
+                if (index > 0)
                     query += ", ";
                 query += $"FileName = '{uploadEvent.FileName}'";
             }
@@ -126,7 +129,7 @@ namespace DiffyAPI.CalendarAPI.Database
         {
             using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
             await connection.QueryAsync<EventData>("INSERT INTO [dbo].[Sondaggio] (IDEvent, Username, Partecipazione, Alloggio, Ruolo, Note, Luogo) " +
-                                                   $"VALUES({ poll.IDEvent}, '{poll.Username}', {poll.Partecipazione}, '{poll.Alloggio}', '{poll.Ruolo}', '{poll.Note}', '{poll.Luogo}');");
+                                                   $"VALUES({ poll.IDEvent}, '{poll.Username}', {poll.Participation}, '{poll.Accommodation}', '{poll.Role}', '{poll.Note}', '{poll.Location}');");
         }
 
         public async Task UploadPoll(Poll poll)
@@ -146,23 +149,23 @@ namespace DiffyAPI.CalendarAPI.Database
                     query += ", ";
                 query += $"Username = '{poll.Username}'";
             }
-            if (poll.Partecipazione == 1 || poll.Partecipazione == 2 || poll.Partecipazione == 3)
+            if (poll.Participation == Participation.No || poll.Participation == Participation.Maybe || poll.Participation == Participation.Yes)
             {
                 if (index++ > 0)
                     query += ", ";
-                query += $"Partecipazione = {poll.Partecipazione}";
+                query += $"Partecipazione = {poll.Participation}";
             }
-            if (!string.IsNullOrEmpty(poll.Alloggio))
+            if (!string.IsNullOrEmpty(poll.Accommodation))
             {
                 if (index++ > 0)
                     query += ", ";
-                query += $"Alloggio = '{poll.Alloggio}'";
+                query += $"Alloggio = '{poll.Accommodation}'";
             }
-            if (!string.IsNullOrEmpty(poll.Ruolo))
+            if (!string.IsNullOrEmpty(poll.Role))
             {
                 if (index++ > 0)
                     query += ", ";
-                query += $"Ruolo = '{poll.Ruolo}'";
+                query += $"Ruolo = '{poll.Role}'";
             }
             if (!string.IsNullOrEmpty(poll.Note))
             {
@@ -170,11 +173,11 @@ namespace DiffyAPI.CalendarAPI.Database
                     query += ", ";
                 query += $"Note = '{poll.Note}'";
             }
-            if (!string.IsNullOrEmpty(poll.Luogo))
+            if (!string.IsNullOrEmpty(poll.Location))
             {
-                if (index++ > 0)
+                if (index > 0)
                     query += ", ";
-                query += $"Luogo = '{poll.Luogo}'";
+                query += $"Luogo = '{poll.Location}'";
             }
 
             query += $" WHERE IDPoll = {poll.IDPoll};";

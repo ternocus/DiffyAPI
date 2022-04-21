@@ -5,27 +5,27 @@ namespace DiffyAPI.CalendarAPI.Controllers.Model
 {
     public class PollRequest : IValidateResult
     {
-        public int? IDPoll { get; set; }
-        public int? IDEvent { get; set; }
+        public int? IdPoll { get; set; }
+        public int? IdEvent { get; set; }
         public string? Username { get; set; }
-        public int? Partecipazione { get; set; }
-        public string? Alloggio { get; set; }
-        public string? Ruolo { get; set; }
+        public string? Participation { get; set; }
+        public string? Accommodation { get; set; }
+        public string? Role { get; set; }
         public string? Note { get; set; }
-        public string? Luogo { get; set; }
+        public string? Location { get; set; }
 
         public Poll ToCore()
         {
             return new Poll
             {
-                IDPoll = IDPoll!.Value,
-                IDEvent = IDEvent!.Value,
+                IDPoll = IdPoll!.Value,
+                IDEvent = IdEvent!.Value,
                 Username = Username!,
-                Partecipazione = Partecipazione!.Value,
-                Alloggio = Alloggio!,
-                Ruolo = Ruolo!,
+                Participation = (Participation)Enum.Parse(typeof(Participation), Participation!),
+                Accommodation = Accommodation!,
+                Role = Role!,
                 Note = Note!,
-                Luogo = Luogo!,
+                Location = Location!,
             };
         }
 
@@ -34,44 +34,44 @@ namespace DiffyAPI.CalendarAPI.Controllers.Model
             var result = new ValidateResult();
 
             if (string.IsNullOrEmpty(Username))
-                result.ErrorMessage("Cognome", "The Cognome must contain a value");
+                result.ErrorMessage("Username", "The Username must contain a value");
             else if (Username.Length > 18)
-                result.ErrorMessage("Cognome length", "The Cognome must be a maximum of 18 characters");
+                result.ErrorMessage("Username length", "The Username must be a maximum of 18 characters");
 
-            if (IDPoll == null)
-                result.ErrorMessage("IDPoll", "The IDPoll must contain a value");
-            else if (IDPoll < 0)
-                result.ErrorMessage("IDPoll length", "The IDPoll must have a value >= 0");
+            if (IdPoll == null)
+                result.ErrorMessage("IdPoll", "The IdPoll must contain a value");
+            else if (IdPoll < 0)
+                result.ErrorMessage("IdPoll length", "The IdPoll must have a value >= 0");
 
-            if (IDEvent == null)
-                result.ErrorMessage("IDEvent", "The IDEvent must contain a value");
-            else if (IDEvent < 0)
-                result.ErrorMessage("IDEvent length", "The IDEvent must have a value >= 0");
+            if (IdEvent == null)
+                result.ErrorMessage("IdEvent", "The IdEvent must contain a value");
+            else if (IdEvent < 0)
+                result.ErrorMessage("IdEvent length", "The IdEvent must have a value >= 0");
 
-            if (Partecipazione == null)
-                result.ErrorMessage("Partecipazione", "The Partecipazione must contain a value");
-            else if (Partecipazione != 1 && Partecipazione != 2 && Partecipazione != 3)
-                result.ErrorMessage("Partecipazione range", "The Partecipazione must have a real value [1-2-3]");
+            if (string.IsNullOrEmpty(Participation))
+                result.ErrorMessage("Participation", "The Participation must contain a value");
+            else if (Participation != "No" && Participation != "Forse" && Participation != "Si")
+                result.ErrorMessage("Participation", "The Participation must be a real value");
 
-            if (string.IsNullOrEmpty(Alloggio))
-                result.ErrorMessage("Alloggio", "The Alloggio must contain a value");
-            else if (Alloggio.Length > 16)
-                result.ErrorMessage("Alloggio length", "The Alloggio must be a maximum of 16 characters");
+            if (string.IsNullOrEmpty(Accommodation))
+                result.ErrorMessage("Accommodation", "The Accommodation must contain a value");
+            else if (Accommodation.Length > 16)
+                result.ErrorMessage("Accommodation length", "The Accommodation must be a maximum of 16 characters");
 
-            if (string.IsNullOrEmpty(Ruolo))
-                result.ErrorMessage("Ruolo", "The Ruolo must contain a value");
-            else if (Ruolo.Length > 32)
-                result.ErrorMessage("Ruolo length", "The Ruolo must be a maximum of 32 characters");
+            if (string.IsNullOrEmpty(Role))
+                result.ErrorMessage("Role", "The Role must contain a value");
+            else if (Role.Length > 32)
+                result.ErrorMessage("Role length", "The Role must be a maximum of 32 characters");
 
             if (string.IsNullOrEmpty(Note))
                 result.ErrorMessage("Note", "The Note must contain a value");
             else if (Note.Length > 200)
                 result.ErrorMessage("Note length", "The Note must be a maximum of 200 characters");
 
-            if (string.IsNullOrEmpty(Luogo))
-                result.ErrorMessage("Luogo", "The Luogo must contain a value");
-            else if (Luogo.Length > 100)
-                result.ErrorMessage("Luogo length", "The Luogo must be a maximum of 100 characters");
+            if (string.IsNullOrEmpty(Location))
+                result.ErrorMessage("Location", "The Location must contain a value");
+            else if (Location.Length > 100)
+                result.ErrorMessage("Location length", "The Location must be a maximum of 100 characters");
 
             return result;
         }

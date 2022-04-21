@@ -25,14 +25,14 @@ namespace DiffyAPI.Test
         {
             var obj = new PollRequest
             {
-                IDPoll = 1,
-                IDEvent = 1,
+                IdPoll = 1,
+                IdEvent = 1,
                 Username = "UserTest",
-                Partecipazione = 1,
-                Alloggio = "Casa",
-                Ruolo = "Armato",
+                Participation = Participation.No.ToString(),
+                Accommodation = "Casa",
+                Role = "Armato",
                 Note = "Note",
-                Luogo = "Luogo",
+                Location = "Luogo",
             }.Validate();
 
             Assert.IsTrue(obj.IsValid);
@@ -43,14 +43,14 @@ namespace DiffyAPI.Test
         {
             var obj = new PollRequest
             {
-                IDPoll = null,
-                IDEvent = null,
+                IdPoll = null,
+                IdEvent = null,
                 Username = null,
-                Partecipazione = null,
-                Alloggio = null,
-                Ruolo = null,
+                Participation = null,
+                Accommodation = null,
+                Role = null,
                 Note = null,
-                Luogo = null,
+                Location = null,
             }.Validate();
 
             Assert.IsFalse(obj.IsValid);
@@ -59,14 +59,14 @@ namespace DiffyAPI.Test
 
             var obj2 = new PollRequest
             {
-                IDPoll = -1,
-                IDEvent = -1,
+                IdPoll = -1,
+                IdEvent = -1,
                 Username = "1234567890123456789",
-                Partecipazione = 4,
-                Alloggio = "12345678901234567",
-                Ruolo = "1234567890123456712345678901234567",
+                Participation = Participation.Null.ToString(),
+                Accommodation = "12345678901234567",
+                Role = "1234567890123456712345678901234567",
                 Note = null,
-                Luogo = null,
+                Location = null,
             }.Validate();
 
             Assert.IsFalse(obj2.IsValid);
@@ -79,7 +79,7 @@ namespace DiffyAPI.Test
         {
             var obj = new PollRequest
             {
-                IDEvent = 1,
+                IdEvent = 1,
                 Username = "Username",
             }.ToCore();
 
@@ -162,7 +162,7 @@ namespace DiffyAPI.Test
                 FileName = "FileName",
                 Poll = new PollRequest
                 {
-                    IDEvent = 1,
+                    IdEvent = 1,
                     Username = "UserTest",
                 },
                 IdEvent = 1,
@@ -241,7 +241,7 @@ namespace DiffyAPI.Test
                 FileName = "FileName",
                 Poll = new PollRequest
                 {
-                    IDEvent = 1,
+                    IdEvent = 1,
                     Username = "UserTest",
                 },
                 IdEvent = -1,
@@ -264,7 +264,7 @@ namespace DiffyAPI.Test
                 FileName = "FileName",
                 Poll = new PollRequest
                 {
-                    IDEvent = 1,
+                    IdEvent = 1,
                     Username = "UserTest",
                 },
                 IdEvent = 1,
@@ -698,11 +698,11 @@ namespace DiffyAPI.Test
             {
                 IDEvent = 1,
                 Username = "UserTest",
-                Partecipazione = 1,
-                Alloggio = "Casa",
-                Ruolo = "Armato",
+                Participation = Participation.No,
+                Accommodation = "Casa",
+                Role = "Armato",
                 Note = "Note",
-                Luogo = "Luogo",
+                Location = "Luogo",
             };
             var uploadObj = new Poll
             {

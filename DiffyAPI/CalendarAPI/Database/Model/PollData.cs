@@ -1,4 +1,5 @@
 ﻿using DiffyAPI.CalendarAPI.Controllers.Model;
+using DiffyAPI.CalendarAPI.Core.Model;
 
 namespace DiffyAPI.CalendarAPI.Database.Model
 {
@@ -20,11 +21,11 @@ namespace DiffyAPI.CalendarAPI.Database.Model
                 IdEvent = IDEvent,
                 IdPoll = IDPoll,
                 Username = Username,
-                Partecipazione = Partecipazione,
-                Alloggio = Alloggio,
-                Ruolo = Ruolo,
+                Participation = (Participation)Partecipazione,
+                Accommodation = Alloggio,
+                Role = Ruolo,
                 Note = Note,
-                Luogo = Luogo,
+                Location = Luogo,
             };
         }
     }
