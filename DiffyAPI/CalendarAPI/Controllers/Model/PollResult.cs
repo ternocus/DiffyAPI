@@ -2,8 +2,8 @@
 {
     public class PollResult
     {
-        public int IDEvent { get; set; }
-        public int IDPoll { get; set; }
+        public int IdEvent { get; set; }
+        public int IdPoll { get; set; }
         public string Username { get; set; }
         public int Partecipazione { get; set; }
         public string Alloggio { get; set; }

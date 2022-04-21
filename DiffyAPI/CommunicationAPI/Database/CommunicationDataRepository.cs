@@ -50,7 +50,7 @@ namespace DiffyAPI.CommunicationAPI.Database
         public async Task AddNewMessage(NewMessage message)
         {
             using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
-            var time = message.Date.Day + "/" + message.Date.Month + "/" + message.Date.Year;
+            var time = message.Date.Year + "/" + message.Date.Month + "/" + message.Date.Day;
 
             await connection.QueryAsync<string>("INSERT INTO [dbo].[Comunicazioni] (IDCategoria, Titolo, Testo, Data, Username) VALUES" +
                                                 $"({message.IDCategory}, '{message.Title}', '{message.Message}', '{time}', '{message.Username}'); ");
@@ -65,10 +65,10 @@ namespace DiffyAPI.CommunicationAPI.Database
             return result.FirstOrDefault();
         }
 
-        public async Task<IEnumerable<TitleData>> GetListMessage()
+        public async Task<IEnumerable<TitleData>> GetListMessage(int idCategory)
         {
             using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
-            return await connection.QueryAsync<TitleData>("SELECT IDTitolo, Titolo FROM [dbo].[Comunicazioni]");
+            return await connection.QueryAsync<TitleData>($"SELECT IDTitolo, Titolo FROM [dbo].[Comunicazioni] WHERE IDCategoria = {idCategory};");
         }
 
         public async Task UploadMessage(UploadMessage uploadMessage)
@@ -98,7 +98,8 @@ namespace DiffyAPI.CommunicationAPI.Database
             {
                 if (index++ > 0)
                     query += ", ";
-                query += $"Data = '{uploadMessage.Date.Day + "/" + uploadMessage.Date.Month + "/" + uploadMessage.Date.Year}'";
+                var time = uploadMessage.Date.Year + "/" + uploadMessage.Date.Month + "/" + uploadMessage.Date.Day;
+                query += $"Data = '{time}'";
             }
             if (!string.IsNullOrEmpty(uploadMessage.Username))
             {

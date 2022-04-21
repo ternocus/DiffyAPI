@@ -12,7 +12,7 @@ namespace DiffyAPI.CommunicationAPI.Database
         public Task<bool> IsMessageExist(int idMessage);
         public Task AddNewMessage(NewMessage message);
         public Task<MessageData?> GetMessage(HeaderMessage messageRequest);
-        public Task<IEnumerable<TitleData>> GetListMessage();
+        public Task<IEnumerable<TitleData>> GetListMessage(int idCategory);
         public Task UploadMessage(UploadMessage uploadMessage);
         public Task<IEnumerable<CategoryData>> GetListCategory();
         public Task DeleteMessage(int idMessage);

@@ -7,7 +7,7 @@ namespace DiffyAPI.CommunicationAPI.Core
     {
         public Task<IEnumerable<CategoryResult>> GetCategory();
         public Task<bool> AddCategory(string name);
-        public Task<IEnumerable<TitleResult>> GetListMessage(string name);
+        public Task<IEnumerable<TitleResult>> GetListMessage(int idCategory);
         public Task<bool> AddMessage(NewMessage message);
         public Task<MessageResponse> GetBodyMessage(HeaderMessage messageRequest);
         public Task UploadMessage(UploadMessage uploadMessage);

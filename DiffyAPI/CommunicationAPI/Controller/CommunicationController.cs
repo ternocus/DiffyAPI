@@ -47,11 +47,11 @@ namespace DiffyAPI.CommunicationAPI.Controller
         }
 
         [HttpGet("GetMessageList")]
-        public async Task<IActionResult> GetListMessage([FromQuery, Required, MinLength(1)] string category)
+        public async Task<IActionResult> GetListMessage([FromQuery, Required] int idCategory)
         {
             try
             {
-                return Ok(await _communicationManager.GetListMessage(category));
+                return Ok(await _communicationManager.GetListMessage(idCategory));
             }
             catch (Exception ex)
             {

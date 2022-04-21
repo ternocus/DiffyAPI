@@ -26,7 +26,7 @@ namespace DiffyAPI.CalendarAPI.Database
         public async Task AddNewEvent(Event myEvent)
         {
             using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
-            var time = myEvent.Date.Day + "/" + myEvent.Date.Month + "/" + myEvent.Date.Year;
+            var time = myEvent.Date.Year + "/" + myEvent.Date.Month + "/" + myEvent.Date.Day;
             await connection.QueryAsync<EventData>("INSERT INTO [dbo].[Eventi] (Titolo, Data, Luogo, Testo, Filename) " +
                                                                 $"VALUES('{myEvent.Title}', '{time}', '{myEvent.Location}', '{myEvent.Description}', '{myEvent.FileName}');");
         }
@@ -76,7 +76,8 @@ namespace DiffyAPI.CalendarAPI.Database
             {
                 if (index++ > 0)
                     query += ", ";
-                query += $"Data = '{uploadEvent.Date.Day + "/" + uploadEvent.Date.Month + "/" + uploadEvent.Date.Year}'";
+                var time = uploadEvent.Date.Year + "/" + uploadEvent.Date.Month + "/" + uploadEvent.Date.Day;
+                query += $"Data = '{time}'";
             }
             if (!string.IsNullOrEmpty(uploadEvent.Location))
             {

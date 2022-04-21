@@ -36,9 +36,9 @@ namespace DiffyAPI.CommunicationAPI.Core
             return await _communicationDataRepository.IsCategoryExist(category);
         }
 
-        public async Task<IEnumerable<TitleResult>> GetListMessage(string name)
+        public async Task<IEnumerable<TitleResult>> GetListMessage(int idCategory)
         {
-            var result = await _communicationDataRepository.GetListMessage();
+            var result = await _communicationDataRepository.GetListMessage(idCategory);
 
             return (result.Select(title => title.ToController())).ToList();
         }

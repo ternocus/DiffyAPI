@@ -290,12 +290,12 @@ namespace DiffyAPI.Test
             var logger = new Mock<ILogger<CommunicationManager>>();
             var communicationData = new Mock<ICommunicationDataRepository>();
             communicationData
-                .Setup(x => x.GetListMessage())
+                .Setup(x => x.GetListMessage(1))
                 .ReturnsAsync(obj);
 
             var communicationManager = new CommunicationManager(communicationData.Object, logger.Object);
 
-            var output = communicationManager.GetListMessage("category");
+            var output = communicationManager.GetListMessage(1);
 
             Assert.AreEqual(2, output.Result.Count());
             Assert.AreEqual(1, output.Result.First().IdTitle);
@@ -310,11 +310,11 @@ namespace DiffyAPI.Test
             var logger = new Mock<ILogger<CommunicationManager>>();
             var communicationData = new Mock<ICommunicationDataRepository>();
             communicationData
-                .Setup(x => x.GetListMessage());
+                .Setup(x => x.GetListMessage(1));
 
             var communicationManager = new CommunicationManager(communicationData.Object, logger.Object);
 
-            var output = communicationManager.GetListMessage("category").Result;
+            var output = communicationManager.GetListMessage(1).Result;
 
             Assert.NotNull(output);
             Assert.AreEqual(0, output.Count());
@@ -613,7 +613,7 @@ namespace DiffyAPI.Test
             await database.AddNewMessage(obj);
 
             TitleData? output2 = null;
-            foreach (var cat in await database.GetListMessage())
+            foreach (var cat in await database.GetListMessage(output.ID))
             {
                 if (cat.Titolo == obj.Title)
                     output2 = cat;

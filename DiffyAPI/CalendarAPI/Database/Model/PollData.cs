@@ -17,8 +17,8 @@ namespace DiffyAPI.CalendarAPI.Database.Model
         {
             return new PollResult
             {
-                IDEvent = IDEvent,
-                IDPoll = IDPoll,
+                IdEvent = IDEvent,
+                IdPoll = IDPoll,
                 Username = Username,
                 Partecipazione = Partecipazione,
                 Alloggio = Alloggio,
