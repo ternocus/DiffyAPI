@@ -12,7 +12,6 @@ namespace DiffyAPI.CalendarAPI.Database.Model
         public string Alloggio { get; set; }
         public string Ruolo { get; set; }
         public string Note { get; set; }
-        public string Luogo { get; set; }
 
         public PollResult ToController()
         {
@@ -25,7 +24,6 @@ namespace DiffyAPI.CalendarAPI.Database.Model
                 Accommodation = Alloggio,
                 Role = Ruolo,
                 Note = Note,
-                Location = Luogo,
             };
         }
     }

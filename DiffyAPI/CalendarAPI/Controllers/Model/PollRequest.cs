@@ -11,7 +11,6 @@ namespace DiffyAPI.CalendarAPI.Controllers.Model
         public string? Accommodation { get; set; }
         public string? Role { get; set; }
         public string? Note { get; set; }
-        public string? Location { get; set; }
 
         public Poll ToCore()
         {
@@ -23,7 +22,6 @@ namespace DiffyAPI.CalendarAPI.Controllers.Model
                 Accommodation = Accommodation!,
                 Role = Role!,
                 Note = Note!,
-                Location = Location!,
             };
         }
 
@@ -43,7 +41,9 @@ namespace DiffyAPI.CalendarAPI.Controllers.Model
 
             if (string.IsNullOrEmpty(Participation))
                 result.ErrorMessage("Participation", "The Participation must contain a value");
-            else if (Participation != "No" && Participation != "Forse" && Participation != "Si")
+            else if (Participation != Core.Model.Participation.No.ToString()
+                     && Participation != Core.Model.Participation.Maybe.ToString()
+                     && Participation != Core.Model.Participation.Yes.ToString())
                 result.ErrorMessage("Participation", "The Participation must be a real value");
 
             if (string.IsNullOrEmpty(Accommodation))
@@ -60,11 +60,6 @@ namespace DiffyAPI.CalendarAPI.Controllers.Model
                 result.ErrorMessage("Note", "The Note must contain a value");
             else if (Note.Length > 200)
                 result.ErrorMessage("Note length", "The Note must be a maximum of 200 characters");
-
-            if (string.IsNullOrEmpty(Location))
-                result.ErrorMessage("Location", "The Location must contain a value");
-            else if (Location.Length > 100)
-                result.ErrorMessage("Location length", "The Location must be a maximum of 100 characters");
 
             return result;
         }

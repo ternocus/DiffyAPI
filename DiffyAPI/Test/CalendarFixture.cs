@@ -31,7 +31,6 @@ namespace DiffyAPI.Test
                 Accommodation = "Casa",
                 Role = "Armato",
                 Note = "Note",
-                Location = "Luogo",
             }.Validate();
 
             Assert.IsTrue(obj.IsValid);
@@ -48,12 +47,11 @@ namespace DiffyAPI.Test
                 Accommodation = null,
                 Role = null,
                 Note = null,
-                Location = null,
             }.Validate();
 
             Assert.IsFalse(obj.IsValid);
             Assert.IsNotEmpty(obj._errors);
-            Assert.AreEqual(8, obj._errors.Count);
+            Assert.AreEqual(6, obj._errors.Count);
 
             var obj2 = new PollRequest
             {
@@ -63,12 +61,11 @@ namespace DiffyAPI.Test
                 Accommodation = "12345678901234567",
                 Role = "1234567890123456712345678901234567",
                 Note = null,
-                Location = null,
             }.Validate();
 
             Assert.IsFalse(obj2.IsValid);
             Assert.IsNotEmpty(obj2._errors);
-            Assert.AreEqual(8, obj2._errors.Count);
+            Assert.AreEqual(6, obj2._errors.Count);
         }
 
         [Test]
@@ -82,7 +79,6 @@ namespace DiffyAPI.Test
                 Accommodation = "Casa",
                 Role = "Armato",
                 Note = "Note",
-                Location = "Luogo",
             }.ToCore();
 
             Assert.AreEqual(typeof(Poll), obj.GetType());
@@ -102,7 +98,6 @@ namespace DiffyAPI.Test
                 Accommodation = "Casa",
                 Role = "Armato",
                 Note = "Note",
-                Location = "Luogo",
             }.Validate();
 
             Assert.IsTrue(obj.IsValid);
@@ -120,12 +115,11 @@ namespace DiffyAPI.Test
                 Accommodation = null,
                 Role = null,
                 Note = null,
-                Location = null,
             }.Validate();
 
             Assert.IsFalse(obj.IsValid);
             Assert.IsNotEmpty(obj._errors);
-            Assert.AreEqual(8, obj._errors.Count);
+            Assert.AreEqual(7, obj._errors.Count);
 
             var obj2 = new UploadPollRequest
             {
@@ -136,12 +130,11 @@ namespace DiffyAPI.Test
                 Accommodation = "12345678901234567",
                 Role = "1234567890123456712345678901234567",
                 Note = null,
-                Location = null,
             }.Validate();
 
             Assert.IsFalse(obj2.IsValid);
             Assert.IsNotEmpty(obj2._errors);
-            Assert.AreEqual(8, obj2._errors.Count);
+            Assert.AreEqual(7, obj2._errors.Count);
         }
 
         [Test]
@@ -156,7 +149,6 @@ namespace DiffyAPI.Test
                 Accommodation = "Casa",
                 Role = "Armato",
                 Note = "Note",
-                Location = "Luogo",
             }.ToCore();
 
             Assert.AreEqual(typeof(Poll), obj.GetType());
@@ -240,6 +232,10 @@ namespace DiffyAPI.Test
                 {
                     IdEvent = 1,
                     Username = "UserTest",
+                    Participation = Participation.No.ToString(),
+                    Accommodation = "Casa",
+                    Role = "Armato",
+                    Note = "Note",
                 },
                 IdEvent = 1,
             }.Validate();
@@ -276,7 +272,7 @@ namespace DiffyAPI.Test
 
             Assert.IsFalse(obj.IsValid);
             Assert.IsNotEmpty(obj._errors);
-            Assert.AreEqual(2, obj._errors.Count);
+            Assert.AreEqual(1, obj._errors.Count);
 
             obj = new UploadRequest
             {
@@ -287,21 +283,6 @@ namespace DiffyAPI.Test
                 FileName = null,
                 Poll = null,
                 IdEvent = -1,
-            }.Validate();
-
-            Assert.IsFalse(obj.IsValid);
-            Assert.IsNotEmpty(obj._errors);
-            Assert.AreEqual(2, obj._errors.Count);
-
-            obj = new UploadRequest
-            {
-                Title = null,
-                Date = null,
-                Location = null,
-                Description = null,
-                FileName = null,
-                Poll = null,
-                IdEvent = 1,
             }.Validate();
 
             Assert.IsFalse(obj.IsValid);
@@ -319,6 +300,10 @@ namespace DiffyAPI.Test
                 {
                     IdEvent = 1,
                     Username = "UserTest",
+                    Participation = Participation.No.ToString(),
+                    Accommodation = "Casa",
+                    Role = "Armato",
+                    Note = "Note",
                 },
                 IdEvent = -1,
             }.Validate();
@@ -342,6 +327,10 @@ namespace DiffyAPI.Test
                 {
                     IdEvent = 1,
                     Username = "UserTest",
+                    Participation = Participation.No.ToString(),
+                    Accommodation = "Casa",
+                    Role = "Armato",
+                    Note = "Note",
                 },
                 IdEvent = 1,
             }.ToCore();
@@ -599,13 +588,14 @@ namespace DiffyAPI.Test
         {
             var obj = new Poll
             {
+                IDEvent = 1,
                 Username = "UserTest",
             };
 
             var logger = new Mock<ILogger<CalendarManager>>();
             var calendarData = new Mock<ICalendarDataRepository>();
             calendarData
-                .Setup(x => x.IsPollExist(obj.Username))
+                .Setup(x => x.IsPollExist(obj.IDEvent))
                 .ReturnsAsync(false);
             calendarData
                 .Setup(x => x.AddNewPoll(obj));
@@ -623,13 +613,14 @@ namespace DiffyAPI.Test
         {
             var obj = new Poll
             {
+                IDEvent = 1,
                 Username = "UserTest",
             };
 
             var logger = new Mock<ILogger<CalendarManager>>();
             var calendarData = new Mock<ICalendarDataRepository>();
             calendarData
-                .Setup(x => x.IsPollExist(obj.Username))
+                .Setup(x => x.IsPollExist(obj.IDEvent))
                 .ReturnsAsync(true);
 
             var calendarManager = new CalendarManager(calendarData.Object, logger.Object);
@@ -643,13 +634,14 @@ namespace DiffyAPI.Test
         {
             var obj = new Poll
             {
+                IDEvent = 1,
                 Username = "UserTest",
             };
 
             var logger = new Mock<ILogger<CalendarManager>>();
             var calendarData = new Mock<ICalendarDataRepository>();
             calendarData
-                .Setup(x => x.IsPollExist(obj.Username))
+                .Setup(x => x.IsPollExist(obj.IDEvent))
                 .ReturnsAsync(false);
 
             var calendarManager = new CalendarManager(calendarData.Object, logger.Object);
@@ -729,7 +721,7 @@ namespace DiffyAPI.Test
             var output1 = await database.GetSingleEvent(id);
             Assert.IsNotNull(output1);
             Assert.IsNotNull(output1.Event);
-            var time = obj.Date.Day + "/" + obj.Date.Month + "/" + obj.Date.Year;
+            var time = obj.Date.Year + "/" + obj.Date.Month + "/" + obj.Date.Day;
             Assert.AreEqual(time, output1.Event.Data);
             Assert.AreEqual(obj.Description, output1.Event.Testo);
             Assert.AreEqual(obj.FileName, output1.Event.FileName);
@@ -744,7 +736,7 @@ namespace DiffyAPI.Test
             var output3 = await database.GetSingleEvent(uploadObj.IDEvent);
             Assert.IsNotNull(output3);
             Assert.IsNotNull(output3.Event);
-            time = uploadObj.Date.Day + "/" + uploadObj.Date.Month + "/" + uploadObj.Date.Year;
+            time = uploadObj.Date.Year + "/" + uploadObj.Date.Month + "/" + uploadObj.Date.Day;
             Assert.AreEqual(time, output3.Event.Data);
             Assert.AreEqual(uploadObj.Description, output3.Event.Testo);
             Assert.AreEqual(uploadObj.FileName, output3.Event.FileName);
@@ -778,17 +770,20 @@ namespace DiffyAPI.Test
                 Accommodation = "Casa",
                 Role = "Armato",
                 Note = "Note",
-                Location = "Luogo",
             };
             var uploadObj = new Poll
             {
                 IDEvent = 1,
-                Username = "UserNewTest",
+                Username = "UserTestUpload",
+                Participation = Participation.Yes,
+                Accommodation = "CasaUpload",
+                Role = "ArmatoUpload",
+                Note = "NoteUpload",
             };
 
             await database.AddNewPoll(obj);
 
-            var output = await database.IsPollExist(obj.Username);
+            var output = await database.IsPollExist(obj.IDEvent);
             Assert.IsTrue(output);
 
             var id = await GetPollID(obj.Username);
@@ -805,9 +800,9 @@ namespace DiffyAPI.Test
             Assert.IsNotNull(output3);
             Assert.AreEqual(uploadObj.Username, output3.Username);
 
-            await database.DeletePoll(await GetPollID(obj.Username));
+            await database.DeletePoll(uploadObj.IDPoll);
 
-            output = await database.IsEventExist(id);
+            output = await database.IsPollExist(uploadObj.IDPoll);
             Assert.IsFalse(output);
         }
 

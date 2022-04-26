@@ -9,6 +9,5 @@
         public string Accommodation { get; set; }
         public string Role { get; set; }
         public string Note { get; set; }
-        public string Location { get; set; }
     }
 }

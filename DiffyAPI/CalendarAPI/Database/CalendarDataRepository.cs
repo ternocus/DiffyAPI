@@ -111,25 +111,25 @@ namespace DiffyAPI.CalendarAPI.Database
             await connection.QueryAsync<EventData>($"DELETE FROM [dbo].[Eventi] WHERE IDEvent = {idEvent};");
         }
 
-        public async Task<bool> IsPollExist(string username)
+        public async Task<bool> IsPollExist(int idEvent, int idPoll)
         {
             using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
-            var result = await connection.QueryAsync<PollData>($"SELECT * FROM [dbo].[Sondaggio] WHERE Username = '{username}';");
+            var result = await connection.QueryAsync<PollData>($"SELECT * FROM [dbo].[Sondaggio] WHERE IDEvent = {idEvent} AND IDPoll = {idPoll};");
             return result.FirstOrDefault() != null;
         }
 
-        public async Task<bool> IsPollExist(int idPoll)
+        public async Task<bool> IsPollExist(int idEvent)
         {
             using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
-            var result = await connection.QueryAsync<PollData>($"SELECT * FROM [dbo].[Sondaggio] WHERE IDPoll = '{idPoll}';");
+            var result = await connection.QueryAsync<PollData>($"SELECT * FROM [dbo].[Sondaggio] WHERE IDEvent = {idEvent};");
             return result.FirstOrDefault() != null;
         }
 
         public async Task AddNewPoll(Poll poll)
         {
             using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
-            await connection.QueryAsync<EventData>("INSERT INTO [dbo].[Sondaggio] (IDEvent, Username, Partecipazione, Alloggio, Ruolo, Note, Luogo) " +
-                                                   $"VALUES({ poll.IDEvent}, '{poll.Username}', {poll.Participation}, '{poll.Accommodation}', '{poll.Role}', '{poll.Note}', '{poll.Location}');");
+            await connection.QueryAsync<EventData>("INSERT INTO [dbo].[Sondaggio] (IDEvent, Username, Partecipazione, Alloggio, Ruolo, Note) " +
+                                                   $"VALUES ({poll.IDEvent}, '{poll.Username}', {(int)poll.Participation}, '{poll.Accommodation}', '{poll.Role}', '{poll.Note}');");
         }
 
         public async Task UploadPoll(Poll poll)
@@ -153,7 +153,7 @@ namespace DiffyAPI.CalendarAPI.Database
             {
                 if (index++ > 0)
                     query += ", ";
-                query += $"Partecipazione = {poll.Participation}";
+                query += $"Partecipazione = {(int)poll.Participation}";
             }
             if (!string.IsNullOrEmpty(poll.Accommodation))
             {
@@ -169,15 +169,9 @@ namespace DiffyAPI.CalendarAPI.Database
             }
             if (!string.IsNullOrEmpty(poll.Note))
             {
-                if (index++ > 0)
-                    query += ", ";
-                query += $"Note = '{poll.Note}'";
-            }
-            if (!string.IsNullOrEmpty(poll.Location))
-            {
                 if (index > 0)
                     query += ", ";
-                query += $"Luogo = '{poll.Location}'";
+                query += $"Note = '{poll.Note}'";
             }
 
             query += $" WHERE IDPoll = {poll.IDPoll};";
@@ -194,7 +188,7 @@ namespace DiffyAPI.CalendarAPI.Database
         public async Task<PollData?> GetPollData(int idPoll)
         {
             using IDbConnection connection = new SqlConnection(Configuration.ConnectionString());
-            var result = await connection.QueryAsync<PollData>($"SELECT * FROM [dbo].[Sondaggio] WHERE IDPoll = '{idPoll}';");
+            var result = await connection.QueryAsync<PollData>($"SELECT * FROM [dbo].[Sondaggio] WHERE IDPoll = {idPoll};");
             return result.FirstOrDefault();
         }
     }

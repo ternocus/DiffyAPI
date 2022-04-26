@@ -76,7 +76,7 @@ namespace DiffyAPI.CalendarAPI.Core
 
         public async Task<bool> AddNewPoll(Poll poll)
         {
-            if (await _calendarDataRepository.IsPollExist(poll.Username))
+            if (await _calendarDataRepository.IsPollExist(poll.IDEvent))
             {
                 _logger.LogError($"Il sondaggio di {poll.Username} è già presente nel database.");
                 throw new PollAlreadyExistException($"The {poll.Username} poll is already present.");
@@ -84,12 +84,12 @@ namespace DiffyAPI.CalendarAPI.Core
 
             await _calendarDataRepository.AddNewPoll(poll);
 
-            return await _calendarDataRepository.IsPollExist(poll.Username);
+            return await _calendarDataRepository.IsPollExist(poll.IDEvent);
         }
 
         public async Task UploadPoll(Poll poll)
         {
-            if (!await _calendarDataRepository.IsPollExist(poll.Username))
+            if (!await _calendarDataRepository.IsPollExist(poll.IDEvent, poll.IDPoll))
             {
                 _logger.LogError($"L'evento [{poll.Username}] da modificare non è presente nel database");
                 throw new EventNotFoundException($"The event [{poll.Username}] is not present in the database.");

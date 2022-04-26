@@ -13,8 +13,8 @@ namespace DiffyAPI.CalendarAPI.Database
         public Task UploadEvent(UploadEvent uploadEvent);
         public Task DeleteEvent(int idEvent);
 
-        public Task<bool> IsPollExist(string username);
-        public Task<bool> IsPollExist(int idPoll);
+        public Task<bool> IsPollExist(int idEvent, int idPoll);
+        public Task<bool> IsPollExist(int idEvent);
         public Task AddNewPoll(Poll poll);
         public Task<PollData?> GetPollData(int idPoll);
         public Task UploadPoll(Poll poll);
