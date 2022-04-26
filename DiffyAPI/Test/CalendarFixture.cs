@@ -25,7 +25,6 @@ namespace DiffyAPI.Test
         {
             var obj = new PollRequest
             {
-                IdPoll = 1,
                 IdEvent = 1,
                 Username = "UserTest",
                 Participation = Participation.No.ToString(),
@@ -43,7 +42,6 @@ namespace DiffyAPI.Test
         {
             var obj = new PollRequest
             {
-                IdPoll = null,
                 IdEvent = null,
                 Username = null,
                 Participation = null,
@@ -59,7 +57,6 @@ namespace DiffyAPI.Test
 
             var obj2 = new PollRequest
             {
-                IdPoll = -1,
                 IdEvent = -1,
                 Username = "1234567890123456789",
                 Participation = Participation.Null.ToString(),
@@ -80,7 +77,86 @@ namespace DiffyAPI.Test
             var obj = new PollRequest
             {
                 IdEvent = 1,
-                Username = "Username",
+                Username = "UserTest",
+                Participation = Participation.No.ToString(),
+                Accommodation = "Casa",
+                Role = "Armato",
+                Note = "Note",
+                Location = "Luogo",
+            }.ToCore();
+
+            Assert.AreEqual(typeof(Poll), obj.GetType());
+        }
+        #endregion
+
+        #region PollModel
+        [Test]
+        public void ValidateUploadPollRequest_CoorectInput_ValidationResult()
+        {
+            var obj = new UploadPollRequest
+            {
+                IdPoll = 1,
+                IdEvent = 1,
+                Username = "UserTest",
+                Participation = Participation.No.ToString(),
+                Accommodation = "Casa",
+                Role = "Armato",
+                Note = "Note",
+                Location = "Luogo",
+            }.Validate();
+
+            Assert.IsTrue(obj.IsValid);
+        }
+
+        [Test]
+        public void ValidateUploadPollRequest_UncorrectInput_ValidationResult()
+        {
+            var obj = new UploadPollRequest
+            {
+                IdPoll = null,
+                IdEvent = null,
+                Username = null,
+                Participation = null,
+                Accommodation = null,
+                Role = null,
+                Note = null,
+                Location = null,
+            }.Validate();
+
+            Assert.IsFalse(obj.IsValid);
+            Assert.IsNotEmpty(obj._errors);
+            Assert.AreEqual(8, obj._errors.Count);
+
+            var obj2 = new UploadPollRequest
+            {
+                IdPoll = -1,
+                IdEvent = -1,
+                Username = "1234567890123456789",
+                Participation = Participation.Null.ToString(),
+                Accommodation = "12345678901234567",
+                Role = "1234567890123456712345678901234567",
+                Note = null,
+                Location = null,
+            }.Validate();
+
+            Assert.IsFalse(obj2.IsValid);
+            Assert.IsNotEmpty(obj2._errors);
+            Assert.AreEqual(8, obj2._errors.Count);
+        }
+
+        [Test]
+        public void ToCoreUploadPollRequest_Poll()
+        {
+            var obj = new UploadPollRequest
+            {
+                IdPoll = 1,
+                IdEvent = 1,
+                Username = "UserTest",
+                Participation = Participation.No.ToString(),
+                Accommodation = "Casa",
+                Role = "Armato",
+                Note = "Note",
+                Location = "Luogo",
             }.ToCore();
 
             Assert.AreEqual(typeof(Poll), obj.GetType());

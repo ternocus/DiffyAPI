@@ -3,8 +3,9 @@ using DiffyAPI.Utils;
 
 namespace DiffyAPI.CalendarAPI.Controllers.Model
 {
-    public class PollRequest : IValidateResult
+    public class UploadPollRequest : IValidateResult
     {
+        public int? IdPoll { get; set; }
         public int? IdEvent { get; set; }
         public string? Username { get; set; }
         public string? Participation { get; set; }
@@ -17,6 +18,7 @@ namespace DiffyAPI.CalendarAPI.Controllers.Model
         {
             return new Poll
             {
+                IDPoll = IdPoll!.Value,
                 IDEvent = IdEvent!.Value,
                 Username = Username!,
                 Participation = (Participation)Enum.Parse(typeof(Participation), Participation!),
@@ -35,6 +37,11 @@ namespace DiffyAPI.CalendarAPI.Controllers.Model
                 result.ErrorMessage("Username", "The Username must contain a value");
             else if (Username.Length > 18)
                 result.ErrorMessage("Username length", "The Username must be a maximum of 18 characters");
+
+            if (IdPoll == null)
+                result.ErrorMessage("IdPoll", "The IdPoll must contain a value");
+            else if (IdPoll < 0)
+                result.ErrorMessage("IdPoll length", "The IdPoll must have a value >= 0");
 
             if (IdEvent == null)
                 result.ErrorMessage("IdEvent", "The IdEvent must contain a value");

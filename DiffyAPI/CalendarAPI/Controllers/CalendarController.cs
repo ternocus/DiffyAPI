@@ -121,7 +121,7 @@ namespace DiffyAPI.CalendarAPI.Controllers
         }
 
         [HttpPut("UploadPoll")]
-        public async Task<IActionResult> UploadPoll([FromBody] PollRequest request)
+        public async Task<IActionResult> UploadPoll([FromBody] UploadPollRequest request)
         {
             try
             {
