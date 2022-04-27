@@ -46,8 +46,9 @@ namespace DiffyAPI.CalendarAPI.Database
 
             foreach (var myEvent in result)
             {
-                myEvent.Title = (await connection.QueryAsync<string>($"SELECT Titolo, Luogo FROM [dbo].[Eventi] WHERE IDEvent = {myEvent.IdEvent};")).First();
+                myEvent.Title = (await connection.QueryAsync<string>($"SELECT Titolo FROM [dbo].[Eventi] WHERE IDEvent = {myEvent.IdEvent};")).First();
                 myEvent.Luogo = (await connection.QueryAsync<string>($"SELECT Luogo FROM [dbo].[Eventi] WHERE IDEvent = {myEvent.IdEvent};")).First();
+                myEvent.IdPoll = (await connection.QueryAsync<int>($"SELECT IDPoll FROM [dbo].[Sondaggio] WHERE IDEvent = {myEvent.IdEvent};")).FirstOrDefault();
             }
 
             return result;
