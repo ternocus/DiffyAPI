@@ -1,17 +1,16 @@
-﻿using DiffyAPI.CommunicationAPI.Controller.Model;
-using DiffyAPI.CommunicationAPI.Core;
-using DiffyAPI.CommunicationAPI.Core.Model;
-using DiffyAPI.CommunicationAPI.Database;
+﻿using DiffyAPI.CommunicationAPI.Database;
 using DiffyAPI.CommunicationAPI.Database.Model;
+using DiffyAPI.Controller.CommunicationAPI.Model;
+using DiffyAPI.Core.CommunicationAPI;
+using DiffyAPI.Core.CommunicationAPI.Model;
 using DiffyAPI.Exceptions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
 
 namespace DiffyAPI.Test
 {
-    [TestFixture]
+	[TestFixture]
     public class CommunicationFixture
     {
         #region HeaderMessageModel

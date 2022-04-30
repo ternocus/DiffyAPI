@@ -1,8 +1,8 @@
-﻿using DiffyAPI.AccessAPI.Controllers.Model;
-using DiffyAPI.AccessAPI.Core;
-using DiffyAPI.AccessAPI.Core.Model;
-using DiffyAPI.AccessAPI.Database;
-using DiffyAPI.AccessAPI.Database.Model;
+﻿using DiffyAPI.Controller.AccessAPI.Model;
+using DiffyAPI.Core.AccessAPI;
+using DiffyAPI.Core.AccessAPI.Model;
+using DiffyAPI.Database.AccessAPI;
+using DiffyAPI.Database.AccessAPI.Model;
 using DiffyAPI.Exceptions;
 using DiffyAPI.Model;
 using DiffyAPI.UserAPI.Database;
@@ -14,7 +14,7 @@ using Assert = NUnit.Framework.Assert;
 
 namespace DiffyAPI.Test
 {
-    [TestFixture]
+	[TestFixture]
     public class AccessFixture
     {
         #region LoginRequestModel

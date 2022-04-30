@@ -1,10 +1,10 @@
-using DiffyAPI.AccessAPI.Core;
-using DiffyAPI.AccessAPI.Database;
-using DiffyAPI.CalendarAPI.Core;
 using DiffyAPI.CalendarAPI.Database;
-using DiffyAPI.CommunicationAPI.Core;
 using DiffyAPI.CommunicationAPI.Database;
-using DiffyAPI.UserAPI.Core;
+using DiffyAPI.Core.AccessAPI;
+using DiffyAPI.Core.CalendarAPI;
+using DiffyAPI.Core.CommunicationAPI;
+using DiffyAPI.Core.UserAPI;
+using DiffyAPI.Database.AccessAPI;
 using DiffyAPI.UserAPI.Database;
 
 var builder = WebApplication.CreateBuilder(args);

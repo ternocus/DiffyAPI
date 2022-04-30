@@ -1,9 +1,11 @@
 ﻿using Dapper;
 using DiffyAPI.CalendarAPI.Controllers.Model;
-using DiffyAPI.CalendarAPI.Core;
-using DiffyAPI.CalendarAPI.Core.Model;
 using DiffyAPI.CalendarAPI.Database;
 using DiffyAPI.CalendarAPI.Database.Model;
+using DiffyAPI.Controller.CalendarAPI.Model;
+using DiffyAPI.Core.CalendarAPI;
+using DiffyAPI.Core.CalendarAPI.Model;
+using DiffyAPI.Core.Enum;
 using DiffyAPI.Exceptions;
 using DiffyAPI.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -16,7 +18,7 @@ using Assert = NUnit.Framework.Assert;
 
 namespace DiffyAPI.Test
 {
-    [TestFixture]
+	[TestFixture]
     public class CalendarFixture
     {
         #region PollModel

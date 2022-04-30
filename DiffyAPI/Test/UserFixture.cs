@@ -1,10 +1,10 @@
-﻿using DiffyAPI.AccessAPI.Core.Model;
-using DiffyAPI.AccessAPI.Database;
+﻿using DiffyAPI.Controller.UserAPI.Model;
+using DiffyAPI.Core.AccessAPI.Model;
+using DiffyAPI.Core.UserAPI;
+using DiffyAPI.Core.UserAPI.Model;
+using DiffyAPI.Database.AccessAPI;
 using DiffyAPI.Exceptions;
 using DiffyAPI.Model;
-using DiffyAPI.UserAPI.Controllers.Model;
-using DiffyAPI.UserAPI.Core;
-using DiffyAPI.UserAPI.Core.Model;
 using DiffyAPI.UserAPI.Database;
 using DiffyAPI.UserAPI.Database.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -14,7 +14,7 @@ using Assert = NUnit.Framework.Assert;
 
 namespace DiffyAPI.Test
 {
-    [TestFixture]
+	[TestFixture]
     public class UserFixture
     {
         #region ExportLineModel
