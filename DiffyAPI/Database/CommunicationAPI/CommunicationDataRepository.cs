@@ -79,7 +79,7 @@ namespace DiffyAPI.CommunicationAPI.Database
             var query = "UPDATE [dbo].[Comunicazioni] SET ";
             if (!string.IsNullOrEmpty(uploadMessage.Title))
             {
-                query += $"IDCategoria = '{uploadMessage.IdCategory}'";
+                query += $"IDCategoria = {uploadMessage.IdCategory}";
                 index++;
             }
             if (!string.IsNullOrEmpty(uploadMessage.Title))

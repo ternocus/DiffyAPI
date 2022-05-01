@@ -108,10 +108,10 @@ namespace DiffyAPI.Controller.CommunicationAPI
 				if (validate.IsValid)
 				{
 					await _communicationManager.UploadMessage(request.ToCore());
-					Ok();
+					return Ok();
 				}
-
-				return BadRequest(new { ErrorType = "InvalidMessageObject", Error = validate.GetErrorMessage().Replace("[", "").Replace("]", "") });
+				else 
+					return BadRequest(new { ErrorType = "InvalidMessageObject", Error = validate.GetErrorMessage().Replace("[", "").Replace("]", "") });
 			}
 			catch (Exception ex)
 			{

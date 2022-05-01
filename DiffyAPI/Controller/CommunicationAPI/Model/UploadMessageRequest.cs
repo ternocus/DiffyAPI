@@ -34,7 +34,9 @@ namespace DiffyAPI.Controller.CommunicationAPI.Model
 			else if (IdMessage < 0)
 				result.ErrorMessage("IdMessage", "The IdMessage must contain a real value");
 
-			if (IdCategory != null && IdCategory < 0)
+			if(IdCategory == null)
+				result.ErrorMessage("IdCategory", "The IdCategory must contain a value");
+			if (IdCategory < 0)
 				result.ErrorMessage("IdCategory", "The IdCategory must contain a real value");
 
 			if (!string.IsNullOrEmpty(Title) && Title.Length > 255)

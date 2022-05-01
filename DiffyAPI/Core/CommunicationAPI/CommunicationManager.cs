@@ -71,7 +71,7 @@ namespace DiffyAPI.Core.CommunicationAPI
 
 		public async Task UploadMessage(UploadMessage uploadMessage)
 		{
-			if (!await _communicationDataRepository.IsMessageExist(uploadMessage.Title))
+			if (!await _communicationDataRepository.IsMessageExist(uploadMessage.IdTitle))
 			{
 				_logger.LogError($"Il messaggio {uploadMessage.Title} non è  presente nel database");
 				throw new MessageNotFoundException($"The {uploadMessage.Title} message is not present in the database.");
